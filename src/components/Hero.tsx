@@ -44,7 +44,7 @@ export default function Hero() {
 
                     {/* Main Heading */}
                     <motion.h1
-                        className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6"
+                        className="text-3xl md:text-6xl lg:text-7xl font-bold mb-6"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.3, duration: 0.8 }}
@@ -56,7 +56,7 @@ export default function Hero() {
 
                     {/* Subtitle */}
                     <motion.h2
-                        className="text-2xl md:text-4xl font-semibold text-gray-400 mb-6"
+                        className="text-xl md:text-2xl font-semibold text-gray-400 mb-6"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.5, duration: 0.8 }}

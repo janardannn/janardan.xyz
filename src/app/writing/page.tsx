@@ -99,7 +99,7 @@ export default function WritingPage() {
                             </Link>
                         </Button>
 
-                        <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent">
+                        <h1 className="text-4xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent">
                             Writing
                         </h1>
                         <p className="text-xl text-gray-300 max-w-3xl leading-relaxed">

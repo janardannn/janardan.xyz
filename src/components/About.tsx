@@ -8,41 +8,64 @@ import { Download, MapPin, Calendar, Coffee, Code2, Briefcase } from "lucide-rea
 
 const skills = [
     { name: "JavaScript", level: "Proficient", category: "Frontend" },
+    { name: "TypeScript", level: "Proficient", category: "Frontend" },
     { name: "React", level: "Proficient", category: "Frontend" },
+    { name: "Next.js", level: "Proficient", category: "Frontend" },
     { name: "HTML/CSS", level: "Proficient", category: "Frontend" },
     { name: "Bootstrap", level: "Proficient", category: "Frontend" },
     { name: "Tailwind CSS", level: "Developing", category: "Frontend" },
+
     { name: "Node.js", level: "Familiar", category: "Backend" },
     { name: "Express.js", level: "Familiar", category: "Backend" },
-    { name: "MongoDB", level: "Familiar", category: "Database" },
-    { name: "MySQL", level: "Familiar", category: "Database" },
     { name: "Python", level: "Learning", category: "Backend" },
+    { name: "Flask", level: "Familiar", category: "Backend" },
+    { name: "REST APIs", level: "Proficient", category: "Backend" },
+
+    { name: "MongoDB", level: "Familiar", category: "Database" },
+    { name: "PostgreSQL", level: "Familiar", category: "Database" },
+    { name: "Prisma", level: "Familiar", category: "Database" },
+
     { name: "C++", level: "Familiar", category: "Programming" },
     { name: "Java", level: "Learning", category: "Programming" },
-    { name: "Git", level: "Proficient", category: "Tools" },
-    { name: "VS Code", level: "Proficient", category: "Tools" },
-    { name: "REST APIs", level: "Developing", category: "Backend" }
+
+    { name: "Git", level: "Familiar", category: "Tools" },
+    { name: "Docker", level: "Familiar", category: "Tools" },
+    { name: "Nginx", level: "Familiar", category: "Tools" },
+    { name: "Github Actions", level: "Familiar", category: "Tools" },
+    { name: "Linux", level: "Familiar", category: "Tools" },
+]
+
+const education = [
+    {
+        title: "Bachelor's in Computer Science and Engineering",
+        institution: "Chandigarh University, Mohali, PB, IN",
+        period: "2022-Present",
+        grade: 7.34,
+        description: "Pursuing Bachelor's in Computer Science with focus on software development, data structures, and algorithms."
+    },
+    {
+        title: "12th",
+        institution: "Kendriya Vidyalaya, Jagiroad, AS, IN",
+        period: "2019-2021",
+        grade: 83.4,
+        description: "Completed 12th grade with a focus on Science, Mathematics and Computer Science."
+    },
+    {
+        title: "10th",
+        institution: "Indus Academy, Jagiroad, AS, IN",
+        period: "2016-2019",
+        grade: 91.6,
+        description: "Completed secondary education with a focus on Science and Mathematics."
+    }
 ]
 
 const experience = [
     {
-        title: "Computer Science Student",
-        company: "Assam University, Silchar",
-        period: "2021 - Present",
-        description: "Pursuing Bachelor's in Computer Science with focus on software development, data structures, and algorithms."
+        title: "Independent Freelancer",
+        company: "Upwork & Fiverr",
+        period: "2022-Present",
+        description: "Building anything from small python scripts to fullstack end to end applications to complex webscraping engines controlled via a simple dashboard."
     },
-    {
-        title: "Web Development Projects",
-        company: "Personal & Academic",
-        period: "2022 - Present",
-        description: "Built multiple web applications including task management systems, e-commerce platforms, and portfolio websites."
-    },
-    {
-        title: "Learning & Development",
-        company: "Self-Directed",
-        period: "2021 - Present",
-        description: "Continuously learning modern web technologies through online courses, tutorials, and hands-on projects."
-    }
 ]
 
 const stats = [
@@ -84,7 +107,7 @@ export default function About() {
                 >
                     <div className="text-center mb-20">
                         <motion.h2
-                            className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent"
+                            className="text-2xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.2 }}
@@ -106,7 +129,7 @@ export default function About() {
                             </Avatar>
                             <div className="flex items-center justify-center gap-2 text-gray-400">
                                 <MapPin className="h-4 w-4" />
-                                <span>Your Location</span>
+                                <span>Chandigarh, India</span>
                             </div>
                         </motion.div>
                     </div>
@@ -138,39 +161,32 @@ export default function About() {
                     </motion.div>
 
                     <div className="grid lg:grid-cols-2 gap-16 mb-16">
-                        {/* About Text */}
+                        {/* Education Text */}
                         <motion.div
-                            initial={{ opacity: 0, x: -30 }}
+                            initial={{ opacity: 0, x: 30 }}
                             whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.8, delay: 0.4 }}
-                            className="space-y-6"
+                            transition={{ duration: 0.8, delay: 0.6 }}
                         >
-                            <div>
-                                <h3 className="text-2xl font-bold mb-4 text-white">My Story</h3>
-                                <p className="text-lg leading-relaxed text-gray-300 mb-6">
-                                    I'm a Computer Science student at Assam University, Silchar, passionate about web development
-                                    and software engineering. Currently in my final year, I've been building my skills through
-                                    academic projects and personal development, creating web applications and exploring modern technologies.
-                                </p>
-                                <p className="text-lg leading-relaxed text-gray-300 mb-6">
-                                    My journey into programming started with curiosity about how websites work, which evolved into
-                                    a deep passion for creating functional and user-friendly applications. I enjoy working with
-                                    JavaScript, React, and backend technologies to build complete web solutions.
-                                </p>
-                                <p className="text-lg leading-relaxed text-gray-300 mb-8">
-                                    When I'm not coding, you'll find me learning new frameworks, working on personal projects,
-                                    or exploring the latest developments in web technology while planning my next build.
-                                </p>
-                            </div>
-
-                            <div className="flex gap-4">
-                                <Button
-                                    variant="outline"
-                                    size="lg"
-                                    className="border-2 border-gray-600 bg-gray-800/50 text-gray-300 hover:scale-105 transition-transform duration-200"
-                                >
-                                    View Portfolio
-                                </Button>
+                            <h3 className="text-2xl font-bold mb-6 text-white">Education</h3>
+                            <div className="space-y-6">
+                                {education.map((edu, index) => (
+                                    <motion.div
+                                        key={edu.title}
+                                        className="relative pl-8 border-l-2 border-emerald-600/40"
+                                        initial={{ opacity: 0, x: 20 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        transition={{ duration: 0.6, delay: 0.1 * index }}
+                                    >
+                                        <div className="absolute w-4 h-4 bg-emerald-600 rounded-full -left-2 top-2"></div>
+                                        <div className="mb-4">
+                                            <h4 className="text-lg font-semibold text-white">{edu.title}</h4>
+                                            <p className="text-emerald-400 font-medium">{edu.institution}</p>
+                                            <p className="text-sm text-gray-400 mb-2">{edu.period}</p>
+                                            {edu.grade == 7.34 ? <p className="text-gray-300">Grade: {edu.grade} CGPA</p> : <p className="text-gray-300">Grade: {edu.grade}%</p>}
+                                            <p className="text-gray-300">{edu.description}</p>
+                                        </div>
+                                    </motion.div>
+                                ))}
                             </div>
                         </motion.div>
 
@@ -210,7 +226,7 @@ export default function About() {
                         transition={{ duration: 0.8, delay: 0.4 }}
                     >
                         <h3 className="text-2xl font-bold mb-8 text-center text-white">Skills & Technologies</h3>
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid md:grid-cols-4 lg:grid-cols-5 gap-6">
                             {Object.entries(skillsByCategory).map(([category, categorySkills], categoryIndex) => (
                                 <motion.div
                                     key={category}
@@ -231,12 +247,12 @@ export default function About() {
                                                         transition={{ duration: 0.4, delay: skillIndex * 0.05 }}
                                                     >
                                                         <span className="text-gray-300 font-medium">{skill.name}</span>
-                                                        <Badge
+                                                        {/* <Badge
                                                             variant="outline"
                                                             className={`text-xs px-2 py-1 rounded-full border-emerald-400 text-emerald-400 bg-gray-900/60`}
                                                         >
                                                             {skill.level}
-                                                        </Badge>
+                                                        </Badge> */}
                                                     </motion.div>
                                                 ))}
                                             </div>

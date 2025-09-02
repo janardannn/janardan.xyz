@@ -98,7 +98,7 @@ export default function Writing() {
                     transition={{ duration: 0.8 }}
                     className="text-center mb-20"
                 >
-                    <h2 className="text-2xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent">
+                    <h2 className="text-2xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent">
                         Latest Writing
                     </h2>
                     <p className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed">

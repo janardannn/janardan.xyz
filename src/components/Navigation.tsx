@@ -47,7 +47,7 @@ export default function Navigation() {
                             <a
                                 key={item}
                                 href={item === "Resume" ? "/resume.pdf" : `#${item.toLowerCase()}`}
-                                className="font-medium text-gray-300 hover:text-blue-400 hover:scale-105 transition-all duration-200"
+                                className="font-medium text-gray-300 hover:text-emerald-400 hover:scale-105 transition-all duration-200"
                             >
                                 {item}
                             </a>
@@ -80,7 +80,7 @@ export default function Navigation() {
                                 <a
                                     key={item}
                                     href={`#${item.toLowerCase()}`}
-                                    className="text-gray-300 hover:text-blue-400 transition-colors font-medium"
+                                    className="text-gray-300 hover:text-emerald-400 transition-colors font-medium"
                                     onClick={() => setMobileMenuOpen(false)}
                                 >
                                     {item}
