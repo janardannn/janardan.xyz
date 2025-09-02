@@ -27,18 +27,14 @@ export const metadata: Metadata = {
     default: "janardan.xyz",
     template: "%s | Janardan Hazarika"
   },
-  description: "Full-Stack Developer crafting exceptional digital experiences with modern web technologies. Specializing in React, Next.js, TypeScript, and Node.js.",
+  description: "Software Engineer exploring how to build reliable, scalable, and human-focused digital products. I work with React, Next.js, TypeScript, and Node.js.",
   keywords: [
     "Janardan Hazarika",
     "Software Engineer",
     "Full-Stack Developer",
-    "React Developer",
     "Next.js Developer",
     "TypeScript",
-    "Node.js",
     "Web Development",
-    "JavaScript",
-    "Frontend Developer",
     "Backend Developer"
   ],
   authors: [{ name: "Janardan Hazarika", url: "https://janardan.xyz" }],
@@ -57,9 +53,9 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://janardan.xyz",
-    title: "Janardan Hazarika - Full-Stack Developer",
-    description: "Full-Stack Developer crafting exceptional digital experiences with modern web technologies.",
-    siteName: "Janardan Hazarika Portfolio",
+    title: "Janardan Hazarika - Software Engineer",
+    description: "Software Engineer exploring how to build reliable, scalable, and human-focused digital products. I work with React, Next.js, TypeScript, and Node.js.",
+    siteName: "janardan's personal website & blog",
     images: [
       {
         url: "/og-image.jpg",
@@ -68,13 +64,6 @@ export const metadata: Metadata = {
         alt: "Janardan Hazarika - Full-Stack Developer",
       },
     ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Janardan Hazarika - Full-Stack Developer",
-    description: "Full-Stack Developer crafting exceptional digital experiences with modern web technologies.",
-    images: ["/og-image.jpg"],
-    creator: "@yourtwitter",
   },
   robots: {
     index: true,
@@ -86,11 +75,6 @@ export const metadata: Metadata = {
       "max-image-preview": "large",
       "max-snippet": -1,
     },
-  },
-  verification: {
-    google: "your-google-verification-code",
-    // yandex: "your-yandex-verification-code",
-    // yahoo: "your-yahoo-verification-code",
   },
 };
 
