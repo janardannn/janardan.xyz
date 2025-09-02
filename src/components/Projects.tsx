@@ -23,7 +23,7 @@ const projects = [
         description: "A modern, full-stack rental booking platform focused on listing and booking studio spaces. Built with **Next.js App Router**, it supports studio owners and renters with features like profile management, real-time chat, and seamless studio discovery.",
         tech: ["Next.js", "TypeScript", "Mapbox API", "PostgreSQL", "Prisma", "TailwindCSS"],
         liveUrl: "https://rents-app-theta.vercel.app/",
-        githubUrl: "https://github.com/janardannn/rents-app",
+        githubUrl: "https://github.com/janardannn/rents.app",
         image: "/projects/rents.app.jpg",
         stats: { stars: 0, forks: 0, contributors: 0 },
         featured: true,
