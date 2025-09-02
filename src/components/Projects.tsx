@@ -8,46 +8,46 @@ import Image from "next/image"
 
 const projects = [
     {
-        title: "E-Commerce Platform",
-        description: "Full-stack e-commerce solution with real-time inventory management, secure payment processing, and comprehensive admin dashboard. Features include user authentication, order tracking, and advanced analytics.",
-        tech: ["Next.js", "TypeScript", "Prisma", "Stripe", "Tailwind CSS"],
-        liveUrl: "https://project1.com",
-        githubUrl: "https://github.com/yourname/project1",
-        image: "/projects/project1.jpg",
-        stats: { stars: 45, forks: 12, contributors: 3 },
+        title: "scaler-lite - A fullstack online learning platform",
+        description: "A full-stack online learning platform, supporting the entire lifecycle from course creation to student enrollment. Including sequential lecture access, progress tracking, and automated real-time quiz scoring. Secure role-based authorization and authentication (Student/Instructor).",
+        tech: ["Next.js", "TypeScript", "Prisma", "MongoDB", "Tailwind CSS", "UploadThing", "NextAuth"],
+        liveUrl: "https://scaler-lite.vercel.app/",
+        githubUrl: "https://github.com/janardannn/scaler-lite",
+        image: "/projects/scaler-lite.jpg",
+        stats: { stars: 0, forks: 0, contributors: 0 },
         featured: true,
         status: "Live"
     },
     {
-        title: "AI-Powered Analytics Dashboard",
-        description: "Interactive dashboard with machine learning insights, real-time data visualization, and predictive analytics for business intelligence. Includes custom chart components and automated reporting.",
-        tech: ["React", "Python", "FastAPI", "PostgreSQL", "D3.js", "TensorFlow"],
-        liveUrl: "https://project2.com",
-        githubUrl: "https://github.com/yourname/project2",
-        image: "/projects/project2.jpg",
-        stats: { stars: 78, forks: 23, contributors: 5 },
+        title: "rents.app - A fullstack user centric, map based rental platform.",
+        description: "A modern, full-stack rental booking platform focused on listing and booking studio spaces. Built with **Next.js App Router**, it supports studio owners and renters with features like profile management, real-time chat, and seamless studio discovery.",
+        tech: ["Next.js", "TypeScript", "Mapbox API", "PostgreSQL", "Prisma", "TailwindCSS"],
+        liveUrl: "https://rents-app-theta.vercel.app/",
+        githubUrl: "https://github.com/janardannn/rents-app",
+        image: "/projects/rents.app.jpg",
+        stats: { stars: 0, forks: 0, contributors: 0 },
         featured: true,
-        status: "Live"
+        status: "Development"
     },
     {
-        title: "Real-Time Chat Application",
-        description: "Scalable messaging platform with end-to-end encryption, file sharing, video calling capabilities, and real-time presence indicators. Built for high-performance communication.",
-        tech: ["Node.js", "Socket.io", "MongoDB", "WebRTC", "Redis"],
-        liveUrl: "https://project3.com",
-        githubUrl: "https://github.com/yourname/project3",
-        image: "/projects/project3.jpg",
-        stats: { stars: 89, forks: 34, contributors: 7 },
+        title: "Air Cargo",
+        description: "A full-stack web app for booking and tracking air cargo shipments, built with the PERN stack. It provides a complete shipment timeline from origin to delivery, with concurrency locking powered by Redis to ensure reliable updates.",
+        tech: ["React", "Node.js", "TypeScript", "Redis", "PostgreSQL", "Prisma", "Winston", "jest", "Tailwind CSS"],
+        liveUrl: "",
+        githubUrl: "https://github.com/janardannn/air-cargo",
+        image: "/projects/air-cargo.jpg",
+        stats: { stars: 0, forks: 0, contributors: 0 },
         featured: false,
         status: "Beta"
     },
     {
-        title: "Task Management System",
-        description: "Collaborative project management tool with kanban boards, time tracking, team collaboration features, and advanced reporting capabilities.",
-        tech: ["Vue.js", "Express.js", "MySQL", "Socket.io", "Tailwind CSS"],
-        liveUrl: "https://project4.com",
-        githubUrl: "https://github.com/yourname/project4",
-        image: "/projects/project4.jpg",
-        stats: { stars: 56, forks: 18, contributors: 4 },
+        title: "Chexkmate",
+        description: "Chexkmate is a chess game analysis and tactics training app designed to help players improve their skills. It offers game analysis, tactical puzzles, and performance tracking to enhance chess proficiency.",
+        tech: ["Next.js", "TypeScript", "Web Workers", "Stockfish.js", "Tailwind CSS"],
+        liveUrl: "https://chexkmate.vercel.app/",
+        githubUrl: "https://github.com/janardannn/chexkmate",
+        image: "/projects/chexkmate.jpg",
+        stats: { stars: 0, forks: 0, contributors: 0 },
         featured: false,
         status: "Development"
     }
@@ -81,12 +81,11 @@ export default function Projects() {
                         Featured Projects
                     </h2>
                     <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-                        A curated selection of my best work, showcasing technical expertise,
-                        creative problem-solving, and passion for building exceptional digital experiences
+                        A look at the projects where I’ve built, debugged, and refined until it clicked.
                     </p>
                 </motion.div>
 
-                <div className="grid lg:grid-cols-2 gap-12 mb-20">
+                <div className="grid lg:grid-cols-2 gap-28 mb-20">
                     {projects.filter(project => project.featured).map((project, index) => (
                         <motion.div
                             key={project.title}
@@ -97,9 +96,20 @@ export default function Projects() {
                         >
                             <Card className="h-full hover:shadow-2xl transition-all duration-500 border-0 shadow-lg overflow-hidden bg-gray-900/30 backdrop-blur-sm rounded-3xl hover:scale-[1.02]">
                                 {/* Project Image Header */}
-                                <div className="relative h-64 overflow-hidden">
-                                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/20 via-gray-800/40 to-slate-800/60" />
-                                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(16,185,129,0.1),transparent_70%)]" />
+                                <div className="relative h-84 overflow-hidden">
+                                    {project.image === "" ?
+                                        <div>
+                                            <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/20 via-gray-800/40 to-slate-800/60" />
+                                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(16,185,129,0.1),transparent_70%)]" />
+                                        </div>
+                                        : <Image
+                                            src={project.image}
+                                            alt={project.title}
+                                            layout="fill"
+                                            objectFit="cover"
+                                            className="transition-transform duration-500 group-hover:scale-105"
+                                        />
+                                    }
 
                                     {/* Status Badge */}
                                     <div className="absolute top-6 left-6">
@@ -112,16 +122,19 @@ export default function Projects() {
                                     </div>
 
                                     {/* Project Stats */}
-                                    <div className="absolute bottom-4 right-4 flex gap-2">
-                                        <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm px-2 py-1 rounded-lg">
-                                            <Star className="h-3 w-3 text-amber-400" />
-                                            <span className="text-xs text-white">{project.stats.stars}</span>
+                                    {
+                                        project.stats.stars > 0 &&
+                                        <div className="absolute bottom-4 right-4 flex gap-2">
+                                            <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm px-2 py-1 rounded-lg">
+                                                <Star className="h-3 w-3 text-amber-400" />
+                                                <span className="text-xs text-white">{project.stats.stars}</span>
+                                            </div>
+                                            <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm px-2 py-1 rounded-lg">
+                                                <GitFork className="h-3 w-3 text-blue-400" />
+                                                <span className="text-xs text-white">{project.stats.forks}</span>
+                                            </div>
                                         </div>
-                                        <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm px-2 py-1 rounded-lg">
-                                            <GitFork className="h-3 w-3 text-blue-400" />
-                                            <span className="text-xs text-white">{project.stats.forks}</span>
-                                        </div>
-                                    </div>
+                                    }
                                 </div>
 
                                 <div className="p-8">
@@ -135,32 +148,40 @@ export default function Projects() {
 
                                     {/* Tech Stack */}
                                     <div className="flex flex-wrap gap-2 mb-8">
-                                        {project.tech.slice(0, 4).map((tech) => (
+                                        {project.tech.map((tech) => (
                                             <Badge key={tech} variant="outline" className="text-xs bg-gray-800/50 text-gray-300 border-gray-600 px-3 py-1">
                                                 {tech}
                                             </Badge>
                                         ))}
-                                        {project.tech.length > 4 && (
+                                        {/* {project.tech.length > 4 && (
                                             <Badge variant="outline" className="text-xs bg-gray-800/50 text-gray-300 border-gray-600 px-3 py-1">
                                                 +{project.tech.length - 4}
                                             </Badge>
-                                        )}
+                                        )} */}
                                     </div>
 
                                     {/* Action Buttons */}
-                                    <div className="flex gap-4">
-                                        <Button asChild variant="outline" className="flex-1 border-2 border-gray-600 bg-gray-800/50 text-gray-300 hover:scale-105 transition-transform duration-200">
-                                            <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
-                                                <ExternalLink className="h-4 w-4" />
-                                                View Project
-                                            </a>
-                                        </Button>
-                                        <Button variant="outline" asChild className="border-2 border-gray-600 bg-gray-800/50 text-gray-300 hover:scale-105 transition-transform duration-200 px-4">
+                                    {project.status === 'Live' ?
+                                        <div className="flex gap-4">
+                                            <Button asChild variant="outline" className="flex-1 border-2 border-gray-600 bg-gray-800/50 text-gray-300 hover:scale-105 transition-transform duration-200">
+                                                <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
+                                                    <ExternalLink className="h-4 w-4" />
+                                                    View Project
+                                                </a>
+                                            </Button>
+                                            <Button variant="outline" asChild className="border-2 border-gray-600 bg-gray-800/50 text-gray-300 hover:scale-105 transition-transform duration-200 px-4">
+                                                <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                                                    <Github className="h-4 w-4" />
+                                                </a>
+                                            </Button>
+                                        </div>
+                                        :
+                                        <Button variant="outline" asChild className="w-full border-2 border-gray-600 bg-gray-800/50 text-gray-300 hover:scale-105 transition-transform duration-200 px-4">
                                             <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
                                                 <Github className="h-4 w-4" />
                                             </a>
                                         </Button>
-                                    </div>
+                                    }
                                 </div>
                             </Card>
                         </motion.div>
@@ -178,7 +199,7 @@ export default function Projects() {
                 </motion.h3>
 
                 {/* Additional Projects Grid */}
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid md:grid-cols-3 gap-12">
                     {projects.filter(project => !project.featured).map((project, index) => (
                         <motion.div
                             key={project.title}
@@ -188,9 +209,18 @@ export default function Projects() {
                             className="group"
                         >
                             <Card className="h-full hover:shadow-xl transition-all duration-300 border-0 bg-gray-900/30 backdrop-blur-sm rounded-2xl hover:scale-[1.02] overflow-hidden">
-                                <div className="relative h-32 bg-gradient-to-br from-gray-800/40 via-gray-900/60 to-slate-800/40">
-                                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,rgba(16,185,129,0.08),transparent_70%)]" />
-
+                                <div className="relative h-56 bg-gradient-to-br from-gray-800/40 via-gray-900/60 to-slate-800/40">
+                                    {project.image === "" ?
+                                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,rgba(16,185,129,0.08),transparent_70%)]" />
+                                        :
+                                        <Image
+                                            src={project.image}
+                                            alt={project.title}
+                                            layout="fill"
+                                            objectFit="cover"
+                                            className="transition-transform duration-500 group-hover:scale-105"
+                                        />
+                                    }
                                     {/* Status Badge */}
                                     <div className="absolute top-4 left-4">
                                         <Badge className={`px-2 py-1 text-xs font-medium rounded-full border-0 ${project.status === 'Live'
@@ -227,21 +257,21 @@ export default function Projects() {
 
                                     {/* Tech Stack */}
                                     <div className="flex flex-wrap gap-2 mb-6">
-                                        {project.tech.slice(0, 3).map((tech) => (
+                                        {project.tech.map((tech) => (
                                             <Badge key={tech} variant="outline" className="text-xs bg-gray-800/50 text-gray-300 border-gray-600 px-2 py-1">
                                                 {tech}
                                             </Badge>
                                         ))}
-                                        {project.tech.length > 3 && (
+                                        {/* {project.tech.length > 3 && (
                                             <Badge variant="outline" className="text-xs bg-gray-800/50 text-gray-300 border-gray-600 px-2 py-1">
                                                 +{project.tech.length - 3}
                                             </Badge>
-                                        )}
+                                        )} */}
                                     </div>
 
                                     {/* Action Button */}
                                     <Button asChild variant="outline" size="sm" className="w-full border-2 border-gray-600 bg-gray-800/50 text-gray-300 hover:scale-105 transition-transform duration-200">
-                                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
+                                        <a href={project.liveUrl === "" ? project.githubUrl : project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
                                             <ExternalLink className="h-3 w-3" />
                                             View Project
                                         </a>
@@ -263,6 +293,9 @@ export default function Projects() {
                         size="lg"
                         variant="outline"
                         className="border-2 border-gray-600 bg-gray-800/50 text-gray-300 hover:scale-105 transition-transform duration-200"
+                        onClick={() => {
+                            window.open("https://github.com/janardannn?tab=repositories", "_blank")
+                        }}
                     >
                         View All Projects <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>

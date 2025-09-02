@@ -9,8 +9,8 @@ const contactMethods = [
     {
         title: "Email",
         description: "Drop me a line anytime",
-        value: "your.email@example.com",
-        href: "mailto:your.email@example.com",
+        value: "janardanhazarika20@gmail.com",
+        href: "mailto:janardanhazarika20@gmail.com",
         icon: Mail,
         color: "from-emerald-500 to-emerald-600"
     },
@@ -18,15 +18,15 @@ const contactMethods = [
         title: "Schedule a Call",
         description: "Let's discuss your project",
         value: "Book a meeting",
-        href: "https://calendly.com/yourname",
+        href: "https://cal.com/janardan-hazarika",
         icon: MessageCircle,
         color: "from-green-500 to-green-600"
     },
     {
         title: "Phone",
         description: "Give me a call",
-        value: "+1 (555) 123-4567",
-        href: "tel:+15551234567",
+        value: "+91 7002347658",
+        href: "tel:+917002347658",
         icon: Phone,
         color: "from-slate-500 to-slate-600"
     }
@@ -35,21 +35,21 @@ const contactMethods = [
 const socialLinks = [
     {
         name: "GitHub",
-        href: "https://github.com/yourname",
+        href: "https://github.com/janardannn",
         icon: Github,
         description: "Check out my code",
         color: "hover:text-emerald-400"
     },
     {
         name: "LinkedIn",
-        href: "https://linkedin.com/in/yourname",
+        href: "https://linkedin.com/in/janardan-hazarika",
         icon: Linkedin,
         description: "Professional network",
         color: "hover:text-emerald-400"
     },
     {
         name: "Email",
-        href: "mailto:your.email@example.com",
+        href: "mailto:janardanhazarika20@gmail.com",
         icon: Mail,
         description: "Send me a message",
         color: "hover:text-emerald-400"
@@ -57,9 +57,7 @@ const socialLinks = [
 ]
 
 const workingHours = [
-    { day: "Monday - Friday", hours: "9:00 AM - 6:00 PM EST" },
-    { day: "Saturday", hours: "10:00 AM - 2:00 PM EST" },
-    { day: "Sunday", hours: "Closed" }
+    { day: "All Days", hours: "24/7 Available" }
 ]
 
 export default function Contact() {
@@ -86,12 +84,11 @@ export default function Contact() {
                     transition={{ duration: 0.8 }}
                     className="text-center max-w-4xl mx-auto mb-20"
                 >
-                    <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-emerald-100 to-white bg-clip-text text-transparent">
-                        Let's Build Something Amazing
+                    <h2 className="text-2xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-white via-emerald-100 to-white bg-clip-text text-transparent">
+                        Open for Projects, Problems, and Possibilities
                     </h2>
-                    <p className="text-xl text-gray-300 leading-relaxed mb-8">
-                        I'm always excited about new opportunities and interesting projects.
-                        Whether you're a startup with a big idea or an established company looking to innovate, let's connect!
+                    <p className="text-lg text-gray-300 leading-relaxed mb-8">
+                        I’m always curious about new ideas and challenges. If you’re building something exciting, let’s talk.
                     </p>
 
                     <motion.div
@@ -106,11 +103,11 @@ export default function Contact() {
                         </Badge>
                         <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30 px-4 py-2">
                             <MapPin className="w-3 h-3 mr-2" />
-                            Based in India
+                            Based in Chandigarh, India
                         </Badge>
                         <Badge className="bg-slate-500/20 text-slate-400 border-slate-500/30 px-4 py-2">
                             <Clock className="w-3 h-3 mr-2" />
-                            EST Timezone
+                            IST Timezone
                         </Badge>
                     </motion.div>
                 </motion.div>
@@ -233,9 +230,10 @@ export default function Contact() {
                         <Button
                             asChild
                             size="lg"
-                            className="bg-gray-800 text-white border-0 hover:scale-105 transition-transform duration-200"
+                            variant="outline"
+                            className="border-2 border-gray-600 bg-gray-800/50 text-gray-300 hover:scale-105 transition-transform duration-200"
                         >
-                            <a href="mailto:your.email@example.com">
+                            <a href="mailto:janardanhazarika20@gmail.com">
                                 <Mail className="mr-2 h-5 w-5" />
                                 Send me an Email
                             </a>
@@ -246,7 +244,7 @@ export default function Contact() {
                             variant="outline"
                             className="border-2 border-gray-600 bg-gray-800/50 text-gray-300 hover:scale-105 transition-transform duration-200"
                         >
-                            <a href="https://calendly.com/yourname" target="_blank">
+                            <a href="https://cal.com/janardan-hazarika" target="_blank">
                                 <MessageCircle className="mr-2 h-5 w-5" />
                                 Schedule a Call
                             </a>

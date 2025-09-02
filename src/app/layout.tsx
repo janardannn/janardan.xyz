@@ -24,12 +24,13 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Janardan Hazarika - Full-Stack Developer",
+    default: "janardan.xyz",
     template: "%s | Janardan Hazarika"
   },
   description: "Full-Stack Developer crafting exceptional digital experiences with modern web technologies. Specializing in React, Next.js, TypeScript, and Node.js.",
   keywords: [
     "Janardan Hazarika",
+    "Software Engineer",
     "Full-Stack Developer",
     "React Developer",
     "Next.js Developer",

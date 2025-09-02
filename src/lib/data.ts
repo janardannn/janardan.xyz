@@ -1,10 +1,10 @@
 export const personalInfo = {
-    name: "Your Name",
-    title: "Full-Stack Developer Crafting Digital Experiences with Modern Web Technologies",
-    email: "your.email@example.com",
-    github: "https://github.com/yourname",
-    linkedin: "https://linkedin.com/in/yourname",
-    calendly: "https://calendly.com/yourname"
+    name: "Janardan Hazarika",
+    title: "I’m always curious about new ideas and challenges. If you’re building something exciting, let’s talk.",
+    email: "janardanhazarika20@gmail.com",
+    github: "https://github.com/janardannn",
+    linkedin: "https://linkedin.com/in/janardan-hazarika",
+    cal_com: "https://cal.com/janardan-hazarika"
 }
 
 export const skills = [

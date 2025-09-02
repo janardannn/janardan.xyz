@@ -61,7 +61,7 @@ export default function Hero() {
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.5, duration: 0.8 }}
                     >
-                        Full-Stack Developer
+                        Software Engineer
                     </motion.h2>
 
                     {/* Description */}
@@ -71,8 +71,7 @@ export default function Hero() {
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.7, duration: 0.8 }}
                     >
-                        I craft exceptional digital experiences with modern web technologies,
-                        bridging the gap between innovative design and robust functionality.
+                        I build things, fix them better, and keep pushing until it works at scale.
                     </motion.p>
 
                     {/* Call to Action Buttons */}
@@ -108,21 +107,23 @@ export default function Hero() {
                         transition={{ delay: 1.1, duration: 0.8 }}
                     >
                         <motion.a
-                            href="https://github.com"
+                            href="https://github.com/janardannn"
                             className="text-gray-400 hover:text-emerald-400 hover:scale-110 transition-all duration-200"
                             aria-label="GitHub Profile"
+                            target="_blank"
                         >
                             <Github className="h-7 w-7" />
                         </motion.a>
                         <motion.a
-                            href="https://linkedin.com"
+                            href="https://linkedin.com/in/janardan-hazarika"
                             className="text-gray-400 hover:text-emerald-400 hover:scale-110 transition-all duration-200"
                             aria-label="LinkedIn Profile"
+                            target="_blank"
                         >
                             <Linkedin className="h-7 w-7" />
                         </motion.a>
                         <motion.a
-                            href="mailto:your.email@example.com"
+                            href="mailto:janardanhazarika20@gmail.com"
                             className="text-gray-400 hover:text-slate-400 hover:scale-110 transition-all duration-200"
                             aria-label="Email Contact"
                         >

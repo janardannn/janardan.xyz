@@ -98,12 +98,11 @@ export default function Writing() {
                     transition={{ duration: 0.8 }}
                     className="text-center mb-20"
                 >
-                    <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent">
+                    <h2 className="text-2xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent">
                         Latest Writing
                     </h2>
-                    <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-                        Insights on web development, technology trends, and lessons learned from building digital products.
-                        Sharing knowledge to help developers grow and create better applications.
+                    <p className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                        Thoughts on code, systems, and the messy process of turning ideas into products.
                     </p>
                 </motion.div>
 
@@ -125,82 +124,7 @@ export default function Writing() {
                     ))}
                 </motion.div>
 
-                {/* Featured Posts */}
-                <div className="grid lg:grid-cols-2 gap-12 mb-20">
-                    {featuredPosts.map((post, index) => (
-                        <motion.div
-                            key={post.slug}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: index * 0.2 }}
-                            className="group"
-                        >
-                            <Card className="h-full hover:shadow-2xl transition-all duration-500 border-0 shadow-lg overflow-hidden bg-gray-900/30 backdrop-blur-sm rounded-3xl hover:scale-[1.02]">
-                                <Link href={`/writing/${post.slug}`}>
-                                    {/* Article Header */}
-                                    <div className="relative h-64 overflow-hidden">
-                                        <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/20 via-gray-800/40 to-slate-800/60" />
-                                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(16,185,129,0.1),transparent_70%)]" />
-
-                                        {/* Featured Badge */}
-                                        <div className="absolute top-6 left-6">
-                                            <Badge className="px-3 py-1 text-xs font-medium rounded-full border-0 bg-emerald-500/90 text-white">
-                                                Featured
-                                            </Badge>
-                                        </div>
-
-                                        {/* Article Stats */}
-                                        <div className="absolute bottom-4 right-4 flex gap-2">
-                                            <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm px-2 py-1 rounded-lg">
-                                                <Eye className="h-3 w-3 text-blue-400" />
-                                                <span className="text-xs text-white">{post.views.toLocaleString()}</span>
-                                            </div>
-                                            <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm px-2 py-1 rounded-lg">
-                                                <Heart className="h-3 w-3 text-red-400" />
-                                                <span className="text-xs text-white">{post.likes}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="p-8">
-                                        <CardTitle className="text-2xl font-bold text-white mb-4 group-hover:text-emerald-400 transition-colors duration-300 leading-tight">
-                                            {post.title}
-                                        </CardTitle>
-
-                                        <CardDescription className="text-gray-300 leading-relaxed mb-6 text-base">
-                                            {post.excerpt}
-                                        </CardDescription>
-
-                                        {/* Article Meta */}
-                                        <div className="flex flex-wrap items-center gap-4 mb-8 text-sm text-gray-400">
-                                            <div className="flex items-center gap-1">
-                                                <Calendar className="h-4 w-4" />
-                                                {post.date}
-                                            </div>
-                                            <div className="flex items-center gap-1">
-                                                <Clock className="h-4 w-4" />
-                                                {post.readTime}
-                                            </div>
-                                            <Badge variant="outline" className="bg-gray-800/50 text-gray-300 border-gray-600 px-3 py-1">
-                                                {post.category}
-                                            </Badge>
-                                        </div>
-
-                                        {/* Read Article Button */}
-                                        <div className="flex items-center justify-between">
-                                            <Button variant="outline" className="border-2 border-gray-600 bg-gray-800/50 text-gray-300 hover:scale-105 transition-transform duration-200">
-                                                Read Article
-                                            </Button>
-                                            <ArrowRight className="h-5 w-5 text-gray-400 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all duration-200" />
-                                        </div>
-                                    </div>
-                                </Link>
-                            </Card>
-                        </motion.div>
-                    ))}
-                </div>
-
-                {/* Other Posts */}
+                {/* Posts */}
                 <motion.h3
                     className="text-2xl font-bold text-white mb-12"
                     initial={{ opacity: 0, y: 20 }}
@@ -208,6 +132,16 @@ export default function Writing() {
                     transition={{ duration: 0.6 }}
                 >
                     Latest Articles
+                </motion.h3>
+
+                {/* CMS under dev warning */}
+                <motion.h3
+                    className="text-2xl font-bold text-orange-800 mb-12"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                >
+                    CMS for this site is under development. Articles are just placeholders for now.
                 </motion.h3>
 
                 {/* Regular Posts Grid */}
@@ -222,17 +156,17 @@ export default function Writing() {
                         >
                             <Card className="h-full hover:shadow-xl transition-all duration-300 border-0 bg-gray-900/30 backdrop-blur-sm rounded-2xl hover:scale-[1.02] overflow-hidden">
                                 <Link href={`/writing/${post.slug}`}>
-                                    <div className="relative h-32 bg-gradient-to-br from-gray-800/40 via-gray-900/60 to-slate-800/40">
+                                    {/* <div className="relative h-6 bg-gradient-to-br from-gray-800/40 via-gray-900/60 to-slate-800/40">
                                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,rgba(16,185,129,0.08),transparent_70%)]" />
 
-                                        {/* Category Badge */}
+                                        Category Badge
                                         <div className="absolute top-4 left-4">
                                             <Badge className="px-2 py-1 text-xs font-medium rounded-full border-0 bg-emerald-500/90 text-white">
                                                 {post.category}
                                             </Badge>
                                         </div>
 
-                                        {/* Article Stats */}
+                                        Article Stats
                                         <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                             <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm px-2 py-1 rounded-lg">
                                                 <Eye className="h-3 w-3 text-blue-400" />
@@ -243,6 +177,12 @@ export default function Writing() {
                                                 <span className="text-xs text-white">{post.likes}</span>
                                             </div>
                                         </div>
+                                    </div> */}
+
+                                    <div className="absolute top-4 left-4">
+                                        <Badge className="px-2 py-1 text-xs font-medium rounded-full border-0 bg-emerald-500/90 text-white">
+                                            {post.category}
+                                        </Badge>
                                     </div>
 
                                     <CardContent className="p-6">

@@ -23,26 +23,26 @@ const footerLinks = {
         { name: "GitHub", href: "https://github.com/yourname" },
         { name: "LinkedIn", href: "https://linkedin.com/in/yourname" },
         { name: "Email", href: "mailto:your.email@example.com" },
-        { name: "Schedule Call", href: "https://calendly.com/yourname" }
+        { name: "Schedule Call", href: "https://cal.com/janardan-hazarika" }
     ]
 }
 
 const socialLinks = [
     {
         name: "GitHub",
-        href: "https://github.com/yourname",
+        href: "https://github.com/janardannn",
         icon: Github,
         color: "hover:text-emerald-400"
     },
     {
         name: "LinkedIn",
-        href: "https://linkedin.com/in/yourname",
+        href: "https://linkedin.com/in/janardan-hazarika",
         icon: Linkedin,
         color: "hover:text-emerald-400"
     },
     {
         name: "Email",
-        href: "mailto:your.email@example.com",
+        href: "mailto:janardanhazarika20@gmail.com",
         icon: Mail,
         color: "hover:text-emerald-400"
     }
@@ -84,8 +84,7 @@ export default function Footer() {
                                 janardan.xyz
                             </h3>
                             <p className="text-gray-300 mb-6 leading-relaxed">
-                                Crafting exceptional digital experiences with modern web technologies.
-                                Let's build something amazing together.
+                                Building things, fixing them, and keep pushing until it works at scale.
                             </p>
                             <div className="flex space-x-4">
                                 {socialLinks.map((social) => (
@@ -138,7 +137,7 @@ export default function Footer() {
                     </div>
 
                     {/* Newsletter/CTA Section */}
-                    <motion.div
+                    {/* <motion.div
                         className="bg-gradient-to-r from-emerald-600/10 to-slate-700/10 rounded-2xl p-8 mb-12 border border-emerald-500/20"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -160,7 +159,7 @@ export default function Footer() {
                                 </Button>
                             </div>
                         </div>
-                    </motion.div>
+                    </motion.div> */}
                 </div>
 
                 {/* Bottom Footer */}

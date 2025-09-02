@@ -13,7 +13,7 @@ export default function Navigation() {
         return () => window.removeEventListener("scroll", handleScroll)
     }, [])
 
-    const navItems = ["Home", "About", "Projects", "Writing", "Contact"]
+    const navItems = ["About", "Projects", "Writing", "Contact", "Resume"]
 
     return (
         <motion.nav
@@ -34,7 +34,7 @@ export default function Navigation() {
                     : "bg-transparent"
                     }`}>
                     <motion.div
-                        className="font-bold text-xl transition-colors text-white"
+                        className="font-bold text-l transition-colors text-white"
                         whileHover={{ scale: 1.05 }}
                         transition={{ type: "spring", stiffness: 400, damping: 17 }}
                     >
@@ -46,8 +46,8 @@ export default function Navigation() {
                         {navItems.map((item) => (
                             <a
                                 key={item}
-                                href={`#${item.toLowerCase()}`}
-                                className="font-medium text-gray-300 hover:text-emerald-400 hover:scale-105 transition-all duration-200"
+                                href={item === "Resume" ? "/resume.pdf" : `#${item.toLowerCase()}`}
+                                className="font-medium text-gray-300 hover:text-blue-400 hover:scale-105 transition-all duration-200"
                             >
                                 {item}
                             </a>
@@ -80,7 +80,7 @@ export default function Navigation() {
                                 <a
                                     key={item}
                                     href={`#${item.toLowerCase()}`}
-                                    className="text-gray-300 hover:text-emerald-400 transition-colors font-medium"
+                                    className="text-gray-300 hover:text-blue-400 transition-colors font-medium"
                                     onClick={() => setMobileMenuOpen(false)}
                                 >
                                     {item}

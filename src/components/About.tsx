@@ -8,47 +8,47 @@ import { Download, MapPin, Calendar, Coffee, Code2, Briefcase } from "lucide-rea
 
 const skills = [
     { name: "JavaScript", level: "Proficient", category: "Frontend" },
-    { name: "TypeScript", level: "Proficient", category: "Frontend" },
     { name: "React", level: "Proficient", category: "Frontend" },
-    { name: "Next.js", level: "Developing", category: "Frontend" },
+    { name: "HTML/CSS", level: "Proficient", category: "Frontend" },
+    { name: "Bootstrap", level: "Proficient", category: "Frontend" },
+    { name: "Tailwind CSS", level: "Developing", category: "Frontend" },
     { name: "Node.js", level: "Familiar", category: "Backend" },
-    { name: "Python", level: "Proficient", category: "Backend" },
-    { name: "PostgreSQL", level: "Familiar", category: "Database" },
-    { name: "MongoDB", level: "Learning", category: "Database" },
-    { name: "AWS", level: "Learning", category: "DevOps" },
-    { name: "Docker", level: "Familiar", category: "DevOps" },
-    { name: "Tailwind CSS", level: "Proficient", category: "Frontend" },
-    { name: "GraphQL", level: "Learning", category: "Backend" },
-    { name: "REST APIs", level: "Proficient", category: "Backend" },
+    { name: "Express.js", level: "Familiar", category: "Backend" },
+    { name: "MongoDB", level: "Familiar", category: "Database" },
+    { name: "MySQL", level: "Familiar", category: "Database" },
+    { name: "Python", level: "Learning", category: "Backend" },
+    { name: "C++", level: "Familiar", category: "Programming" },
+    { name: "Java", level: "Learning", category: "Programming" },
     { name: "Git", level: "Proficient", category: "Tools" },
-    { name: "Agile", level: "Familiar", category: "Process" }
+    { name: "VS Code", level: "Proficient", category: "Tools" },
+    { name: "REST APIs", level: "Developing", category: "Backend" }
 ]
 
 const experience = [
     {
-        title: "Software Engineering Student",
-        company: "University/College",
+        title: "Computer Science Student",
+        company: "Assam University, Silchar",
         period: "2021 - Present",
-        description: "Building foundational knowledge in computer science, data structures, algorithms, and software development principles."
+        description: "Pursuing Bachelor's in Computer Science with focus on software development, data structures, and algorithms."
     },
     {
-        title: "Frontend Development Intern",
-        company: "Local Tech Company",
-        period: "Summer 2024",
-        description: "Developed responsive web interfaces using React and gained hands-on experience with modern development workflows."
+        title: "Web Development Projects",
+        company: "Personal & Academic",
+        period: "2022 - Present",
+        description: "Built multiple web applications including task management systems, e-commerce platforms, and portfolio websites."
     },
     {
-        title: "Freelance Web Developer",
-        company: "Personal Projects",
-        period: "2023 - Present",
-        description: "Created websites for local businesses and personal projects, focusing on modern web technologies and best practices."
+        title: "Learning & Development",
+        company: "Self-Directed",
+        period: "2021 - Present",
+        description: "Continuously learning modern web technologies through online courses, tutorials, and hands-on projects."
     }
 ]
 
 const stats = [
     { label: "Years Learning", value: "3+", icon: Calendar },
-    { label: "Projects Built", value: "15+", icon: Briefcase },
-    { label: "Technologies Used", value: "10+", icon: Code2 },
+    { label: "Projects Built", value: "10+", icon: Briefcase },
+    { label: "Technologies Used", value: "15+", icon: Code2 },
     { label: "Cups of Coffee", value: "∞", icon: Coffee }
 ]
 
@@ -148,18 +148,18 @@ export default function About() {
                             <div>
                                 <h3 className="text-2xl font-bold mb-4 text-white">My Story</h3>
                                 <p className="text-lg leading-relaxed text-gray-300 mb-6">
-                                    I'm a passionate aspiring software engineer who transforms ideas into digital solutions.
-                                    Currently pursuing my computer science degree, I've been developing my skills through
-                                    academic projects, internships, and personal coding ventures, building everything from simple websites to full-stack applications.
+                                    I'm a Computer Science student at Assam University, Silchar, passionate about web development
+                                    and software engineering. Currently in my final year, I've been building my skills through
+                                    academic projects and personal development, creating web applications and exploring modern technologies.
                                 </p>
                                 <p className="text-lg leading-relaxed text-gray-300 mb-6">
-                                    My journey began with a curiosity about how things work on the web. That curiosity evolved into
-                                    a deep passion for creating solutions that solve real problems and provide great user experiences.
-                                    I believe in writing clean, maintainable code and continuously learning about new technologies and best practices.
+                                    My journey into programming started with curiosity about how websites work, which evolved into
+                                    a deep passion for creating functional and user-friendly applications. I enjoy working with
+                                    JavaScript, React, and backend technologies to build complete web solutions.
                                 </p>
                                 <p className="text-lg leading-relaxed text-gray-300 mb-8">
-                                    When I'm not coding, you'll find me exploring new technologies, working on side projects,
-                                    learning from online courses and tutorials, or enjoying a good cup of coffee while planning my next build.
+                                    When I'm not coding, you'll find me learning new frameworks, working on personal projects,
+                                    or exploring the latest developments in web technology while planning my next build.
                                 </p>
                             </div>
 
