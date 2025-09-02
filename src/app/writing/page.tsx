@@ -103,14 +103,36 @@ export default function WritingPage() {
                             Writing
                         </h1>
                         <p className="text-xl text-gray-300 max-w-3xl leading-relaxed">
-                            Thoughts on web development, technology trends, and lessons learned from building digital products.
+                            Thoughts on code, systems, and the messy process of turning ideas into products.
                         </p>
                     </motion.div>
                 </div>
             </section>
 
+            {/* CMS warning */}
+            <section className="py-12 relative overflow-hidden">
+                <div className="container px-6 mx-auto max-w-7xl relative z-10">
+                    <motion.div
+                        className="text-center mb-8"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                    >
+                        <div className="bg-orange-600/10 rounded-2xl p-6 border border-orange-500/20">
+                            <h3 className="text-xl font-bold text-orange-600 mb-2">
+                                CMS Under Development
+                            </h3>
+                            <p className="text-orange-300/80">
+                                Articles are placeholders for now. Real content coming soon!
+                            </p>
+                        </div>
+                    </motion.div>
+                </div>
+            </section>
+
+
             {/* Featured Posts */}
-            <section className="py-24 relative overflow-hidden">
+            {/* <section className="py-24 relative overflow-hidden">
                 <div className="container px-6 mx-auto max-w-7xl relative z-10">
                     <motion.div
                         className="text-center mb-16"
@@ -118,11 +140,11 @@ export default function WritingPage() {
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent">
+                        <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent">
                             Featured Articles
                         </h2>
                         <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-                            Deep dives into web development and technology
+                            Deep dives into software engineering, web development and much more!
                         </p>
                     </motion.div>
 
@@ -136,18 +158,18 @@ export default function WritingPage() {
                                 className="group"
                             >
                                 <Card className="h-full hover:shadow-2xl transition-all duration-500 border-0 shadow-lg overflow-hidden bg-gray-900/30 backdrop-blur-sm rounded-3xl hover:scale-[1.02]">
-                                    {/* Article Header */}
+                                    
                                     <div className="relative h-48 overflow-hidden bg-gradient-to-br from-blue-400/20 via-gray-800/40 to-slate-800/60">
                                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(59,130,246,0.1),transparent_70%)]" />
 
-                                        {/* Meta Badge */}
+                                       
                                         <div className="absolute top-6 left-6">
                                             <Badge className="px-3 py-1 text-xs font-medium rounded-full border-0 bg-blue-500/90 text-white">
                                                 Featured
                                             </Badge>
                                         </div>
 
-                                        {/* Read Time */}
+                                       
                                         <div className="absolute top-6 right-6">
                                             <div className="flex items-center text-xs text-blue-300 bg-black/40 backdrop-blur-sm rounded-lg px-3 py-2">
                                                 <Clock className="h-3 w-3 mr-1" />
@@ -198,10 +220,10 @@ export default function WritingPage() {
                         ))}
                     </div>
                 </div>
-            </section>
+            </section> */}
 
             {/* All Posts */}
-            <section className="py-24 relative overflow-hidden">
+            <section className="py-16 relative overflow-hidden">
                 <div className="container px-6 mx-auto max-w-7xl relative z-10">
                     <motion.h3
                         className="text-3xl font-bold text-white mb-12"
@@ -222,11 +244,11 @@ export default function WritingPage() {
                                 className="group"
                             >
                                 <Card className="h-full hover:shadow-xl transition-all duration-300 border-0 bg-gray-900/30 backdrop-blur-sm rounded-2xl hover:scale-[1.02] overflow-hidden">
-                                    <div className="relative h-40 bg-gradient-to-br from-gray-800/40 via-gray-900/60 to-slate-800/40">
-                                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,rgba(59,130,246,0.08),transparent_70%)]" />
+                                    <div className="relative bg-gradient-to-br from-gray-800/40 via-gray-900/60 to-slate-800/40">
+                                        {/* <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,rgba(59,130,246,0.08),transparent_70%)]" /> */}
 
                                         {/* Read Time Badge */}
-                                        <div className="absolute top-4 right-4">
+                                        <div className="absolute right-4">
                                             <div className="flex items-center text-xs text-blue-300 bg-black/40 backdrop-blur-sm rounded-lg px-2 py-1">
                                                 <Clock className="h-3 w-3 mr-1" />
                                                 {post.readTime}
