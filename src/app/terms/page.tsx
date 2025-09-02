@@ -101,7 +101,7 @@ export default function TermsOfServicePage() {
                                 transition={{ duration: 0.6, delay: 0.2 }}
                                 className="mb-8"
                             >
-                                <h2 className="text-2xl font-bold text-white mb-4">What You Can't Do</h2>
+                                <h2 className="text-2xl font-bold text-white mb-4">What You Can&apos;t Do</h2>
                                 <div className="text-gray-300 space-y-3">
                                     <ul className="list-disc list-inside space-y-1 ml-4">
                                         <li>Copy my content without permission</li>
@@ -124,7 +124,7 @@ export default function TermsOfServicePage() {
                                     <h2 className="text-2xl font-bold text-white">Disclaimer</h2>
                                 </div>
                                 <div className="text-gray-300 space-y-3">
-                                    <p>This website is provided "as is". I do my best to keep everything working and up-to-date, but I can't guarantee it will always be perfect.</p>
+                                    <p>This website is provided &quot;as is&quot;. I do my best to keep everything working and up-to-date, but I can&apos;t guarantee it will always be perfect.</p>
                                 </div>
                             </motion.div>
 

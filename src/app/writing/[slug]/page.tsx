@@ -7,8 +7,8 @@ import { ArrowLeft, Calendar, Clock, Share2 } from "lucide-react"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 
-// This would typically come from a CMS or markdown files
-const getBlogPost = (slug: string) => {
+// This will come from a CMS or markdown files
+const getBlogPost = async (slug: string) => {
     const posts = {
         "scalable-react-architecture": {
             title: "Building Scalable React Applications with Modern Architecture",
@@ -43,14 +43,14 @@ const getBlogPost = (slug: string) => {
         <p>TypeScript provides several built-in utility types that can save you time...</p>
       `
         }
-        // Add more posts as needed
     }
 
     return posts[slug as keyof typeof posts] || null
 }
 
-export default function BlogPost({ params }: { params: { slug: string } }) {
-    const post = getBlogPost(params.slug)
+export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    const post = await getBlogPost(slug);
 
     if (!post) {
         notFound()
@@ -102,7 +102,7 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
             {/* Content */}
             <div className="container px-4 mx-auto py-12">
                 <motion.article
-                    className="max-w-4xl mx-auto prose prose-lg prose-gray max-w-none"
+                    className="max-w-4xl mx-auto prose prose-lg prose-gray"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.2 }}

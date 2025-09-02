@@ -106,12 +106,12 @@ export default function PrivacyPolicyPage() {
                                 transition={{ duration: 0.6, delay: 0.2 }}
                                 className="mb-8"
                             >
-                                <h2 className="text-2xl font-bold text-white mb-4">What I Don't Do</h2>
+                                <h2 className="text-2xl font-bold text-white mb-4">What I Don&apos;t Do</h2>
                                 <div className="text-gray-300 space-y-3">
                                     <ul className="list-disc list-inside space-y-1 ml-4">
-                                        <li>I don't sell your information</li>
-                                        <li>I don't spam you</li>
-                                        <li>I don't share your data with others (unless legally required)</li>
+                                        <li>I don&apos;t sell your information</li>
+                                        <li>I don&apos;t spam you</li>
+                                        <li>I don&apos;t share your data with others (unless legally required)</li>
                                     </ul>
                                 </div>
                             </motion.div>
