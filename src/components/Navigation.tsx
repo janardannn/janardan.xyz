@@ -79,7 +79,7 @@ export default function Navigation() {
                             {navItems.map((item) => (
                                 <a
                                     key={item}
-                                    href={`#${item.toLowerCase()}`}
+                                    href={item === "Resume" ? "/resume.pdf" : `#${item.toLowerCase()}`}
                                     className="text-gray-300 hover:text-emerald-400 transition-colors font-medium"
                                     onClick={() => setMobileMenuOpen(false)}
                                 >
