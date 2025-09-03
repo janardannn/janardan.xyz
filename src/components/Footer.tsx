@@ -20,9 +20,9 @@ const footerLinks = {
         { name: "Contact Form", href: "#contact" }
     ],
     "Connect": [
-        { name: "GitHub", href: "https://github.com/yourname" },
-        { name: "LinkedIn", href: "https://linkedin.com/in/yourname" },
-        { name: "Email", href: "mailto:your.email@example.com" },
+        { name: "GitHub", href: "https://github.com/janardannn" },
+        { name: "LinkedIn", href: "https://linkedin.com/in/janardan-hazarika" },
+        { name: "Email", href: "mailto:janardanhazarika20@gmail.com" },
         { name: "Schedule Call", href: "https://cal.com/janardan-hazarika" }
     ]
 }
