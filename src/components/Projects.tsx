@@ -20,7 +20,7 @@ const projects = [
     },
     {
         title: "rents.app - A fullstack user centric, map based rental platform.",
-        description: "A modern, full-stack rental booking platform focused on listing and booking studio spaces. Built with **Next.js App Router**, it supports studio owners and renters with features like profile management, real-time chat, and seamless studio discovery.",
+        description: "A modern, full-stack rental platform focused on helping users find and secure rentals, PGs, and shared accommodations. Built using Next.js, TypeScript and Map using Mapbox API.",
         tech: ["Next.js", "TypeScript", "Mapbox API", "PostgreSQL", "Prisma", "TailwindCSS"],
         liveUrl: "https://rents-app-theta.vercel.app/",
         githubUrl: "https://github.com/janardannn/rents.app",
@@ -252,7 +252,7 @@ export default function Projects() {
                                     </h4>
 
                                     <p className="text-gray-300 text-sm mb-6 leading-relaxed">
-                                        {project.description.substring(0, 120)}...
+                                        {project.description}
                                     </p>
 
                                     {/* Tech Stack */}
