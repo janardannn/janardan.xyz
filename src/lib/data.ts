@@ -17,6 +17,3 @@ export const projects = [
     // Your projects array from before...
 ]
 
-export const blogPosts = [
-    // Your blog posts array from before...
-]
