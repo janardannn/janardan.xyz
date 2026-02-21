@@ -17,7 +17,7 @@ export default function Hero() {
                     transition={{ duration: 0.8, ease: "easeOut" }}
                 >
                     <motion.p
-                        className="text-lg md:text-xl text-emerald-500 mb-4 font-medium"
+                        className="text-lg md:text-xl text-pop mb-4 font-medium"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.2, duration: 0.6 }}
@@ -86,7 +86,7 @@ export default function Hero() {
                     >
                         <a
                             href="https://github.com/janardannn"
-                            className="text-muted-foreground hover:text-emerald-500 hover:scale-110 transition-all duration-200"
+                            className="text-muted-foreground hover:text-pop hover:scale-110 transition-all duration-200"
                             aria-label="GitHub Profile"
                             target="_blank"
                         >
@@ -94,7 +94,7 @@ export default function Hero() {
                         </a>
                         <a
                             href="https://linkedin.com/in/janardan-hazarika"
-                            className="text-muted-foreground hover:text-emerald-500 hover:scale-110 transition-all duration-200"
+                            className="text-muted-foreground hover:text-pop hover:scale-110 transition-all duration-200"
                             aria-label="LinkedIn Profile"
                             target="_blank"
                         >
@@ -102,7 +102,7 @@ export default function Hero() {
                         </a>
                         <a
                             href="mailto:janardanhazarika20@gmail.com"
-                            className="text-muted-foreground hover:text-emerald-500 hover:scale-110 transition-all duration-200"
+                            className="text-muted-foreground hover:text-pop hover:scale-110 transition-all duration-200"
                             aria-label="Email Contact"
                         >
                             <Mail className="h-7 w-7" />

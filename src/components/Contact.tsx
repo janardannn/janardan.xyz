@@ -12,7 +12,6 @@ const contactMethods = [
         value: "janardanhazarika20@gmail.com",
         href: "mailto:janardanhazarika20@gmail.com",
         icon: Mail,
-        color: "from-emerald-500 to-emerald-600"
     },
     {
         title: "Schedule a Call",
@@ -20,7 +19,6 @@ const contactMethods = [
         value: "Book a meeting",
         href: "https://cal.com/janardan-hazarika",
         icon: MessageCircle,
-        color: "from-green-500 to-green-600"
     },
     {
         title: "Phone",
@@ -28,7 +26,6 @@ const contactMethods = [
         value: "+91 7002347658",
         href: "tel:+917002347658",
         icon: Phone,
-        color: "from-slate-500 to-slate-600"
     }
 ]
 
@@ -57,13 +54,13 @@ export default function Contact() {
                     </p>
 
                     <div className="flex flex-wrap justify-center gap-4 mb-8">
-                        <Badge className="bg-green-500/20 text-green-600 dark:text-green-300 border-green-500/30 px-4 py-2">
+                        <Badge className="bg-secondary text-muted-foreground border-border px-4 py-2">
                             <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
                             Available for new projects
                         </Badge>
-                        <Badge className="bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 px-4 py-2">
+                        <Badge className="bg-secondary text-muted-foreground border-border px-4 py-2">
                             <MapPin className="w-3 h-3 mr-2" />
-                            Based in Chandigarh, India
+                            Based in Bengaluru, India
                         </Badge>
                         <Badge className="bg-secondary text-muted-foreground border-border px-4 py-2">
                             <Clock className="w-3 h-3 mr-2" />
@@ -83,8 +80,8 @@ export default function Contact() {
                         >
                             <Card className="group hover:shadow-2xl transition-all duration-500 border border-border shadow-lg bg-card hover:bg-card/80">
                                 <CardContent className="p-8 text-center">
-                                    <div className={`w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-r ${method.color} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                                        <method.icon className="h-8 w-8 text-white" />
+                                    <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-secondary border border-border flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                        <method.icon className="h-8 w-8 text-muted-foreground" />
                                     </div>
                                     <h3 className="text-xl font-semibold mb-2 text-foreground">{method.title}</h3>
                                     <p className="text-muted-foreground mb-4">{method.description}</p>
@@ -121,7 +118,7 @@ export default function Contact() {
                                     rel="noopener noreferrer"
                                     className="flex items-center gap-4 p-4 rounded-lg bg-card border border-border hover:bg-secondary transition-all duration-200 group hover:translate-x-2"
                                 >
-                                    <social.icon className="h-6 w-6 text-muted-foreground group-hover:text-emerald-500 transition-colors" />
+                                    <social.icon className="h-6 w-6 text-muted-foreground group-hover:text-pop transition-colors" />
                                     <div>
                                         <div className="font-semibold text-foreground">{social.name}</div>
                                         <div className="text-sm text-muted-foreground">{social.description}</div>
@@ -146,8 +143,8 @@ export default function Contact() {
                                         <span className="text-muted-foreground">24/7 Available</span>
                                     </div>
                                 </div>
-                                <div className="mt-6 p-4 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
-                                    <p className="text-emerald-600 dark:text-emerald-400 text-sm flex items-center">
+                                <div className="mt-6 p-4 bg-secondary rounded-lg border border-border">
+                                    <p className="text-muted-foreground text-sm flex items-center">
                                         <Clock className="h-4 w-4 mr-2" />
                                         Response time: Usually within 24 hours
                                     </p>

@@ -4,10 +4,11 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, Calendar, Clock, Share2 } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, Share2, Check } from "lucide-react";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { useState } from "react";
 
 interface BlogPostClientProps {
   post: {
@@ -20,9 +21,17 @@ interface BlogPostClientProps {
 }
 
 export default function BlogPostClient({ post }: BlogPostClientProps) {
+  const [copied, setCopied] = useState(false);
+
+  const handleShare = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <div className="border-b border-border bg-muted">
+      <div className="border-b border-border bg-card/50">
         <div className="container px-4 mx-auto py-8">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -39,7 +48,7 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
             <div className="max-w-4xl mx-auto">
               <div className="flex flex-wrap gap-2 mb-4">
                 {post.tags.map((tag) => (
-                  <Badge key={tag} variant="outline" className="border-emerald-500/30 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10">
+                  <Badge key={tag} variant="outline" className="border-pop/30 text-pop-muted bg-pop/10">
                     {tag}
                   </Badge>
                 ))}
@@ -54,9 +63,9 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
                 {post.date}
                 <Clock className="h-4 w-4 ml-6 mr-2" />
                 {post.readTime}
-                <Button variant="ghost" size="sm" className="ml-auto text-muted-foreground hover:text-foreground">
-                  <Share2 className="h-4 w-4 mr-2" />
-                  Share
+                <Button variant="ghost" size="sm" onClick={handleShare} className="ml-auto text-muted-foreground hover:text-foreground">
+                  {copied ? <Check className="h-4 w-4 mr-2" /> : <Share2 className="h-4 w-4 mr-2" />}
+                  {copied ? "Link Copied!" : "Share"}
                 </Button>
               </div>
             </div>

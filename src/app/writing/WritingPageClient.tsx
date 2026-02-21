@@ -86,7 +86,7 @@ export default function WritingPageClient({ posts }: { posts: Post[] }) {
                         </div>
                       </div>
 
-                      <h4 className="font-bold text-lg text-foreground group-hover:text-emerald-500 transition-colors mb-3">
+                      <h4 className="font-bold text-lg text-foreground group-hover:text-pop transition-colors mb-3">
                         {post.title}
                       </h4>
 
@@ -99,7 +99,7 @@ export default function WritingPageClient({ posts }: { posts: Post[] }) {
                           <Badge
                             key={tag}
                             variant="outline"
-                            className="text-xs border-emerald-500/30 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10"
+                            className="text-xs border-pop/30 text-pop-muted bg-pop/10"
                           >
                             {tag}
                           </Badge>

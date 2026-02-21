@@ -8,6 +8,17 @@ import Image from "next/image"
 
 const projects = [
     {
+        title: "ai-eval-lab - AI-Proctored Skill Assessment Platform",
+        description: "An AI-proctored exam platform for professional engineering tools (EDA, CAD) that streams desktop environments to the browser via a VNC pipeline. Features dynamic Docker container provisioning, a three-phase AI proctor using Gemini for adaptive questioning and rubric-based grading, with ElevenLabs TTS/STT for voice interaction.",
+        tech: ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "Redis", "Docker", "Gemini", "ElevenLabs", "noVNC"],
+        liveUrl: "",
+        githubUrl: "https://github.com/janardannn/ai-eval-lab",
+        image: "/projects/ai-eval-lab.jpg",
+        stats: { stars: 0, forks: 0, contributors: 0 },
+        featured: true,
+        status: "Development"
+    },
+    {
         title: "scaler-lite - A fullstack online learning platform",
         description: "A full-stack online learning platform, supporting the entire lifecycle from course creation to student enrollment. Including sequential lecture access, progress tracking, and automated real-time quiz scoring. Secure role-based authorization and authentication (Student/Instructor).",
         tech: ["Next.js", "TypeScript", "Prisma", "MongoDB", "Tailwind CSS", "UploadThing", "NextAuth"],
@@ -29,28 +40,6 @@ const projects = [
         featured: true,
         status: "Development"
     },
-    {
-        title: "Air Cargo",
-        description: "A full-stack web app for booking and tracking air cargo shipments, built with the PERN stack. It provides a complete shipment timeline from origin to delivery, with concurrency locking powered by Redis to ensure reliable updates.",
-        tech: ["React", "Node.js", "TypeScript", "Redis", "PostgreSQL", "Prisma", "Winston", "jest", "Tailwind CSS"],
-        liveUrl: "",
-        githubUrl: "https://github.com/janardannn/air-cargo",
-        image: "/projects/air-cargo.jpg",
-        stats: { stars: 0, forks: 0, contributors: 0 },
-        featured: false,
-        status: "Beta"
-    },
-    {
-        title: "Chexkmate",
-        description: "Chexkmate is a chess game analysis and tactics training app designed to help players improve their skills. It offers game analysis, tactical puzzles, and performance tracking to enhance chess proficiency.",
-        tech: ["Next.js", "TypeScript", "Web Workers", "Stockfish.js", "Tailwind CSS"],
-        liveUrl: "https://chexkmate.vercel.app/",
-        githubUrl: "https://github.com/janardannn/chexkmate",
-        image: "/projects/chexkmate.jpg",
-        stats: { stars: 0, forks: 0, contributors: 0 },
-        featured: false,
-        status: "Development"
-    }
 ]
 
 export default function Projects() {
@@ -72,7 +61,7 @@ export default function Projects() {
                     </p>
                 </motion.div>
 
-                <div className="grid lg:grid-cols-2 gap-28 mb-20">
+                <div className="grid lg:grid-cols-2 gap-28 mb-12">
                     {projects.filter(project => project.featured).map((project, index) => (
                         <motion.div
                             key={project.title}
@@ -96,7 +85,7 @@ export default function Projects() {
                                     }
                                     <div className="absolute top-6 left-6">
                                         <Badge className={`px-3 py-1 text-xs font-medium rounded-full border-0 ${project.status === 'Live'
-                                            ? 'bg-emerald-500/90 text-white'
+                                            ? 'bg-pop/90 text-white'
                                             : 'bg-amber-500/90 text-white'
                                             }`}>
                                             {project.status}
@@ -117,7 +106,7 @@ export default function Projects() {
                                 </div>
 
                                 <div className="p-8">
-                                    <CardTitle className="text-2xl font-bold text-foreground mb-4 group-hover:text-emerald-500 transition-colors duration-300">
+                                    <CardTitle className="text-2xl font-bold text-foreground mb-4 group-hover:text-pop transition-colors duration-300">
                                         {project.title}
                                     </CardTitle>
 
@@ -160,16 +149,6 @@ export default function Projects() {
                     ))}
                 </div>
 
-                <motion.h3
-                    className="text-2xl font-bold text-foreground mb-12"
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
-                >
-                    Other Projects
-                </motion.h3>
-
                 <div className="grid md:grid-cols-3 gap-12">
                     {projects.filter(project => !project.featured).map((project, index) => (
                         <motion.div
@@ -195,7 +174,7 @@ export default function Projects() {
                                     }
                                     <div className="absolute top-4 left-4">
                                         <Badge className={`px-2 py-1 text-xs font-medium rounded-full border-0 ${project.status === 'Live'
-                                            ? 'bg-emerald-500/90 text-white'
+                                            ? 'bg-pop/90 text-white'
                                             : project.status === 'Beta'
                                                 ? 'bg-amber-500/90 text-white'
                                                 : 'bg-blue-500/90 text-white'
@@ -216,7 +195,7 @@ export default function Projects() {
                                 </div>
 
                                 <CardContent className="p-6">
-                                    <h4 className="font-bold text-lg text-foreground group-hover:text-emerald-500 transition-colors mb-3">
+                                    <h4 className="font-bold text-lg text-foreground group-hover:text-pop transition-colors mb-3">
                                         {project.title}
                                     </h4>
                                     <p className="text-muted-foreground text-sm mb-6 leading-relaxed">
@@ -242,7 +221,7 @@ export default function Projects() {
                 </div>
 
                 <motion.div
-                    className="text-center mt-16"
+                    className="text-center mt-10"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}

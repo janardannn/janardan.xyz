@@ -59,14 +59,11 @@ export default function Writing({ posts }: { posts: Post[] }) {
               >
                 <Card className="h-full hover:shadow-xl transition-all duration-300 border border-border bg-card rounded-2xl hover:scale-[1.02] overflow-hidden">
                   <Link href={`/writing/${post.slug}`}>
-                    <div className="absolute top-4 left-4">
-                      <Badge className="px-2 py-1 text-xs font-medium rounded-full border-0 bg-emerald-500/90 text-white">
+                    <CardContent className="p-6">
+                      <Badge className="px-2 py-1 text-xs font-medium rounded-full border-0 bg-pop/90 text-white mb-3 inline-block">
                         {post.category}
                       </Badge>
-                    </div>
-
-                    <CardContent className="p-6">
-                      <h4 className="font-bold text-lg text-foreground group-hover:text-emerald-500 transition-colors mb-3 leading-tight">
+                      <h4 className="font-bold text-lg text-foreground group-hover:text-pop transition-colors mb-3 leading-tight">
                         {post.title}
                       </h4>
 
@@ -89,7 +86,7 @@ export default function Writing({ posts }: { posts: Post[] }) {
                         <Button variant="outline" size="sm" className="border-2 border-border bg-secondary text-secondary-foreground hover:scale-105 transition-transform duration-200">
                           Read Article
                         </Button>
-                        <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-emerald-500 group-hover:translate-x-1 transition-all duration-200" />
+                        <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-pop group-hover:translate-x-1 transition-all duration-200" />
                       </div>
                     </CardContent>
                   </Link>

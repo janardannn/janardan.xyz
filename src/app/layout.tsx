@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import NoiseOverlay from "@/components/NoiseOverlay";
 import "./globals.css";
 
 const inter = Inter({
@@ -93,7 +94,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.className} antialiased`}
       >
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <NoiseOverlay />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

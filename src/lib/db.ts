@@ -4,11 +4,12 @@ const globalForPrisma = globalThis as unknown as { prisma: PrismaClient | undefi
 
 export async function getPrisma(): Promise<PrismaClient> {
   if (!globalForPrisma.prisma) {
-    const mod = await import("@/generated/prisma/client");
-    const Ctor = mod.PrismaClient as unknown as new (opts: { datasourceUrl: string }) => PrismaClient;
-    globalForPrisma.prisma = new Ctor({
-      datasourceUrl: process.env.DATABASE_URL!,
-    });
+    const { PrismaNeon } = await import("@prisma/adapter-neon");
+    const { PrismaClient } = await import("@/generated/prisma/client");
+
+    const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL! });
+
+    globalForPrisma.prisma = new (PrismaClient as unknown as new (opts: { adapter: typeof adapter }) => PrismaClient)({ adapter });
   }
   return globalForPrisma.prisma;
 }

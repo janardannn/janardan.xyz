@@ -50,7 +50,7 @@ export default function Footer() {
                             transition={{ duration: 0.5 }}
                             className="lg:col-span-1"
                         >
-                            <h3 className="text-2xl font-bold mb-4 text-emerald-500">
+                            <h3 className="text-2xl font-bold mb-4 text-pop">
                                 janardan.xyz
                             </h3>
                             <p className="text-muted-foreground mb-6 leading-relaxed">
@@ -63,7 +63,7 @@ export default function Footer() {
                                         href={social.href}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-muted-foreground hover:text-emerald-500 hover:scale-110 hover:-translate-y-0.5 active:scale-95 transition-all duration-200"
+                                        className="text-muted-foreground hover:text-pop hover:scale-110 hover:-translate-y-0.5 active:scale-95 transition-all duration-200"
                                         aria-label={social.name}
                                     >
                                         <social.icon className="h-5 w-5" />
