@@ -6,7 +6,7 @@ Personal portfolio and blog - [Janardan Hazarika](https://janardan.xyz).
 
 Software engineer based in Bengaluru, India. Currently an SDE Intern at Scaler (InterviewBit Technologies), working across the full stack on growth engineering - refactoring legacy Rails + React systems, building conversion-optimized flows, and shipping services with Redis-backed distributed locking.
 
-B.E. Computer Science from Chandigarh University (2022-2026). Previously freelanced on Upwork & Fiverr building fullstack apps, scrapers, and automation tools.
+B.E. CSE from Chandigarh University (2022-2026). Previously freelanced on Upwork & Fiverr building fullstack apps, scrapers, and automation tools.
 
 ## Stack
 
