@@ -26,7 +26,7 @@ export default async function Home() {
   }));
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-900">
+    <div className="min-h-screen bg-background text-foreground">
       <Navigation />
 
       <section id="home">

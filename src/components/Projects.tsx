@@ -1,9 +1,9 @@
 "use client"
 import { motion } from "framer-motion"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ExternalLink, Github, ArrowRight, Star, Users, GitFork } from "lucide-react"
+import { ExternalLink, Github, ArrowRight, Star, GitFork } from "lucide-react"
 import Image from "next/image"
 
 const projects = [
@@ -55,33 +55,20 @@ const projects = [
 
 export default function Projects() {
     return (
-        <section className="py-24 bg-gradient-to-br from-black via-gray-950 to-black relative overflow-hidden">
-            {/* Background Elements */}
-            <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-3"></div>
-            <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-emerald-600/5 to-slate-600/5"
-                animate={{
-                    background: [
-                        "linear-gradient(to right, rgba(16, 185, 129, 0.05), rgba(71, 85, 105, 0.05))",
-                        "linear-gradient(to right, rgba(71, 85, 105, 0.05), rgba(16, 185, 129, 0.05))",
-                        "linear-gradient(to right, rgba(16, 185, 129, 0.05), rgba(71, 85, 105, 0.05))"
-                    ]
-                }}
-                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-            />
-
+        <section className="py-24 relative overflow-hidden">
             <div className="container px-6 mx-auto max-w-7xl relative z-10">
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
                     className="text-center mb-20"
                 >
-                    <h2 className="text-4xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent">
+                    <h2 className="text-4xl md:text-4xl font-bold mb-6 text-foreground">
                         Featured Projects
                     </h2>
-                    <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-                        A look at the projects where I’ve built, debugged, and refined until it clicked.
+                    <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+                        A look at the projects where I&apos;ve built, debugged, and refined until it clicked.
                     </p>
                 </motion.div>
 
@@ -89,19 +76,16 @@ export default function Projects() {
                     {projects.filter(project => project.featured).map((project, index) => (
                         <motion.div
                             key={project.title}
-                            initial={{ opacity: 0, y: 30 }}
+                            initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: index * 0.2 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5, delay: index * 0.1 }}
                             className="group"
                         >
-                            <Card className="h-full hover:shadow-2xl transition-all duration-500 border-0 shadow-lg overflow-hidden bg-gray-900/30 backdrop-blur-sm rounded-3xl hover:scale-[1.02]">
-                                {/* Project Image Header */}
+                            <Card className="h-full hover:shadow-2xl transition-all duration-500 border border-border shadow-lg overflow-hidden bg-card rounded-3xl hover:scale-[1.02]">
                                 <div className="relative h-84 overflow-hidden">
                                     {project.image === "" ?
-                                        <div>
-                                            <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/20 via-gray-800/40 to-slate-800/60" />
-                                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(16,185,129,0.1),transparent_70%)]" />
-                                        </div>
+                                        <div className="absolute inset-0 bg-muted" />
                                         : <Image
                                             src={project.image}
                                             alt={project.title}
@@ -110,8 +94,6 @@ export default function Projects() {
                                             className="transition-transform duration-500 group-hover:scale-105"
                                         />
                                     }
-
-                                    {/* Status Badge */}
                                     <div className="absolute top-6 left-6">
                                         <Badge className={`px-3 py-1 text-xs font-medium rounded-full border-0 ${project.status === 'Live'
                                             ? 'bg-emerald-500/90 text-white'
@@ -120,10 +102,7 @@ export default function Projects() {
                                             {project.status}
                                         </Badge>
                                     </div>
-
-                                    {/* Project Stats */}
-                                    {
-                                        project.stats.stars > 0 &&
+                                    {project.stats.stars > 0 &&
                                         <div className="absolute bottom-4 right-4 flex gap-2">
                                             <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm px-2 py-1 rounded-lg">
                                                 <Star className="h-3 w-3 text-amber-400" />
@@ -138,45 +117,38 @@ export default function Projects() {
                                 </div>
 
                                 <div className="p-8">
-                                    <CardTitle className="text-2xl font-bold text-white mb-4 group-hover:text-emerald-400 transition-colors duration-300">
+                                    <CardTitle className="text-2xl font-bold text-foreground mb-4 group-hover:text-emerald-500 transition-colors duration-300">
                                         {project.title}
                                     </CardTitle>
 
-                                    <CardDescription className="text-gray-300 leading-relaxed mb-6 text-base">
+                                    <CardDescription className="text-muted-foreground leading-relaxed mb-6 text-base">
                                         {project.description}
                                     </CardDescription>
 
-                                    {/* Tech Stack */}
                                     <div className="flex flex-wrap gap-2 mb-8">
                                         {project.tech.map((tech) => (
-                                            <Badge key={tech} variant="outline" className="text-xs bg-gray-800/50 text-gray-300 border-gray-600 px-3 py-1">
+                                            <Badge key={tech} variant="outline" className="text-xs bg-secondary text-secondary-foreground border-border px-3 py-1">
                                                 {tech}
                                             </Badge>
                                         ))}
-                                        {/* {project.tech.length > 4 && (
-                                            <Badge variant="outline" className="text-xs bg-gray-800/50 text-gray-300 border-gray-600 px-3 py-1">
-                                                +{project.tech.length - 4}
-                                            </Badge>
-                                        )} */}
                                     </div>
 
-                                    {/* Action Buttons */}
                                     {project.status === 'Live' ?
                                         <div className="flex gap-4">
-                                            <Button asChild variant="outline" className="flex-1 border-2 border-gray-600 bg-gray-800/50 text-gray-300 hover:scale-105 transition-transform duration-200">
+                                            <Button asChild variant="outline" className="flex-1 border-2 border-border bg-secondary text-secondary-foreground hover:scale-105 transition-transform duration-200">
                                                 <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
                                                     <ExternalLink className="h-4 w-4" />
                                                     View Project
                                                 </a>
                                             </Button>
-                                            <Button variant="outline" asChild className="border-2 border-gray-600 bg-gray-800/50 text-gray-300 hover:scale-105 transition-transform duration-200 px-4">
+                                            <Button variant="outline" asChild className="border-2 border-border bg-secondary text-secondary-foreground hover:scale-105 transition-transform duration-200 px-4">
                                                 <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
                                                     <Github className="h-4 w-4" />
                                                 </a>
                                             </Button>
                                         </div>
                                         :
-                                        <Button variant="outline" asChild className="w-full border-2 border-gray-600 bg-gray-800/50 text-gray-300 hover:scale-105 transition-transform duration-200 px-4">
+                                        <Button variant="outline" asChild className="w-full border-2 border-border bg-secondary text-secondary-foreground hover:scale-105 transition-transform duration-200 px-4">
                                             <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
                                                 <Github className="h-4 w-4" />
                                             </a>
@@ -188,30 +160,30 @@ export default function Projects() {
                     ))}
                 </div>
 
-                {/* Other Projects */}
                 <motion.h3
-                    className="text-2xl font-bold text-white mb-12"
-                    initial={{ opacity: 0, y: 20 }}
+                    className="text-2xl font-bold text-foreground mb-12"
+                    initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
                 >
                     Other Projects
                 </motion.h3>
 
-                {/* Additional Projects Grid */}
                 <div className="grid md:grid-cols-3 gap-12">
                     {projects.filter(project => !project.featured).map((project, index) => (
                         <motion.div
                             key={project.title}
-                            initial={{ opacity: 0, y: 30 }}
+                            initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: index * 0.1 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5, delay: index * 0.05 }}
                             className="group"
                         >
-                            <Card className="h-full hover:shadow-xl transition-all duration-300 border-0 bg-gray-900/30 backdrop-blur-sm rounded-2xl hover:scale-[1.02] overflow-hidden">
-                                <div className="relative h-56 bg-gradient-to-br from-gray-800/40 via-gray-900/60 to-slate-800/40">
+                            <Card className="h-full hover:shadow-xl transition-all duration-300 border border-border bg-card rounded-2xl hover:scale-[1.02] overflow-hidden">
+                                <div className="relative h-56 bg-muted">
                                     {project.image === "" ?
-                                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,rgba(16,185,129,0.08),transparent_70%)]" />
+                                        <div className="absolute inset-0" />
                                         :
                                         <Image
                                             src={project.image}
@@ -221,7 +193,6 @@ export default function Projects() {
                                             className="transition-transform duration-500 group-hover:scale-105"
                                         />
                                     }
-                                    {/* Status Badge */}
                                     <div className="absolute top-4 left-4">
                                         <Badge className={`px-2 py-1 text-xs font-medium rounded-full border-0 ${project.status === 'Live'
                                             ? 'bg-emerald-500/90 text-white'
@@ -232,8 +203,6 @@ export default function Projects() {
                                             {project.status}
                                         </Badge>
                                     </div>
-
-                                    {/* Action Icons */}
                                     <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                         <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
                                             className="p-2 bg-black/40 backdrop-blur-sm rounded-lg hover:scale-110 transition-transform">
@@ -247,30 +216,20 @@ export default function Projects() {
                                 </div>
 
                                 <CardContent className="p-6">
-                                    <h4 className="font-bold text-lg text-white group-hover:text-emerald-400 transition-colors mb-3">
+                                    <h4 className="font-bold text-lg text-foreground group-hover:text-emerald-500 transition-colors mb-3">
                                         {project.title}
                                     </h4>
-
-                                    <p className="text-gray-300 text-sm mb-6 leading-relaxed">
+                                    <p className="text-muted-foreground text-sm mb-6 leading-relaxed">
                                         {project.description}
                                     </p>
-
-                                    {/* Tech Stack */}
                                     <div className="flex flex-wrap gap-2 mb-6">
                                         {project.tech.map((tech) => (
-                                            <Badge key={tech} variant="outline" className="text-xs bg-gray-800/50 text-gray-300 border-gray-600 px-2 py-1">
+                                            <Badge key={tech} variant="outline" className="text-xs bg-secondary text-secondary-foreground border-border px-2 py-1">
                                                 {tech}
                                             </Badge>
                                         ))}
-                                        {/* {project.tech.length > 3 && (
-                                            <Badge variant="outline" className="text-xs bg-gray-800/50 text-gray-300 border-gray-600 px-2 py-1">
-                                                +{project.tech.length - 3}
-                                            </Badge>
-                                        )} */}
                                     </div>
-
-                                    {/* Action Button */}
-                                    <Button asChild variant="outline" size="sm" className="w-full border-2 border-gray-600 bg-gray-800/50 text-gray-300 hover:scale-105 transition-transform duration-200">
+                                    <Button asChild variant="outline" size="sm" className="w-full border-2 border-border bg-secondary text-secondary-foreground hover:scale-105 transition-transform duration-200">
                                         <a href={project.liveUrl === "" ? project.githubUrl : project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
                                             <ExternalLink className="h-3 w-3" />
                                             View Project
@@ -282,17 +241,17 @@ export default function Projects() {
                     ))}
                 </div>
 
-                {/* View More Button */}
                 <motion.div
                     className="text-center mt-16"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
-                    transition={{ duration: 0.8, delay: 0.3 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
                 >
                     <Button
                         size="lg"
                         variant="outline"
-                        className="border-2 border-gray-600 bg-gray-800/50 text-gray-300 hover:scale-105 transition-transform duration-200"
+                        className="border-2 border-border bg-secondary text-secondary-foreground hover:scale-105 transition-transform duration-200"
                         onClick={() => {
                             window.open("https://github.com/janardannn?tab=repositories", "_blank")
                         }}

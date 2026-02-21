@@ -1,38 +1,32 @@
 "use client"
 import { motion } from "framer-motion"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Download, MapPin, Calendar, Coffee, Code2, Briefcase } from "lucide-react"
+import { MapPin, Calendar, Coffee, Code2, Briefcase } from "lucide-react"
 
 const skills = [
-    { name: "JavaScript", level: "Proficient", category: "Frontend" },
-    { name: "TypeScript", level: "Proficient", category: "Frontend" },
-    { name: "React", level: "Proficient", category: "Frontend" },
-    { name: "Next.js", level: "Proficient", category: "Frontend" },
-    { name: "HTML/CSS", level: "Proficient", category: "Frontend" },
-    { name: "Bootstrap", level: "Proficient", category: "Frontend" },
-    { name: "Tailwind CSS", level: "Developing", category: "Frontend" },
-
-    { name: "Node.js", level: "Familiar", category: "Backend" },
-    { name: "Express.js", level: "Familiar", category: "Backend" },
-    { name: "Python", level: "Learning", category: "Backend" },
-    { name: "Flask", level: "Familiar", category: "Backend" },
-    { name: "REST APIs", level: "Proficient", category: "Backend" },
-
-    { name: "MongoDB", level: "Familiar", category: "Database" },
-    { name: "PostgreSQL", level: "Familiar", category: "Database" },
-    { name: "Prisma", level: "Familiar", category: "Database" },
-
-    { name: "C++", level: "Familiar", category: "Programming" },
-    { name: "Java", level: "Learning", category: "Programming" },
-
-    { name: "Git", level: "Familiar", category: "Tools" },
-    { name: "Docker", level: "Familiar", category: "Tools" },
-    { name: "Nginx", level: "Familiar", category: "Tools" },
-    { name: "Github Actions", level: "Familiar", category: "Tools" },
-    { name: "Linux", level: "Familiar", category: "Tools" },
+    { name: "JavaScript", category: "Frontend" },
+    { name: "TypeScript", category: "Frontend" },
+    { name: "React", category: "Frontend" },
+    { name: "Next.js", category: "Frontend" },
+    { name: "HTML/CSS", category: "Frontend" },
+    { name: "Bootstrap", category: "Frontend" },
+    { name: "Tailwind CSS", category: "Frontend" },
+    { name: "Node.js", category: "Backend" },
+    { name: "Express.js", category: "Backend" },
+    { name: "Python", category: "Backend" },
+    { name: "Flask", category: "Backend" },
+    { name: "REST APIs", category: "Backend" },
+    { name: "MongoDB", category: "Database" },
+    { name: "PostgreSQL", category: "Database" },
+    { name: "Prisma", category: "Database" },
+    { name: "C++", category: "Programming" },
+    { name: "Java", category: "Programming" },
+    { name: "Git", category: "Tools" },
+    { name: "Docker", category: "Tools" },
+    { name: "Nginx", category: "Tools" },
+    { name: "Github Actions", category: "Tools" },
+    { name: "Linux", category: "Tools" },
 ]
 
 const education = [
@@ -72,7 +66,7 @@ const stats = [
     { label: "Years Learning", value: "3+", icon: Calendar },
     { label: "Projects Built", value: "10+", icon: Briefcase },
     { label: "Technologies Used", value: "15+", icon: Code2 },
-    { label: "Cups of Coffee", value: "∞", icon: Coffee }
+    { label: "Cups of Coffee", value: "\u221E", icon: Coffee }
 ]
 
 export default function About() {
@@ -83,43 +77,26 @@ export default function About() {
     }, {} as Record<string, typeof skills>)
 
     return (
-        <section className="py-24 bg-gradient-to-br from-black via-gray-950 to-black relative overflow-hidden">
-            {/* Background Elements */}
-            <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-3"></div>
-            <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-emerald-600/5 to-slate-600/5"
-                animate={{
-                    background: [
-                        "linear-gradient(to right, rgba(16, 185, 129, 0.05), rgba(71, 85, 105, 0.05))",
-                        "linear-gradient(to right, rgba(71, 85, 105, 0.05), rgba(16, 185, 129, 0.05))",
-                        "linear-gradient(to right, rgba(16, 185, 129, 0.05), rgba(71, 85, 105, 0.05))"
-                    ]
-                }}
-                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-            />
-
+        <section className="py-24 relative overflow-hidden">
             <div className="container px-6 mx-auto max-w-7xl relative z-10">
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
                     className="max-w-6xl mx-auto"
                 >
                     <div className="text-center mb-20">
-                        <motion.h2
-                            className="text-2xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent"
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.2 }}
-                        >
+                        <h2 className="text-2xl md:text-4xl font-bold mb-6 text-foreground">
                             About Me
-                        </motion.h2>
+                        </h2>
 
                         <motion.div
                             className="relative mb-8"
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.8, delay: 0.4 }}
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
                         >
                             <Avatar className="w-40 h-40 mx-auto mb-6 ring-4 ring-emerald-500/30 shadow-xl">
                                 <AvatarImage src="/profile.jpg" alt="Janardan Hazarika" />
@@ -127,138 +104,107 @@ export default function About() {
                                     JH
                                 </AvatarFallback>
                             </Avatar>
-                            <div className="flex items-center justify-center gap-2 text-gray-400">
+                            <div className="flex items-center justify-center gap-2 text-muted-foreground">
                                 <MapPin className="h-4 w-4" />
                                 <span>Chandigarh, India</span>
                             </div>
                         </motion.div>
                     </div>
 
-                    {/* Stats Section */}
                     <motion.div
                         className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16"
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.6 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: 0.3 }}
                     >
-                        {stats.map((stat, index) => (
-                            <motion.div
-                                key={stat.label}
-                                className="text-center"
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6, delay: 0.1 * index }}
-                            >
-                                <Card className="p-6 hover:shadow-lg transition-all duration-300 border-0 bg-gray-800/50 backdrop-blur-sm rounded-xl">
+                        {stats.map((stat) => (
+                            <div key={stat.label} className="text-center">
+                                <Card className="p-6 hover:shadow-lg transition-all duration-300 border border-border bg-card rounded-xl">
                                     <CardContent className="p-0 text-center">
-                                        <stat.icon className="h-8 w-8 mx-auto mb-3 text-emerald-400" />
-                                        <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
-                                        <div className="text-sm text-gray-400">{stat.label}</div>
+                                        <stat.icon className="h-8 w-8 mx-auto mb-3 text-emerald-500" />
+                                        <div className="text-3xl font-bold text-foreground mb-1">{stat.value}</div>
+                                        <div className="text-sm text-muted-foreground">{stat.label}</div>
                                     </CardContent>
                                 </Card>
-                            </motion.div>
+                            </div>
                         ))}
                     </motion.div>
 
                     <div className="grid lg:grid-cols-2 gap-16 mb-16">
-                        {/* Education Text */}
                         <motion.div
-                            initial={{ opacity: 0, x: 30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.8, delay: 0.6 }}
+                            initial={{ opacity: 0, y: 10 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5 }}
                         >
-                            <h3 className="text-2xl font-bold mb-6 text-white">Education</h3>
+                            <h3 className="text-2xl font-bold mb-6 text-foreground">Education</h3>
                             <div className="space-y-6">
-                                {education.map((edu, index) => (
-                                    <motion.div
+                                {education.map((edu) => (
+                                    <div
                                         key={edu.title}
                                         className="relative pl-8 border-l-2 border-emerald-600/40"
-                                        initial={{ opacity: 0, x: 20 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
-                                        transition={{ duration: 0.6, delay: 0.1 * index }}
                                     >
                                         <div className="absolute w-4 h-4 bg-emerald-600 rounded-full -left-2 top-2"></div>
                                         <div className="mb-4">
-                                            <h4 className="text-lg font-semibold text-white">{edu.title}</h4>
-                                            <p className="text-emerald-400 font-medium">{edu.institution}</p>
-                                            <p className="text-sm text-gray-400 mb-2">{edu.period}</p>
-                                            {edu.grade == 7.34 ? <p className="text-gray-300">Grade: {edu.grade} CGPA</p> : <p className="text-gray-300">Grade: {edu.grade}%</p>}
-                                            <p className="text-gray-300">{edu.description}</p>
+                                            <h4 className="text-lg font-semibold text-foreground">{edu.title}</h4>
+                                            <p className="text-emerald-500 font-medium">{edu.institution}</p>
+                                            <p className="text-sm text-muted-foreground mb-2">{edu.period}</p>
+                                            {edu.grade == 7.34 ? <p className="text-muted-foreground">Grade: {edu.grade} CGPA</p> : <p className="text-muted-foreground">Grade: {edu.grade}%</p>}
+                                            <p className="text-muted-foreground">{edu.description}</p>
                                         </div>
-                                    </motion.div>
+                                    </div>
                                 ))}
                             </div>
                         </motion.div>
 
-                        {/* Experience Section */}
                         <motion.div
-                            initial={{ opacity: 0, x: 30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.8, delay: 0.6 }}
+                            initial={{ opacity: 0, y: 10 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5, delay: 0.1 }}
                         >
-                            <h3 className="text-2xl font-bold mb-6 text-white">Experience</h3>
+                            <h3 className="text-2xl font-bold mb-6 text-foreground">Experience</h3>
                             <div className="space-y-6">
-                                {experience.map((exp, index) => (
-                                    <motion.div
+                                {experience.map((exp) => (
+                                    <div
                                         key={exp.title}
                                         className="relative pl-8 border-l-2 border-emerald-600/40"
-                                        initial={{ opacity: 0, x: 20 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
-                                        transition={{ duration: 0.6, delay: 0.1 * index }}
                                     >
                                         <div className="absolute w-4 h-4 bg-emerald-600 rounded-full -left-2 top-2"></div>
                                         <div className="mb-4">
-                                            <h4 className="text-lg font-semibold text-white">{exp.title}</h4>
-                                            <p className="text-emerald-400 font-medium">{exp.company}</p>
-                                            <p className="text-sm text-gray-400 mb-2">{exp.period}</p>
-                                            <p className="text-gray-300">{exp.description}</p>
+                                            <h4 className="text-lg font-semibold text-foreground">{exp.title}</h4>
+                                            <p className="text-emerald-500 font-medium">{exp.company}</p>
+                                            <p className="text-sm text-muted-foreground mb-2">{exp.period}</p>
+                                            <p className="text-muted-foreground">{exp.description}</p>
                                         </div>
-                                    </motion.div>
+                                    </div>
                                 ))}
                             </div>
                         </motion.div>
                     </div>
 
-                    {/* Skills Section */}
                     <motion.div
-                        initial={{ opacity: 0, y: 30 }}
+                        initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.4 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5 }}
                     >
-                        <h3 className="text-2xl font-bold mb-8 text-center text-white">Skills & Technologies</h3>
+                        <h3 className="text-2xl font-bold mb-8 text-center text-foreground">Skills & Technologies</h3>
                         <div className="grid md:grid-cols-4 lg:grid-cols-5 gap-6">
-                            {Object.entries(skillsByCategory).map(([category, categorySkills], categoryIndex) => (
-                                <motion.div
-                                    key={category}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.6, delay: categoryIndex * 0.1 }}
-                                >
-                                    <Card className="p-6 h-full hover:shadow-lg transition-all duration-300 border-0 bg-gray-800/50 backdrop-blur-sm">
-                                        <CardContent className="p-0">
-                                            <h4 className="font-semibold text-lg mb-4 text-white">{category}</h4>
-                                            <div className="space-y-3">
-                                                {categorySkills.map((skill, skillIndex) => (
-                                                    <motion.div
-                                                        key={skill.name}
-                                                        className="flex items-center justify-between"
-                                                        initial={{ opacity: 0, x: -10 }}
-                                                        whileInView={{ opacity: 1, x: 0 }}
-                                                        transition={{ duration: 0.4, delay: skillIndex * 0.05 }}
-                                                    >
-                                                        <span className="text-gray-300 font-medium">{skill.name}</span>
-                                                        {/* <Badge
-                                                            variant="outline"
-                                                            className={`text-xs px-2 py-1 rounded-full border-emerald-400 text-emerald-400 bg-gray-900/60`}
-                                                        >
-                                                            {skill.level}
-                                                        </Badge> */}
-                                                    </motion.div>
-                                                ))}
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-                                </motion.div>
+                            {Object.entries(skillsByCategory).map(([category, categorySkills]) => (
+                                <Card key={category} className="p-6 h-full hover:shadow-lg transition-all duration-300 border border-border bg-card">
+                                    <CardContent className="p-0">
+                                        <h4 className="font-semibold text-lg mb-4 text-foreground">{category}</h4>
+                                        <div className="space-y-3">
+                                            {categorySkills.map((skill) => (
+                                                <div key={skill.name} className="flex items-center justify-between">
+                                                    <span className="text-muted-foreground font-medium">{skill.name}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </CardContent>
+                                </Card>
                             ))}
                         </div>
                     </motion.div>
