@@ -21,15 +21,15 @@ interface BlogPostClientProps {
 
 export default function BlogPostClient({ post }: BlogPostClientProps) {
   return (
-    <div className="min-h-screen bg-white">
-      <div className="border-b bg-gray-50">
+    <div className="min-h-screen bg-background text-foreground">
+      <div className="border-b border-border bg-muted">
         <div className="container px-4 mx-auto py-8">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.5 }}
           >
-            <Button variant="ghost" asChild className="mb-6">
+            <Button variant="ghost" asChild className="mb-6 text-muted-foreground hover:text-foreground">
               <Link href="/writing">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Writing
@@ -39,20 +39,22 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
             <div className="max-w-4xl mx-auto">
               <div className="flex flex-wrap gap-2 mb-4">
                 {post.tags.map((tag) => (
-                  <Badge key={tag} variant="outline">{tag}</Badge>
+                  <Badge key={tag} variant="outline" className="border-emerald-500/30 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10">
+                    {tag}
+                  </Badge>
                 ))}
               </div>
 
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight text-foreground">
                 {post.title}
               </h1>
 
-              <div className="flex items-center text-gray-600 mb-6">
+              <div className="flex items-center text-muted-foreground mb-6">
                 <Calendar className="h-4 w-4 mr-2" />
                 {post.date}
                 <Clock className="h-4 w-4 ml-6 mr-2" />
                 {post.readTime}
-                <Button variant="ghost" size="sm" className="ml-auto">
+                <Button variant="ghost" size="sm" className="ml-auto text-muted-foreground hover:text-foreground">
                   <Share2 className="h-4 w-4 mr-2" />
                   Share
                 </Button>
@@ -64,10 +66,10 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
 
       <div className="container px-4 mx-auto py-12">
         <motion.article
-          className="max-w-4xl mx-auto prose prose-lg prose-gray"
-          initial={{ opacity: 0, y: 20 }}
+          className="max-w-4xl mx-auto prose prose-lg dark:prose-invert"
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
         >
           <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content}</ReactMarkdown>
         </motion.article>
@@ -78,12 +80,12 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
           className="max-w-4xl mx-auto text-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <p className="text-gray-600 mb-6">
+          <p className="text-muted-foreground mb-6">
             Thanks for reading! If you enjoyed this post, feel free to share it with others.
           </p>
-          <Button asChild>
+          <Button asChild variant="outline" className="border-2 border-border bg-secondary text-secondary-foreground hover:scale-105 transition-transform duration-200">
             <Link href="/writing">Read More Posts</Link>
           </Button>
         </motion.div>
