@@ -14,4 +14,6 @@ Next.js 15, React 19, TypeScript, Tailwind CSS v4, shadcn/ui, Framer Motion. Dar
 
 Blog posts live in Neon (serverless Postgres) via Prisma. Admin is password-protected with NextAuth. Posts are server-rendered with `react-markdown`.
 
-Canvas-based noise grain overlay for texture. Deployed on Vercel.
+Canvas-based noise grain overlay for texture. 
+
+Deployed on Vercel.
