@@ -53,7 +53,7 @@ export default function Projects() {
                     transition={{ duration: 0.5 }}
                     className="text-center mb-20"
                 >
-                    <h2 className="text-4xl md:text-4xl font-bold mb-6 text-foreground">
+                    <h2 className="text-4xl md:text-4xl font-bold mb-6 text-foreground font-serif">
                         Featured Projects
                     </h2>
                     <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
@@ -106,7 +106,7 @@ export default function Projects() {
                                 </div>
 
                                 <div className="p-8">
-                                    <CardTitle className="text-2xl font-bold text-foreground mb-4 group-hover:text-pop transition-colors duration-300">
+                                    <CardTitle className="text-2xl font-bold text-foreground mb-4 group-hover:text-pop transition-colors duration-300 font-serif">
                                         {project.title}
                                     </CardTitle>
 

@@ -54,7 +54,7 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
                 ))}
               </div>
 
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight text-foreground">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight text-foreground font-serif">
                 {post.title}
               </h1>
 
