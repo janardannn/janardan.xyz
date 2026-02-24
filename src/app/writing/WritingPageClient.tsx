@@ -38,7 +38,7 @@ export default function WritingPageClient({ posts }: { posts: Post[] }) {
               </Link>
             </Button>
 
-            <h1 className="text-4xl md:text-4xl font-bold mb-6 text-foreground">
+            <h1 className="text-4xl md:text-4xl font-bold mb-6 text-foreground font-serif">
               Writing
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed">
@@ -86,7 +86,7 @@ export default function WritingPageClient({ posts }: { posts: Post[] }) {
                         </div>
                       </div>
 
-                      <h4 className="font-bold text-lg text-foreground group-hover:text-pop transition-colors mb-3">
+                      <h4 className="font-bold text-lg text-foreground group-hover:text-pop transition-colors mb-3 font-serif">
                         {post.title}
                       </h4>
 

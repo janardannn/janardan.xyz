@@ -100,7 +100,7 @@ export default function About() {
                     className="max-w-6xl mx-auto"
                 >
                     <div className="text-center mb-20">
-                        <h2 className="text-2xl md:text-4xl font-bold mb-6 text-foreground">
+                        <h2 className="text-2xl md:text-4xl font-bold mb-6 text-foreground font-serif">
                             About Me
                         </h2>
 

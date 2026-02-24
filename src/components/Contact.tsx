@@ -46,7 +46,7 @@ export default function Contact() {
                     transition={{ duration: 0.5 }}
                     className="text-center max-w-4xl mx-auto mb-20"
                 >
-                    <h2 className="text-2xl md:text-4xl font-bold mb-6 text-foreground">
+                    <h2 className="text-2xl md:text-4xl font-bold mb-6 text-foreground font-serif">
                         Open for Projects, Problems, and Possibilities
                     </h2>
                     <p className="text-lg text-muted-foreground leading-relaxed mb-8">

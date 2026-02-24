@@ -26,7 +26,7 @@ export default function Writing({ posts }: { posts: Post[] }) {
           transition={{ duration: 0.5 }}
           className="text-center mb-20"
         >
-          <h2 className="text-2xl md:text-4xl font-bold mb-6 text-foreground">
+          <h2 className="text-2xl md:text-4xl font-bold mb-6 text-foreground font-serif">
             Latest Writing
           </h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
@@ -63,7 +63,7 @@ export default function Writing({ posts }: { posts: Post[] }) {
                       <Badge className="px-2 py-1 text-xs font-medium rounded-full border-0 bg-pop/90 text-white mb-3 inline-block">
                         {post.category}
                       </Badge>
-                      <h4 className="font-bold text-lg text-foreground group-hover:text-pop transition-colors mb-3 leading-tight">
+                      <h4 className="font-bold text-lg text-foreground group-hover:text-pop transition-colors mb-3 leading-tight font-serif">
                         {post.title}
                       </h4>
 

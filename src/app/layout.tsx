@@ -1,19 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import { Inter } from "next/font/google";
+import { Geist_Mono, Playfair_Display, Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import NoiseOverlay from "@/components/NoiseOverlay";
 import "./globals.css";
 
 const inter = Inter({
+  variable: "--font-sans",
   subsets: ["latin"],
   display: "swap",
 });
 
-
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const playfair = Playfair_Display({
+  variable: "--font-serif",
   subsets: ["latin"],
   display: "swap",
 });
@@ -92,7 +90,7 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${inter.className} antialiased`}
+        className={`${inter.variable} ${geistMono.variable} ${playfair.variable} antialiased`}
       >
         <ThemeProvider>
           <NoiseOverlay />
