@@ -1,5 +1,5 @@
 // Granular Tracking System — Client-Side Core
-// Zero dependencies, ~3KB gzipped
+// Zero dependencies, ~4KB gzipped
 
 interface QueuedEvent {
   type: "pageview" | "event" | "pageupdate";
@@ -17,6 +17,19 @@ interface DeviceInfo {
   screenHeight: number;
   language: string;
   timezone: string;
+  // Hardware signals
+  colorDepth: number;
+  pixelRatio: number;
+  deviceMemory: number | null;
+  maxTouchPoints: number;
+  platform: string;
+  cpuCores: number | null;
+  connectionType: string | null;
+  // Advanced fingerprint hashes
+  canvasHash: string;
+  webglVendor: string;
+  webglRenderer: string;
+  audioHash: string;
 }
 
 interface AcquisitionInfo {
@@ -54,6 +67,12 @@ class Tracker {
   private acquisition!: AcquisitionInfo;
   private initialized = false;
 
+  // Advanced signal results (populated async)
+  private canvasHash = "";
+  private webglVendor = "";
+  private webglRenderer = "";
+  private audioHash = "";
+
   async init(): Promise<void> {
     if (this.initialized) return;
     this.initialized = true;
@@ -64,6 +83,9 @@ class Tracker {
       this.device = this.collectDeviceInfo();
       this.acquisition = this.collectAcquisition();
 
+      // Fire advanced fingerprinting in parallel, non-blocking
+      this.computeAdvancedSignals().catch(() => {});
+
       this.setupScrollTracking();
       this.setupVisibilityTracking();
       this.setupBeforeUnload();
@@ -73,7 +95,25 @@ class Tracker {
     }
   }
 
-  // --- Fingerprinting ---
+  // --- Hashing ---
+
+  private async hashString(input: string): Promise<string> {
+    if (typeof crypto !== "undefined" && crypto.subtle) {
+      const encoded = new TextEncoder().encode(input);
+      const hash = await crypto.subtle.digest("SHA-256", encoded);
+      return Array.from(new Uint8Array(hash))
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("");
+    }
+    // Fallback simple hash for HTTP
+    let h = 0;
+    for (let i = 0; i < input.length; i++) {
+      h = ((h << 5) - h + input.charCodeAt(i)) | 0;
+    }
+    return Math.abs(h).toString(16).padStart(16, "0");
+  }
+
+  // --- Fingerprinting (stable — do NOT change signal order) ---
 
   private async generateFingerprint(): Promise<string> {
     const raw = [
@@ -85,21 +125,103 @@ class Tracker {
       navigator.language,
       navigator.hardwareConcurrency ?? "",
     ].join("|");
+    return this.hashString(raw);
+  }
 
-    // crypto.subtle unavailable on HTTP — fallback to simple hash
-    if (typeof crypto !== "undefined" && crypto.subtle) {
-      const encoded = new TextEncoder().encode(raw);
-      const hash = await crypto.subtle.digest("SHA-256", encoded);
-      return Array.from(new Uint8Array(hash))
-        .map((b) => b.toString(16).padStart(2, "0"))
-        .join("");
-    }
+  // --- Advanced Fingerprinting ---
 
-    let h = 0;
-    for (let i = 0; i < raw.length; i++) {
-      h = ((h << 5) - h + raw.charCodeAt(i)) | 0;
+  private async computeAdvancedSignals(): Promise<void> {
+    const results = await Promise.allSettled([
+      this.computeCanvasHash(),
+      this.computeWebGLInfo(),
+      this.computeAudioHash(),
+    ]);
+
+    if (results[0].status === "fulfilled") this.canvasHash = results[0].value;
+    if (results[1].status === "fulfilled") {
+      this.webglVendor = results[1].value.vendor;
+      this.webglRenderer = results[1].value.renderer;
     }
-    return Math.abs(h).toString(16).padStart(16, "0");
+    if (results[2].status === "fulfilled") this.audioHash = results[2].value;
+  }
+
+  private async computeCanvasHash(): Promise<string> {
+    try {
+      const canvas = document.createElement("canvas");
+      canvas.width = 200;
+      canvas.height = 50;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return "";
+
+      ctx.textBaseline = "top";
+      ctx.font = "14px 'Arial'";
+      ctx.fillStyle = "#f60";
+      ctx.fillRect(125, 1, 62, 20);
+      ctx.fillStyle = "#069";
+      ctx.fillText("GTS fingerprint", 2, 15);
+      ctx.fillStyle = "rgba(102, 204, 0, 0.7)";
+      ctx.fillText("GTS fingerprint", 4, 17);
+
+      ctx.beginPath();
+      ctx.arc(50, 30, 10, 0, Math.PI * 2);
+      ctx.fill();
+
+      return await this.hashString(canvas.toDataURL());
+    } catch {
+      return "";
+    }
+  }
+
+  private computeWebGLInfo(): Promise<{ vendor: string; renderer: string }> {
+    try {
+      const canvas = document.createElement("canvas");
+      const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+      if (!gl) return Promise.resolve({ vendor: "", renderer: "" });
+
+      const debugInfo = (gl as WebGLRenderingContext).getExtension("WEBGL_debug_renderer_info");
+      if (!debugInfo) return Promise.resolve({ vendor: "", renderer: "" });
+
+      return Promise.resolve({
+        vendor: (gl as WebGLRenderingContext).getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) || "",
+        renderer: (gl as WebGLRenderingContext).getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) || "",
+      });
+    } catch {
+      return Promise.resolve({ vendor: "", renderer: "" });
+    }
+  }
+
+  private async computeAudioHash(): Promise<string> {
+    try {
+      const AudioCtx = window.OfflineAudioContext ||
+        (window as unknown as Record<string, unknown>).webkitOfflineAudioContext as typeof OfflineAudioContext;
+      if (!AudioCtx) return "";
+
+      const context = new AudioCtx(1, 44100, 44100);
+      const oscillator = context.createOscillator();
+      oscillator.type = "triangle";
+      oscillator.frequency.setValueAtTime(10000, context.currentTime);
+
+      const compressor = context.createDynamicsCompressor();
+      compressor.threshold.setValueAtTime(-50, context.currentTime);
+      compressor.knee.setValueAtTime(40, context.currentTime);
+      compressor.ratio.setValueAtTime(12, context.currentTime);
+      compressor.attack.setValueAtTime(0, context.currentTime);
+      compressor.release.setValueAtTime(0.25, context.currentTime);
+
+      oscillator.connect(compressor);
+      compressor.connect(context.destination);
+      oscillator.start(0);
+
+      const buffer = await context.startRendering();
+      const data = buffer.getChannelData(0);
+      let sum = 0;
+      for (let i = 4500; i < 5000; i++) {
+        sum += Math.abs(data[i]);
+      }
+      return await this.hashString(sum.toString());
+    } catch {
+      return "";
+    }
   }
 
   // --- Session Management ---
@@ -131,12 +253,28 @@ class Tracker {
   // --- Device & Acquisition ---
 
   private collectDeviceInfo(): DeviceInfo {
+    const nav = navigator as unknown as Record<string, unknown>;
+    const conn = (nav.connection ?? nav.mozConnection ?? nav.webkitConnection) as
+      { effectiveType?: string } | undefined;
+
     return {
       userAgent: navigator.userAgent,
       screenWidth: screen.width,
       screenHeight: screen.height,
       language: navigator.language,
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      colorDepth: screen.colorDepth ?? 0,
+      pixelRatio: window.devicePixelRatio ?? 1,
+      deviceMemory: (nav.deviceMemory as number) ?? null,
+      maxTouchPoints: navigator.maxTouchPoints ?? 0,
+      platform: navigator.platform ?? "",
+      cpuCores: (navigator.hardwareConcurrency as number) ?? null,
+      connectionType: conn?.effectiveType ?? null,
+      // Placeholders — real values merged at flush time
+      canvasHash: "",
+      webglVendor: "",
+      webglRenderer: "",
+      audioHash: "",
     };
   }
 
@@ -277,10 +415,19 @@ class Tracker {
   private flush(useBeacon: boolean): void {
     if (this.queue.length === 0) return;
 
+    // Merge latest advanced signals into device snapshot
+    const device: DeviceInfo = {
+      ...this.device,
+      canvasHash: this.canvasHash,
+      webglVendor: this.webglVendor,
+      webglRenderer: this.webglRenderer,
+      audioHash: this.audioHash,
+    };
+
     const payload: TrackingPayload = {
       fingerprint: this.fingerprint,
       sessionId: this.sessionId,
-      device: this.device,
+      device,
       acquisition: this.acquisition,
       events: [...this.queue],
     };

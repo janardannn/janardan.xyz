@@ -50,7 +50,7 @@ export default async function VisitorDetailPage({
       {/* Device Info */}
       <div className="bg-gray-900 border border-gray-800 rounded-xl p-6 mb-8">
         <h2 className="text-sm text-gray-400 mb-4">Device Information</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {[
             { label: "Browser", value: visitor.browser },
             { label: "OS", value: visitor.os },
@@ -60,6 +60,21 @@ export default async function VisitorDetailPage({
             { label: "Screen", value: visitor.screenWidth && visitor.screenHeight ? `${visitor.screenWidth}x${visitor.screenHeight}` : null },
             { label: "First Seen", value: formatTime(visitor.firstSeenAt) },
             { label: "Last Seen", value: formatTime(visitor.lastSeenAt) },
+            // Geo
+            { label: "Country", value: visitor.country },
+            { label: "Region", value: visitor.region },
+            { label: "City", value: visitor.city },
+            // Hardware
+            { label: "Color Depth", value: visitor.colorDepth ? `${visitor.colorDepth}-bit` : null },
+            { label: "Pixel Ratio", value: visitor.pixelRatio ? `${visitor.pixelRatio}x` : null },
+            { label: "Memory", value: visitor.deviceMemory ? `${visitor.deviceMemory} GB` : null },
+            { label: "Touch Points", value: visitor.maxTouchPoints != null ? String(visitor.maxTouchPoints) : null },
+            { label: "Platform", value: visitor.platform },
+            { label: "CPU Cores", value: visitor.cpuCores ? String(visitor.cpuCores) : null },
+            { label: "Connection", value: visitor.connectionType },
+            // GPU
+            { label: "GPU Vendor", value: visitor.webglVendor },
+            { label: "GPU Renderer", value: visitor.webglRenderer },
           ].map((item) => (
             <div key={item.label}>
               <p className="text-xs text-gray-500">{item.label}</p>

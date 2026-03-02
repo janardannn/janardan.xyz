@@ -30,6 +30,7 @@ async function VisitorList({ page }: { page: number }) {
               <th className="text-left py-3 px-4 text-gray-400 font-medium">Browser</th>
               <th className="text-left py-3 px-4 text-gray-400 font-medium">OS</th>
               <th className="text-left py-3 px-4 text-gray-400 font-medium">Device</th>
+              <th className="text-left py-3 px-4 text-gray-400 font-medium">Location</th>
               <th className="text-left py-3 px-4 text-gray-400 font-medium">Sessions</th>
               <th className="text-left py-3 px-4 text-gray-400 font-medium">Last Seen</th>
             </tr>
@@ -37,7 +38,7 @@ async function VisitorList({ page }: { page: number }) {
           <tbody>
             {visitors.length === 0 && (
               <tr>
-                <td colSpan={6} className="py-8 text-center text-gray-500">
+                <td colSpan={7} className="py-8 text-center text-gray-500">
                   No visitors yet
                 </td>
               </tr>
@@ -55,6 +56,9 @@ async function VisitorList({ page }: { page: number }) {
                 <td className="py-3 px-4 text-gray-300">{v.browser ?? "—"}</td>
                 <td className="py-3 px-4 text-gray-300">{v.os ?? "—"}</td>
                 <td className="py-3 px-4 text-gray-300">{v.device ?? "—"}</td>
+                <td className="py-3 px-4 text-gray-300 text-xs">
+                  {v.city && v.country ? `${v.city}, ${v.country}` : v.country ?? "—"}
+                </td>
                 <td className="py-3 px-4 text-gray-300">{v.sessionCount}</td>
                 <td className="py-3 px-4 text-gray-500">{timeAgo(v.lastSeenAt)}</td>
               </tr>

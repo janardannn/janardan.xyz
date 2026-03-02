@@ -7,6 +7,7 @@ import {
   getDeviceBreakdown,
   getTopEvents,
   getDailyPageViews,
+  getGeoBreakdown,
 } from "@/lib/analytics";
 import StatCard from "@/components/admin/analytics/StatCard";
 import DataTable from "@/components/admin/analytics/DataTable";
@@ -23,13 +24,14 @@ function formatDuration(seconds: number) {
 }
 
 async function AnalyticsDashboard({ range }: { range: string }) {
-  const [stats, pages, referrers, devices, events, dailyViews] = await Promise.all([
+  const [stats, pages, referrers, devices, events, dailyViews, geo] = await Promise.all([
     getOverviewStats(range),
     getTopPages(range),
     getTopReferrers(range),
     getDeviceBreakdown(range),
     getTopEvents(range),
     getDailyPageViews(range),
+    getGeoBreakdown(range),
   ]);
 
   const pageColumns = [
@@ -139,6 +141,66 @@ async function AnalyticsDashboard({ range }: { range: string }) {
             </Link>
           </div>
           <DataTable columns={eventColumns} rows={events} />
+        </div>
+      </div>
+
+      {/* Geography */}
+      <div className="grid lg:grid-cols-2 gap-8 mb-8">
+        <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
+          <h3 className="text-sm text-gray-400 mb-4">Top Countries</h3>
+          <div className="space-y-2">
+            {geo.countries.length === 0 && (
+              <p className="text-sm text-gray-500">No geo data yet</p>
+            )}
+            {geo.countries.map((item) => {
+              const total = geo.countries.reduce((s, i) => s + i.count, 0);
+              const pct = total > 0 ? Math.round((item.count / total) * 100) : 0;
+              return (
+                <div key={item.name} className="flex items-center justify-between">
+                  <span className="text-sm text-gray-300">{item.name}</span>
+                  <div className="flex items-center gap-3">
+                    <div className="w-24 h-1.5 bg-gray-800 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-emerald-500 rounded-full"
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                    <span className="text-xs text-gray-500 w-12 text-right">{item.count}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
+          <h3 className="text-sm text-gray-400 mb-4">Top Cities</h3>
+          <div className="space-y-2">
+            {geo.cities.length === 0 && (
+              <p className="text-sm text-gray-500">No geo data yet</p>
+            )}
+            {geo.cities.map((item) => {
+              const total = geo.cities.reduce((s, i) => s + i.count, 0);
+              const pct = total > 0 ? Math.round((item.count / total) * 100) : 0;
+              return (
+                <div key={`${item.name}-${item.country}`} className="flex items-center justify-between">
+                  <span className="text-sm text-gray-300">
+                    {item.name}
+                    <span className="text-gray-500 ml-1 text-xs">{item.country}</span>
+                  </span>
+                  <div className="flex items-center gap-3">
+                    <div className="w-24 h-1.5 bg-gray-800 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-emerald-500 rounded-full"
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                    <span className="text-xs text-gray-500 w-12 text-right">{item.count}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </>

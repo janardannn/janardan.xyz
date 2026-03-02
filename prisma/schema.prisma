@@ -28,23 +28,46 @@ model Post {
 }
 
 model Visitor {
-  id          String   @id @default(cuid())
-  fingerprint String   @unique
-  firstSeenAt DateTime @default(now())
-  lastSeenAt  DateTime @updatedAt
-  userAgent   String?
-  browser     String?
-  os          String?
-  device      String?
-  screenWidth Int?
+  id           String   @id @default(cuid())
+  fingerprint  String   @unique
+  firstSeenAt  DateTime @default(now())
+  lastSeenAt   DateTime @updatedAt
+  userAgent    String?
+  browser      String?
+  os           String?
+  device       String?
+  screenWidth  Int?
   screenHeight Int?
-  language    String?
-  timezone    String?
+  language     String?
+  timezone     String?
+
+  // Geolocation (server-side, from Vercel headers)
+  country    String?
+  region     String?
+  city       String?
+  ipHash     String?
+
+  // Enhanced hardware signals (client-side)
+  colorDepth     Int?
+  pixelRatio     Float?
+  deviceMemory   Float?
+  maxTouchPoints Int?
+  platform       String?
+  cpuCores       Int?
+  connectionType String?
+
+  // Advanced fingerprint signals (client-side hashes)
+  canvasHash    String?
+  webglVendor   String?
+  webglRenderer String?
+  audioHash     String?
 
   sessions Session[]
 
   @@index([lastSeenAt])
   @@index([firstSeenAt])
+  @@index([country])
+  @@index([city])
   @@map("visitors")
 }
 

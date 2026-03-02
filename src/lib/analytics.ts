@@ -162,6 +162,8 @@ export async function getVisitors(
       browser: v.browser,
       os: v.os,
       device: v.device,
+      country: v.country,
+      city: v.city,
       sessionCount: v._count.sessions,
       firstSeenAt: v.firstSeenAt,
       lastSeenAt: v.lastSeenAt,
@@ -226,6 +228,86 @@ export async function getEventStream(
     })),
     total,
     pages: Math.ceil(total / perPage),
+  };
+}
+
+export async function getGeoBreakdown(range: string = "7d") {
+  const prisma = await getPrisma();
+  const { from, to } = getDateRange(range);
+  const where = { lastSeenAt: { gte: from, lte: to }, country: { not: null } };
+
+  const [countries, cities] = await Promise.all([
+    prisma.visitor.groupBy({
+      by: ["country"],
+      where,
+      _count: { id: true },
+      orderBy: { _count: { id: "desc" } },
+      take: 10,
+    }),
+    prisma.visitor.groupBy({
+      by: ["city", "country"],
+      where: { ...where, city: { not: null } },
+      _count: { id: true },
+      orderBy: { _count: { id: "desc" } },
+      take: 10,
+    }),
+  ]);
+
+  return {
+    countries: countries.map((c) => ({
+      name: c.country ?? "Unknown",
+      count: c._count.id,
+    })),
+    cities: cities.map((c) => ({
+      name: c.city ?? "Unknown",
+      country: c.country ?? "",
+      count: c._count.id,
+    })),
+  };
+}
+
+export async function getHardwareBreakdown(range: string = "7d") {
+  const prisma = await getPrisma();
+  const { from, to } = getDateRange(range);
+  const where = { lastSeenAt: { gte: from, lte: to } };
+
+  const [gpuRenderers, memoryTiers, connectionTypes] = await Promise.all([
+    prisma.visitor.groupBy({
+      by: ["webglRenderer"],
+      where: { ...where, webglRenderer: { not: null } },
+      _count: { id: true },
+      orderBy: { _count: { id: "desc" } },
+      take: 10,
+    }),
+    prisma.visitor.groupBy({
+      by: ["deviceMemory"],
+      where: { ...where, deviceMemory: { not: null } },
+      _count: { id: true },
+      orderBy: { _count: { id: "desc" } },
+      take: 10,
+    }),
+    prisma.visitor.groupBy({
+      by: ["connectionType"],
+      where: { ...where, connectionType: { not: null } },
+      _count: { id: true },
+      orderBy: { _count: { id: "desc" } },
+      take: 5,
+    }),
+  ]);
+
+  return {
+    gpuRenderers: gpuRenderers.map((g) => ({
+      name: g.webglRenderer ?? "Unknown",
+      count: g._count.id,
+    })),
+    memoryTiers: memoryTiers.map((m) => ({
+      name: m.deviceMemory ? `${m.deviceMemory} GB` : "Unknown",
+      count: m._count.id,
+    })),
+    connectionTypes: connectionTypes.map((c) => ({
+      name: c.connectionType ?? "Unknown",
+      count: c._count.id,
+    })),
   };
 }
 

@@ -21,6 +21,19 @@ interface TrackingPayload {
     screenHeight: number;
     language: string;
     timezone: string;
+    // Enhanced hardware signals
+    colorDepth?: number;
+    pixelRatio?: number;
+    deviceMemory?: number | null;
+    maxTouchPoints?: number;
+    platform?: string;
+    cpuCores?: number | null;
+    connectionType?: string | null;
+    // Advanced fingerprint hashes
+    canvasHash?: string;
+    webglVendor?: string;
+    webglRenderer?: string;
+    audioHash?: string;
   };
   acquisition: {
     referrer?: string;
@@ -31,6 +44,26 @@ interface TrackingPayload {
     utmContent?: string;
   };
   events: IncomingEvent[];
+}
+
+async function extractGeoData(req: NextRequest) {
+  const country = req.headers.get("x-vercel-ip-country") || undefined;
+  const region = req.headers.get("x-vercel-ip-country-region") || undefined;
+  const rawCity = req.headers.get("x-vercel-ip-city");
+  const city = rawCity ? decodeURIComponent(rawCity) : undefined;
+
+  let ipHash: string | undefined;
+  const forwardedFor = req.headers.get("x-forwarded-for");
+  if (forwardedFor) {
+    const ip = forwardedFor.split(",")[0].trim();
+    const encoded = new TextEncoder().encode(ip);
+    const hash = await crypto.subtle.digest("SHA-256", encoded);
+    ipHash = Array.from(new Uint8Array(hash))
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+  }
+
+  return { country, region, city, ipHash };
 }
 
 function parseUserAgent(ua: string) {
@@ -68,6 +101,7 @@ export async function POST(req: NextRequest) {
     const { browser, os, device: deviceType } = parseUserAgent(
       device.userAgent || ""
     );
+    const geo = await extractGeoData(req);
 
     // 1. Upsert visitor
     const visitor = await prisma.visitor.upsert({
@@ -82,6 +116,24 @@ export async function POST(req: NextRequest) {
         screenHeight: device.screenHeight,
         language: device.language,
         timezone: device.timezone,
+        // Geo
+        country: geo.country,
+        region: geo.region,
+        city: geo.city,
+        ipHash: geo.ipHash,
+        // Hardware
+        colorDepth: device.colorDepth ?? null,
+        pixelRatio: device.pixelRatio ?? null,
+        deviceMemory: device.deviceMemory ?? null,
+        maxTouchPoints: device.maxTouchPoints ?? null,
+        platform: device.platform ?? null,
+        cpuCores: device.cpuCores ?? null,
+        connectionType: device.connectionType ?? null,
+        // Advanced fingerprints
+        canvasHash: device.canvasHash || null,
+        webglVendor: device.webglVendor || null,
+        webglRenderer: device.webglRenderer || null,
+        audioHash: device.audioHash || null,
       },
       update: {
         lastSeenAt: new Date(),
@@ -89,6 +141,24 @@ export async function POST(req: NextRequest) {
         browser,
         os,
         device: deviceType,
+        // Geo (update on every request — location can change)
+        country: geo.country ?? undefined,
+        region: geo.region ?? undefined,
+        city: geo.city ?? undefined,
+        ipHash: geo.ipHash ?? undefined,
+        // Hardware
+        colorDepth: device.colorDepth ?? undefined,
+        pixelRatio: device.pixelRatio ?? undefined,
+        deviceMemory: device.deviceMemory ?? undefined,
+        maxTouchPoints: device.maxTouchPoints ?? undefined,
+        platform: device.platform ?? undefined,
+        cpuCores: device.cpuCores ?? undefined,
+        connectionType: device.connectionType ?? undefined,
+        // Advanced fingerprints
+        canvasHash: device.canvasHash || undefined,
+        webglVendor: device.webglVendor || undefined,
+        webglRenderer: device.webglRenderer || undefined,
+        audioHash: device.audioHash || undefined,
       },
     });
 
