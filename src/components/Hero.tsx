@@ -2,6 +2,7 @@
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Github, Linkedin, Mail } from "lucide-react"
+import { track } from "@/lib/tracker"
 
 export default function Hero() {
     const scrollToSection = (sectionId: string) => {
@@ -64,7 +65,10 @@ export default function Hero() {
                             variant="outline"
                             size="lg"
                             className="border-2 border-border bg-secondary text-secondary-foreground hover:scale-105 transition-transform duration-200"
-                            onClick={() => scrollToSection('projects')}
+                            onClick={() => {
+                                scrollToSection('projects')
+                                track("cta_click", "conversion", { label: "view_my_work", target: "projects" })
+                            }}
                         >
                             View My Work <ArrowRight className="ml-2 h-5 w-5" />
                         </Button>
@@ -72,7 +76,10 @@ export default function Hero() {
                             variant="outline"
                             size="lg"
                             className="border-2 border-border bg-secondary text-secondary-foreground hover:scale-105 transition-transform duration-200"
-                            onClick={() => scrollToSection('contact')}
+                            onClick={() => {
+                                scrollToSection('contact')
+                                track("cta_click", "conversion", { label: "get_in_touch", target: "contact" })
+                            }}
                         >
                             Get in Touch
                         </Button>
@@ -89,6 +96,7 @@ export default function Hero() {
                             className="text-muted-foreground hover:text-pop hover:scale-110 transition-all duration-200"
                             aria-label="GitHub Profile"
                             target="_blank"
+                            onClick={() => track("social_click", "conversion", { platform: "github", location: "hero" })}
                         >
                             <Github className="h-7 w-7" />
                         </a>
@@ -97,6 +105,7 @@ export default function Hero() {
                             className="text-muted-foreground hover:text-pop hover:scale-110 transition-all duration-200"
                             aria-label="LinkedIn Profile"
                             target="_blank"
+                            onClick={() => track("social_click", "conversion", { platform: "linkedin", location: "hero" })}
                         >
                             <Linkedin className="h-7 w-7" />
                         </a>
@@ -104,6 +113,7 @@ export default function Hero() {
                             href="mailto:janardanhazarika20@gmail.com"
                             className="text-muted-foreground hover:text-pop hover:scale-110 transition-all duration-200"
                             aria-label="Email Contact"
+                            onClick={() => track("social_click", "conversion", { platform: "email", location: "hero" })}
                         >
                             <Mail className="h-7 w-7" />
                         </a>

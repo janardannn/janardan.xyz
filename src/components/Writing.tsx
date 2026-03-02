@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Calendar, Clock } from "lucide-react"
+import { track } from "@/lib/tracker"
 import Link from "next/link"
 
 interface Post {
@@ -58,7 +59,7 @@ export default function Writing({ posts }: { posts: Post[] }) {
                 className="group"
               >
                 <Card className="h-full hover:shadow-xl transition-all duration-300 border border-border bg-card rounded-2xl hover:scale-[1.02] overflow-hidden">
-                  <Link href={`/writing/${post.slug}`}>
+                  <Link href={`/writing/${post.slug}`} onClick={() => track("blog_click", "engagement", { slug: post.slug, title: post.title })}>
                     <CardContent className="p-6">
                       <Badge className="px-2 py-1 text-xs font-medium rounded-full border-0 bg-pop/90 text-white mb-3 inline-block">
                         {post.category}
@@ -109,7 +110,7 @@ export default function Writing({ posts }: { posts: Post[] }) {
             variant="outline"
             className="border-2 border-border bg-secondary text-secondary-foreground hover:scale-105 transition-transform duration-200"
           >
-            <Link href="/writing">
+            <Link href="/writing" onClick={() => track("cta_click", "navigation", { label: "view_all_posts" })}>
               View All Posts <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>

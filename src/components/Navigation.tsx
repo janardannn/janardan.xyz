@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { useTheme } from "next-themes"
 import { Menu, X, Sun, Moon } from "lucide-react"
+import { track } from "@/lib/tracker"
 
 export default function Navigation() {
     const [scrolled, setScrolled] = useState(false)
@@ -33,7 +34,7 @@ export default function Navigation() {
                     : "bg-transparent"
                     }`}>
                     <div className="font-bold text-l text-foreground hover:scale-105 transition-transform">
-                        <a href="#home">janardan.xyz</a>
+                        <a href="#home" onClick={() => track("nav_click", "navigation", { item: "logo" })}>janardan.xyz</a>
                     </div>
 
                     <div className="hidden md:flex items-center space-x-8">
@@ -42,12 +43,17 @@ export default function Navigation() {
                                 key={item}
                                 href={item === "Resume" ? "/resume.pdf" : `#${item.toLowerCase()}`}
                                 className="font-medium text-muted-foreground hover:text-pop transition-colors duration-200"
+                                onClick={() => track("nav_click", "navigation", { item, device: "desktop" })}
                             >
                                 {item}
                             </a>
                         ))}
                         <button
-                            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                            onClick={() => {
+                                const newTheme = theme === "dark" ? "light" : "dark"
+                                setTheme(newTheme)
+                                track("theme_toggle", "interaction", { newTheme })
+                            }}
                             className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
                             aria-label="Toggle theme"
                         >
@@ -57,7 +63,11 @@ export default function Navigation() {
 
                     <div className="flex md:hidden items-center gap-2">
                         <button
-                            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                            onClick={() => {
+                                const newTheme = theme === "dark" ? "light" : "dark"
+                                setTheme(newTheme)
+                                track("theme_toggle", "interaction", { newTheme })
+                            }}
                             className="p-2 rounded-lg text-muted-foreground hover:text-foreground transition-colors"
                             aria-label="Toggle theme"
                         >
@@ -65,7 +75,11 @@ export default function Navigation() {
                         </button>
                         <button
                             className="p-2 text-foreground"
-                            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                            onClick={() => {
+                                const newState = !mobileMenuOpen
+                                setMobileMenuOpen(newState)
+                                track("mobile_menu_toggle", "navigation", { state: newState ? "open" : "close" })
+                            }}
                             aria-label="Toggle mobile menu"
                         >
                             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -89,7 +103,10 @@ export default function Navigation() {
                                     key={item}
                                     href={item === "Resume" ? "/resume.pdf" : `#${item.toLowerCase()}`}
                                     className="text-muted-foreground hover:text-pop transition-colors font-medium"
-                                    onClick={() => setMobileMenuOpen(false)}
+                                    onClick={() => {
+                                        setMobileMenuOpen(false)
+                                        track("nav_click", "navigation", { item, device: "mobile" })
+                                    }}
                                 >
                                     {item}
                                 </a>

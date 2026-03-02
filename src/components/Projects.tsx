@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/c
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ExternalLink, Github, ArrowRight, Star, GitFork } from "lucide-react"
+import { track } from "@/lib/tracker"
 import Image from "next/image"
 
 const projects = [
@@ -125,13 +126,15 @@ export default function Projects() {
                                     {project.status === 'Live' ?
                                         <div className="flex gap-4">
                                             <Button asChild variant="outline" className="flex-1 border-2 border-border bg-secondary text-secondary-foreground hover:scale-105 transition-transform duration-200">
-                                                <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
+                                                <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2"
+                                                    onClick={() => track("project_click", "engagement", { project: project.title, action: "view_live" })}>
                                                     <ExternalLink className="h-4 w-4" />
                                                     View Project
                                                 </a>
                                             </Button>
                                             <Button variant="outline" asChild className="border-2 border-border bg-secondary text-secondary-foreground hover:scale-105 transition-transform duration-200 px-4">
-                                                <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                                                <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
+                                                    onClick={() => track("project_click", "engagement", { project: project.title, action: "view_code" })}>
                                                     <Github className="h-4 w-4" />
                                                 </a>
                                             </Button>
@@ -232,6 +235,7 @@ export default function Projects() {
                         variant="outline"
                         className="border-2 border-border bg-secondary text-secondary-foreground hover:scale-105 transition-transform duration-200"
                         onClick={() => {
+                            track("cta_click", "navigation", { label: "view_all_projects" })
                             window.open("https://github.com/janardannn?tab=repositories", "_blank")
                         }}
                     >

@@ -9,6 +9,7 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useState } from "react";
+import { track } from "@/lib/tracker";
 
 interface BlogPostClientProps {
   post: {
@@ -26,6 +27,7 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
     setCopied(true);
+    track("share_click", "engagement", { slug: window.location.pathname.split("/").pop() });
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -95,7 +97,7 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
             Thanks for reading! If you enjoyed this post, feel free to share it with others.
           </p>
           <Button asChild variant="outline" className="border-2 border-border bg-secondary text-secondary-foreground hover:scale-105 transition-transform duration-200">
-            <Link href="/writing">Read More Posts</Link>
+            <Link href="/writing" onClick={() => track("cta_click", "navigation", { label: "read_more_posts" })}>Read More Posts</Link>
           </Button>
         </motion.div>
       </div>
