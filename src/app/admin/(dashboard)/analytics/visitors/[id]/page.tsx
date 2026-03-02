@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getVisitorDetail } from "@/lib/analytics";
+import { describeEvent } from "@/lib/event-display";
 
 export const dynamic = "force-dynamic";
 
@@ -169,7 +170,9 @@ export default async function VisitorDetailPage({
                         <span className="px-1.5 py-0.5 bg-emerald-500/10 text-emerald-400 rounded text-xs">
                           {evt.category}
                         </span>
-                        <span className="text-gray-300">{evt.name}</span>
+                        <span className="text-gray-300">
+                          {describeEvent(evt.name, evt.properties as Record<string, unknown> | null, evt.path)}
+                        </span>
                       </div>
                       <div className="flex items-center gap-3 text-xs text-gray-500">
                         <span>{evt.path}</span>
