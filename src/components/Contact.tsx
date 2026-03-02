@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Mail, Github, Linkedin, MessageCircle, MapPin, Phone, Clock, Send } from "lucide-react"
+import { track } from "@/lib/tracker"
 
 const contactMethods = [
     {
@@ -90,7 +91,8 @@ export default function Contact() {
                                         variant="outline"
                                         className="border-2 border-border bg-secondary text-secondary-foreground hover:scale-105 transition-transform duration-200"
                                     >
-                                        <a href={method.href} target={method.href.startsWith('http') ? "_blank" : undefined}>
+                                        <a href={method.href} target={method.href.startsWith('http') ? "_blank" : undefined}
+                                            onClick={() => track("contact_click", "conversion", { method: method.title.toLowerCase().replace(/ /g, "_") })}>
                                             <Send className="mr-2 h-4 w-4" />
                                             {method.value}
                                         </a>
@@ -117,6 +119,7 @@ export default function Contact() {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="flex items-center gap-4 p-4 rounded-lg bg-card border border-border hover:bg-secondary transition-all duration-200 group hover:translate-x-2"
+                                    onClick={() => track("social_click", "conversion", { platform: social.name.toLowerCase(), location: "contact" })}
                                 >
                                     <social.icon className="h-6 w-6 text-muted-foreground group-hover:text-pop transition-colors" />
                                     <div>
@@ -169,7 +172,8 @@ export default function Contact() {
                             variant="outline"
                             className="border-2 border-border bg-secondary text-secondary-foreground hover:scale-105 transition-transform duration-200"
                         >
-                            <a href="mailto:janardanhazarika20@gmail.com">
+                            <a href="mailto:janardanhazarika20@gmail.com"
+                                onClick={() => track("cta_click", "conversion", { label: "send_email", location: "contact_bottom" })}>
                                 <Mail className="mr-2 h-5 w-5" />
                                 Send me an Email
                             </a>
@@ -180,7 +184,8 @@ export default function Contact() {
                             variant="outline"
                             className="border-2 border-border bg-secondary text-secondary-foreground hover:scale-105 transition-transform duration-200"
                         >
-                            <a href="https://cal.com/janardan-hazarika" target="_blank">
+                            <a href="https://cal.com/janardan-hazarika" target="_blank"
+                                onClick={() => track("cta_click", "conversion", { label: "schedule_call", location: "contact_bottom" })}>
                                 <MessageCircle className="mr-2 h-5 w-5" />
                                 Schedule a Call
                             </a>

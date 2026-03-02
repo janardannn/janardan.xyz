@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
-import { PenSquare, LayoutDashboard, LogOut } from "lucide-react";
+import { PenSquare, LayoutDashboard, BarChart3, LogOut } from "lucide-react";
 
 export default function AdminNav() {
   const pathname = usePathname();
 
   const links = [
     { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
     { href: "/admin/write", label: "New Post", icon: PenSquare },
   ];
 
@@ -26,7 +27,7 @@ export default function AdminNav() {
                 key={href}
                 href={href}
                 className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
-                  pathname === href
+                  pathname === href || (href !== "/admin" && pathname.startsWith(href))
                     ? "bg-gray-800 text-white"
                     : "text-gray-400 hover:text-white hover:bg-gray-900"
                 }`}

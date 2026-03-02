@@ -1,6 +1,7 @@
 "use client"
 import { motion } from "framer-motion"
 import { Github, Linkedin, Mail, Heart, ArrowUp } from "lucide-react"
+import { track } from "@/lib/tracker"
 import { Button } from "@/components/ui/button"
 
 const currentYear = new Date().getFullYear()
@@ -35,6 +36,7 @@ const socialLinks = [
 
 export default function Footer() {
     const scrollToTop = () => {
+        track("scroll_to_top", "interaction")
         window.scrollTo({ top: 0, behavior: 'smooth' })
     }
 
@@ -65,6 +67,7 @@ export default function Footer() {
                                         rel="noopener noreferrer"
                                         className="text-muted-foreground hover:text-pop hover:scale-110 hover:-translate-y-0.5 active:scale-95 transition-all duration-200"
                                         aria-label={social.name}
+                                        onClick={() => track("social_click", "conversion", { platform: social.name.toLowerCase(), location: "footer" })}
                                     >
                                         <social.icon className="h-5 w-5" />
                                     </a>
@@ -89,6 +92,7 @@ export default function Footer() {
                                                 className="text-muted-foreground hover:text-foreground transition-colors duration-200 hover:underline"
                                                 target={link.href.startsWith('http') ? "_blank" : undefined}
                                                 rel={link.href.startsWith('http') ? "noopener noreferrer" : undefined}
+                                                onClick={() => track("footer_link_click", "navigation", { name: link.name, category })}
                                             >
                                                 {link.name}
                                             </a>
