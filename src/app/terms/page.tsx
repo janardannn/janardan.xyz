@@ -42,7 +42,7 @@ export default function TermsOfServicePage() {
 
                         <div className="flex items-center mb-6">
                             <FileText className="h-8 w-8 text-blue-400 mr-4" />
-                            <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent">
+                            <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent font-serif leading-tight pb-1">
                                 Terms of Service
                             </h1>
                         </div>
@@ -120,8 +120,8 @@ export default function TermsOfServicePage() {
                                 className="mb-8"
                             >
                                 <div className="flex items-center mb-4">
-                                    <AlertTriangle className="h-6 w-6 text-blue-400 mr-3" />
-                                    <h2 className="text-2xl font-bold text-white">Disclaimer</h2>
+                                    <AlertTriangle className="h-6 w-6 shrink-0 text-blue-400 mr-3" />
+                                    <h2 className="text-2xl font-bold text-white !my-0">Disclaimer</h2>
                                 </div>
                                 <div className="text-gray-300 space-y-3">
                                     <p>This website is provided &quot;as is&quot;. I do my best to keep everything working and up-to-date, but I can&apos;t guarantee it will always be perfect.</p>
@@ -146,11 +146,11 @@ export default function TermsOfServicePage() {
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.6, delay: 0.5 }}
-                                className="bg-blue-600/10 rounded-2xl p-6 border border-blue-500/20"
+                                className="bg-blue-600/10 rounded-2xl p-6 border border-blue-500/20 not-prose"
                             >
                                 <div className="flex items-center mb-4">
-                                    <Mail className="h-6 w-6 text-blue-400 mr-3" />
-                                    <h2 className="text-2xl font-bold text-white">Questions?</h2>
+                                    <Mail className="h-6 w-6 shrink-0 text-blue-400 mr-3" />
+                                    <h2 className="text-2xl font-bold text-white !my-0">Questions?</h2>
                                 </div>
                                 <div className="text-gray-300">
                                     <p>
