@@ -9,6 +9,7 @@ import {
   getDailyPageViews,
   getGeoBreakdown,
 } from "@/lib/analytics";
+import { describeEvent } from "@/lib/event-display";
 import StatCard from "@/components/admin/analytics/StatCard";
 import DataTable from "@/components/admin/analytics/DataTable";
 import DateRangePicker from "@/components/admin/analytics/DateRangePicker";
@@ -47,9 +48,14 @@ async function AnalyticsDashboard({ range }: { range: string }) {
   ];
 
   const eventColumns = [
-    { key: "name" as const, label: "Event" },
+    { key: "label" as const, label: "Event" },
     { key: "count" as const, label: "Count" },
   ];
+
+  const eventsWithLabels = events.map((e) => ({
+    ...e,
+    label: describeEvent(e.name),
+  }));
 
   return (
     <>
@@ -140,7 +146,7 @@ async function AnalyticsDashboard({ range }: { range: string }) {
               View all
             </Link>
           </div>
-          <DataTable columns={eventColumns} rows={events} />
+          <DataTable columns={eventColumns} rows={eventsWithLabels} />
         </div>
       </div>
 

@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { getEventStream } from "@/lib/analytics";
+import { describeEvent } from "@/lib/event-display";
 import Pagination from "@/components/admin/analytics/Pagination";
 
 export const dynamic = "force-dynamic";
@@ -41,17 +42,16 @@ async function EventList({
           <thead>
             <tr className="border-b border-gray-800">
               <th className="text-left py-3 px-4 text-gray-400 font-medium">Time</th>
-              <th className="text-left py-3 px-4 text-gray-400 font-medium">Event</th>
+              <th className="text-left py-3 px-4 text-gray-400 font-medium">What Happened</th>
               <th className="text-left py-3 px-4 text-gray-400 font-medium">Category</th>
               <th className="text-left py-3 px-4 text-gray-400 font-medium">Path</th>
               <th className="text-left py-3 px-4 text-gray-400 font-medium">Visitor</th>
-              <th className="text-left py-3 px-4 text-gray-400 font-medium">Properties</th>
             </tr>
           </thead>
           <tbody>
             {events.length === 0 && (
               <tr>
-                <td colSpan={6} className="py-8 text-center text-gray-500">
+                <td colSpan={5} className="py-8 text-center text-gray-500">
                   No events yet
                 </td>
               </tr>
@@ -61,7 +61,9 @@ async function EventList({
                 <td className="py-3 px-4 text-gray-500 text-xs whitespace-nowrap">
                   {formatTime(evt.timestamp)}
                 </td>
-                <td className="py-3 px-4 text-gray-300 font-medium">{evt.name}</td>
+                <td className="py-3 px-4 text-gray-300 font-medium">
+                  {describeEvent(evt.name, evt.properties as Record<string, unknown> | null, evt.path)}
+                </td>
                 <td className="py-3 px-4">
                   <span className="px-1.5 py-0.5 bg-emerald-500/10 text-emerald-400 rounded text-xs">
                     {evt.category}
@@ -72,9 +74,6 @@ async function EventList({
                   <span className="font-mono text-xs text-gray-500">
                     {evt.fingerprint.slice(0, 8)}
                   </span>
-                </td>
-                <td className="py-3 px-4 text-gray-500 text-xs max-w-[200px] truncate">
-                  {evt.properties ? JSON.stringify(evt.properties) : "—"}
                 </td>
               </tr>
             ))}
