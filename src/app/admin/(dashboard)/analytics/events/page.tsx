@@ -6,12 +6,13 @@ import Pagination from "@/components/admin/analytics/Pagination";
 export const dynamic = "force-dynamic";
 
 function formatTime(date: Date) {
-  return date.toLocaleString("en-US", {
+  return date.toLocaleString("en-IN", {
     month: "short",
     day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
+    timeZone: "Asia/Kolkata",
   });
 }
 

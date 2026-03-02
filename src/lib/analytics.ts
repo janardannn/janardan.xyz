@@ -323,7 +323,7 @@ export async function getDailyPageViews(range: string = "7d") {
 
   const daily: Record<string, number> = {};
   for (const v of views) {
-    const day = v.timestamp.toISOString().slice(0, 10);
+    const day = v.timestamp.toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
     daily[day] = (daily[day] || 0) + 1;
   }
 
