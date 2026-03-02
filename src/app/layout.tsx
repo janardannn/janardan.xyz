@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Geist_Mono, Playfair_Display, Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { TrackerProvider } from "@/components/TrackerProvider";
 import NoiseOverlay from "@/components/NoiseOverlay";
 import "./globals.css";
 
@@ -93,6 +95,9 @@ export default function RootLayout({
         className={`${inter.variable} ${geistMono.variable} ${playfair.variable} antialiased`}
       >
         <ThemeProvider>
+          <Suspense fallback={null}>
+            <TrackerProvider />
+          </Suspense>
           <NoiseOverlay />
           {children}
         </ThemeProvider>

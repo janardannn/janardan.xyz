@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export default auth((req) => {
   const isAdmin = req.nextUrl.pathname.startsWith("/admin");
   const isLoginPage = req.nextUrl.pathname === "/admin/login";
-  const isApi = req.nextUrl.pathname.startsWith("/api/posts");
+  const isApi = req.nextUrl.pathname.startsWith("/api/posts") || req.nextUrl.pathname.startsWith("/api/admin");
 
   if (isApi && !req.auth) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -18,5 +18,5 @@ export default auth((req) => {
 });
 
 export const config = {
-  matcher: ["/admin/:path*", "/api/posts/:path*"],
+  matcher: ["/admin/:path*", "/api/posts/:path*", "/api/admin/:path*"],
 };
