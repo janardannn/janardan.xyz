@@ -18,7 +18,7 @@ export function TrackerProvider() {
     tracker.init().then(() => {
       tracker.trackPageView();
       prevPath.current = pathname;
-    });
+    }).catch(() => {});
     initialized.current = true;
   }, [pathname]);
 

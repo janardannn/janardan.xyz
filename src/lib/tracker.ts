@@ -58,15 +58,19 @@ class Tracker {
     if (this.initialized) return;
     this.initialized = true;
 
-    this.fingerprint = await this.generateFingerprint();
-    this.sessionId = this.getOrCreateSession();
-    this.device = this.collectDeviceInfo();
-    this.acquisition = this.collectAcquisition();
+    try {
+      this.fingerprint = await this.generateFingerprint();
+      this.sessionId = this.getOrCreateSession();
+      this.device = this.collectDeviceInfo();
+      this.acquisition = this.collectAcquisition();
 
-    this.setupScrollTracking();
-    this.setupVisibilityTracking();
-    this.setupBeforeUnload();
-    this.startFlushTimer();
+      this.setupScrollTracking();
+      this.setupVisibilityTracking();
+      this.setupBeforeUnload();
+      this.startFlushTimer();
+    } catch {
+      this.initialized = false;
+    }
   }
 
   // --- Fingerprinting ---
@@ -82,33 +86,46 @@ class Tracker {
       navigator.hardwareConcurrency ?? "",
     ].join("|");
 
-    const encoded = new TextEncoder().encode(raw);
-    const hash = await crypto.subtle.digest("SHA-256", encoded);
-    return Array.from(new Uint8Array(hash))
-      .map((b) => b.toString(16).padStart(2, "0"))
-      .join("");
+    // crypto.subtle unavailable on HTTP — fallback to simple hash
+    if (typeof crypto !== "undefined" && crypto.subtle) {
+      const encoded = new TextEncoder().encode(raw);
+      const hash = await crypto.subtle.digest("SHA-256", encoded);
+      return Array.from(new Uint8Array(hash))
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("");
+    }
+
+    let h = 0;
+    for (let i = 0; i < raw.length; i++) {
+      h = ((h << 5) - h + raw.charCodeAt(i)) | 0;
+    }
+    return Math.abs(h).toString(16).padStart(16, "0");
   }
 
   // --- Session Management ---
 
   private getOrCreateSession(): string {
-    const stored = sessionStorage.getItem("_trk_session");
-    const lastActivity = sessionStorage.getItem("_trk_last");
-    const now = Date.now();
+    try {
+      const stored = sessionStorage.getItem("_trk_session");
+      const lastActivity = sessionStorage.getItem("_trk_last");
+      const now = Date.now();
 
-    if (
-      stored &&
-      lastActivity &&
-      now - parseInt(lastActivity) < SESSION_TIMEOUT
-    ) {
+      if (
+        stored &&
+        lastActivity &&
+        now - parseInt(lastActivity) < SESSION_TIMEOUT
+      ) {
+        sessionStorage.setItem("_trk_last", now.toString());
+        return stored;
+      }
+
+      const newId = crypto.randomUUID?.() ?? Math.random().toString(36).slice(2) + Date.now().toString(36);
+      sessionStorage.setItem("_trk_session", newId);
       sessionStorage.setItem("_trk_last", now.toString());
-      return stored;
+      return newId;
+    } catch {
+      return Math.random().toString(36).slice(2) + Date.now().toString(36);
     }
-
-    const newId = crypto.randomUUID();
-    sessionStorage.setItem("_trk_session", newId);
-    sessionStorage.setItem("_trk_last", now.toString());
-    return newId;
   }
 
   // --- Device & Acquisition ---
@@ -142,38 +159,42 @@ class Tracker {
     category: string,
     properties?: Record<string, unknown>
   ): void {
-    if (!this.initialized) return;
-    this.queue.push({
-      type: "event",
-      name,
-      category,
-      path: window.location.pathname,
-      properties,
-      timestamp: Date.now(),
-    });
+    try {
+      if (!this.initialized) return;
+      this.queue.push({
+        type: "event",
+        name,
+        category,
+        path: window.location.pathname,
+        properties,
+        timestamp: Date.now(),
+      });
+    } catch {}
   }
 
   trackPageView(): void {
-    if (!this.initialized) return;
+    try {
+      if (!this.initialized) return;
 
-    // Send update for previous page before tracking new one
-    if (this.currentPath) {
-      this.sendPageUpdate();
-    }
+      // Send update for previous page before tracking new one
+      if (this.currentPath) {
+        this.sendPageUpdate();
+      }
 
-    this.currentPath = window.location.pathname;
-    this.pageEnteredAt = Date.now();
-    this.maxScrollDepth = 0;
-    this.reachedMilestones.clear();
+      this.currentPath = window.location.pathname;
+      this.pageEnteredAt = Date.now();
+      this.maxScrollDepth = 0;
+      this.reachedMilestones.clear();
 
-    this.queue.push({
-      type: "pageview",
-      name: "page_view",
-      category: "navigation",
-      path: this.currentPath,
-      title: document.title,
-      timestamp: Date.now(),
-    });
+      this.queue.push({
+        type: "pageview",
+        name: "page_view",
+        category: "navigation",
+        path: this.currentPath,
+        title: document.title,
+        timestamp: Date.now(),
+      });
+    } catch {}
   }
 
   // --- Scroll Tracking ---
@@ -278,7 +299,7 @@ class Tracker {
       }).catch(() => {});
     }
 
-    sessionStorage.setItem("_trk_last", Date.now().toString());
+    try { sessionStorage.setItem("_trk_last", Date.now().toString()); } catch {}
   }
 
   destroy(): void {
