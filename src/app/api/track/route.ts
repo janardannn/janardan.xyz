@@ -29,11 +29,11 @@ interface TrackingPayload {
     platform?: string;
     cpuCores?: number | null;
     connectionType?: string | null;
-    // Advanced fingerprint hashes
-    canvasHash?: string;
+    // Advanced fingerprint signals (raw)
+    canvasData?: string;
     webglVendor?: string;
     webglRenderer?: string;
-    audioHash?: string;
+    audioData?: string;
   };
   acquisition: {
     referrer?: string;
@@ -46,24 +46,16 @@ interface TrackingPayload {
   events: IncomingEvent[];
 }
 
-async function extractGeoData(req: NextRequest) {
+function extractGeoData(req: NextRequest) {
   const country = req.headers.get("x-vercel-ip-country") || undefined;
   const region = req.headers.get("x-vercel-ip-country-region") || undefined;
   const rawCity = req.headers.get("x-vercel-ip-city");
   const city = rawCity ? decodeURIComponent(rawCity) : undefined;
 
-  let ipHash: string | undefined;
   const forwardedFor = req.headers.get("x-forwarded-for");
-  if (forwardedFor) {
-    const ip = forwardedFor.split(",")[0].trim();
-    const encoded = new TextEncoder().encode(ip);
-    const hash = await crypto.subtle.digest("SHA-256", encoded);
-    ipHash = Array.from(new Uint8Array(hash))
-      .map((b) => b.toString(16).padStart(2, "0"))
-      .join("");
-  }
+  const ip = forwardedFor ? forwardedFor.split(",")[0].trim() : undefined;
 
-  return { country, region, city, ipHash };
+  return { country, region, city, ip };
 }
 
 function parseUserAgent(ua: string) {
@@ -101,7 +93,7 @@ export async function POST(req: NextRequest) {
     const { browser, os, device: deviceType } = parseUserAgent(
       device.userAgent || ""
     );
-    const geo = await extractGeoData(req);
+    const geo = extractGeoData(req);
 
     // 1. Upsert visitor
     const visitor = await prisma.visitor.upsert({
@@ -120,7 +112,7 @@ export async function POST(req: NextRequest) {
         country: geo.country,
         region: geo.region,
         city: geo.city,
-        ipHash: geo.ipHash,
+        ip: geo.ip,
         // Hardware
         colorDepth: device.colorDepth ?? null,
         pixelRatio: device.pixelRatio ?? null,
@@ -130,10 +122,10 @@ export async function POST(req: NextRequest) {
         cpuCores: device.cpuCores ?? null,
         connectionType: device.connectionType ?? null,
         // Advanced fingerprints
-        canvasHash: device.canvasHash || null,
+        canvasData: device.canvasData || null,
         webglVendor: device.webglVendor || null,
         webglRenderer: device.webglRenderer || null,
-        audioHash: device.audioHash || null,
+        audioData: device.audioData || null,
       },
       update: {
         lastSeenAt: new Date(),
@@ -145,7 +137,7 @@ export async function POST(req: NextRequest) {
         country: geo.country ?? undefined,
         region: geo.region ?? undefined,
         city: geo.city ?? undefined,
-        ipHash: geo.ipHash ?? undefined,
+        ip: geo.ip ?? undefined,
         // Hardware
         colorDepth: device.colorDepth ?? undefined,
         pixelRatio: device.pixelRatio ?? undefined,
@@ -155,10 +147,10 @@ export async function POST(req: NextRequest) {
         cpuCores: device.cpuCores ?? undefined,
         connectionType: device.connectionType ?? undefined,
         // Advanced fingerprints
-        canvasHash: device.canvasHash || undefined,
+        canvasData: device.canvasData || undefined,
         webglVendor: device.webglVendor || undefined,
         webglRenderer: device.webglRenderer || undefined,
-        audioHash: device.audioHash || undefined,
+        audioData: device.audioData || undefined,
       },
     });
 

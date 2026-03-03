@@ -57,7 +57,18 @@ async function VisitorList({ page }: { page: number }) {
                 <td className="py-3 px-4 text-gray-300">{v.os ?? "—"}</td>
                 <td className="py-3 px-4 text-gray-300">{v.device ?? "—"}</td>
                 <td className="py-3 px-4 text-gray-300 text-xs">
-                  {v.city && v.country ? `${v.city}, ${v.country}` : v.country ?? "—"}
+                  {v.country ? (
+                    <>
+                      {v.city ? `${v.city}, ` : ""}
+                      {v.country.length === 2 ? (
+                        <>
+                          {String.fromCodePoint(...[...v.country.toUpperCase()].map(c => 0x1F1E6 + c.charCodeAt(0) - 65))}
+                          {" "}
+                          {new Intl.DisplayNames(["en"], { type: "region" }).of(v.country.toUpperCase()) ?? v.country}
+                        </>
+                      ) : v.country}
+                    </>
+                  ) : "—"}
                 </td>
                 <td className="py-3 px-4 text-gray-300">{v.sessionCount}</td>
                 <td className="py-3 px-4 text-gray-500">{timeAgo(v.lastSeenAt)}</td>

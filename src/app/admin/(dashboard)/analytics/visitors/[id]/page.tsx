@@ -63,7 +63,9 @@ export default async function VisitorDetailPage({
             { label: "First Seen", value: formatTime(visitor.firstSeenAt) },
             { label: "Last Seen", value: formatTime(visitor.lastSeenAt) },
             // Geo
-            { label: "Country", value: visitor.country },
+            { label: "Country", value: visitor.country
+              ? `${visitor.country.length === 2 ? String.fromCodePoint(...[...visitor.country.toUpperCase()].map(c => 0x1F1E6 + c.charCodeAt(0) - 65)) + " " : ""}${visitor.country.length === 2 ? (new Intl.DisplayNames(["en"], { type: "region" }).of(visitor.country.toUpperCase()) ?? visitor.country) : visitor.country}`
+              : null },
             { label: "Region", value: visitor.region },
             { label: "City", value: visitor.city },
             // Hardware

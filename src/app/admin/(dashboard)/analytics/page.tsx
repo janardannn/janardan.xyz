@@ -161,9 +161,18 @@ async function AnalyticsDashboard({ range }: { range: string }) {
             {geo.countries.map((item) => {
               const total = geo.countries.reduce((s, i) => s + i.count, 0);
               const pct = total > 0 ? Math.round((item.count / total) * 100) : 0;
+              const flag = item.name.length === 2
+                ? String.fromCodePoint(...[...item.name.toUpperCase()].map(c => 0x1F1E6 + c.charCodeAt(0) - 65))
+                : "";
+              const fullName = item.name.length === 2
+                ? new Intl.DisplayNames(["en"], { type: "region" }).of(item.name.toUpperCase()) ?? item.name
+                : item.name;
               return (
                 <div key={item.name} className="flex items-center justify-between">
-                  <span className="text-sm text-gray-300">{item.name}</span>
+                  <span className="text-sm text-gray-300">
+                    {flag && <span className="mr-1.5">{flag}</span>}
+                    {fullName}
+                  </span>
                   <div className="flex items-center gap-3">
                     <div className="w-24 h-1.5 bg-gray-800 rounded-full overflow-hidden">
                       <div
@@ -192,7 +201,11 @@ async function AnalyticsDashboard({ range }: { range: string }) {
                 <div key={`${item.name}-${item.country}`} className="flex items-center justify-between">
                   <span className="text-sm text-gray-300">
                     {item.name}
-                    <span className="text-gray-500 ml-1 text-xs">{item.country}</span>
+                    {item.country.length === 2 && (
+                      <span className="ml-1.5 text-xs">
+                        {String.fromCodePoint(...[...item.country.toUpperCase()].map(c => 0x1F1E6 + c.charCodeAt(0) - 65))}
+                      </span>
+                    )}
                   </span>
                   <div className="flex items-center gap-3">
                     <div className="w-24 h-1.5 bg-gray-800 rounded-full overflow-hidden">

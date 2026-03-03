@@ -45,7 +45,7 @@ model Visitor {
   country    String?
   region     String?
   city       String?
-  ipHash     String?
+  ip         String?
 
   // Enhanced hardware signals (client-side)
   colorDepth     Int?
@@ -56,11 +56,11 @@ model Visitor {
   cpuCores       Int?
   connectionType String?
 
-  // Advanced fingerprint signals (client-side hashes)
-  canvasHash    String?
+  // Advanced fingerprint signals (client-side, raw)
+  canvasData    String?
   webglVendor   String?
   webglRenderer String?
-  audioHash     String?
+  audioData     String?
 
   sessions Session[]
 

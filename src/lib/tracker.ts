@@ -25,11 +25,11 @@ interface DeviceInfo {
   platform: string;
   cpuCores: number | null;
   connectionType: string | null;
-  // Advanced fingerprint hashes
-  canvasHash: string;
+  // Advanced fingerprint signals (raw)
+  canvasData: string;
   webglVendor: string;
   webglRenderer: string;
-  audioHash: string;
+  audioData: string;
 }
 
 interface AcquisitionInfo {
@@ -68,10 +68,10 @@ class Tracker {
   private initialized = false;
 
   // Advanced signal results (populated async)
-  private canvasHash = "";
+  private canvasData = "";
   private webglVendor = "";
   private webglRenderer = "";
-  private audioHash = "";
+  private audioData = "";
 
   async init(): Promise<void> {
     if (this.initialized) return;
@@ -132,26 +132,26 @@ class Tracker {
 
   private async computeAdvancedSignals(): Promise<void> {
     const results = await Promise.allSettled([
-      this.computeCanvasHash(),
+      this.computeCanvasData(),
       this.computeWebGLInfo(),
-      this.computeAudioHash(),
+      this.computeAudioData(),
     ]);
 
-    if (results[0].status === "fulfilled") this.canvasHash = results[0].value;
+    if (results[0].status === "fulfilled") this.canvasData = results[0].value;
     if (results[1].status === "fulfilled") {
       this.webglVendor = results[1].value.vendor;
       this.webglRenderer = results[1].value.renderer;
     }
-    if (results[2].status === "fulfilled") this.audioHash = results[2].value;
+    if (results[2].status === "fulfilled") this.audioData = results[2].value;
   }
 
-  private async computeCanvasHash(): Promise<string> {
+  private computeCanvasData(): Promise<string> {
     try {
       const canvas = document.createElement("canvas");
       canvas.width = 200;
       canvas.height = 50;
       const ctx = canvas.getContext("2d");
-      if (!ctx) return "";
+      if (!ctx) return Promise.resolve("");
 
       ctx.textBaseline = "top";
       ctx.font = "14px 'Arial'";
@@ -166,9 +166,9 @@ class Tracker {
       ctx.arc(50, 30, 10, 0, Math.PI * 2);
       ctx.fill();
 
-      return await this.hashString(canvas.toDataURL());
+      return Promise.resolve(canvas.toDataURL());
     } catch {
-      return "";
+      return Promise.resolve("");
     }
   }
 
@@ -190,7 +190,7 @@ class Tracker {
     }
   }
 
-  private async computeAudioHash(): Promise<string> {
+  private async computeAudioData(): Promise<string> {
     try {
       const AudioCtx = window.OfflineAudioContext ||
         (window as unknown as Record<string, unknown>).webkitOfflineAudioContext as typeof OfflineAudioContext;
@@ -214,11 +214,8 @@ class Tracker {
 
       const buffer = await context.startRendering();
       const data = buffer.getChannelData(0);
-      let sum = 0;
-      for (let i = 4500; i < 5000; i++) {
-        sum += Math.abs(data[i]);
-      }
-      return await this.hashString(sum.toString());
+      const samples = Array.from(data.slice(4500, 5000));
+      return samples.join(",");
     } catch {
       return "";
     }
@@ -271,10 +268,10 @@ class Tracker {
       cpuCores: (navigator.hardwareConcurrency as number) ?? null,
       connectionType: conn?.effectiveType ?? null,
       // Placeholders — real values merged at flush time
-      canvasHash: "",
+      canvasData: "",
       webglVendor: "",
       webglRenderer: "",
-      audioHash: "",
+      audioData: "",
     };
   }
 
@@ -418,10 +415,10 @@ class Tracker {
     // Merge latest advanced signals into device snapshot
     const device: DeviceInfo = {
       ...this.device,
-      canvasHash: this.canvasHash,
+      canvasData: this.canvasData,
       webglVendor: this.webglVendor,
       webglRenderer: this.webglRenderer,
-      audioHash: this.audioHash,
+      audioData: this.audioData,
     };
 
     const payload: TrackingPayload = {
