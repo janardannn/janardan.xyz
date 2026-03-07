@@ -68,6 +68,7 @@ export default async function VisitorDetailPage({
               : null },
             { label: "Region", value: visitor.region },
             { label: "City", value: visitor.city },
+            { label: "IP", value: visitor.ip },
             // Hardware
             { label: "Color Depth", value: visitor.colorDepth ? `${visitor.colorDepth}-bit` : null },
             { label: "Pixel Ratio", value: visitor.pixelRatio ? `${visitor.pixelRatio}x` : null },
@@ -86,6 +87,31 @@ export default async function VisitorDetailPage({
             </div>
           ))}
         </div>
+
+        {/* User Agent */}
+        <div className="mt-4 pt-4 border-t border-gray-800">
+          <p className="text-xs text-gray-500 mb-1">User Agent</p>
+          <p className="text-xs text-gray-400 font-mono break-all">{visitor.userAgent ?? "—"}</p>
+        </div>
+
+        {/* Raw Fingerprint Data */}
+        {(visitor.canvasData || visitor.audioData) && (
+          <div className="mt-4 pt-4 border-t border-gray-800 space-y-3">
+            <p className="text-xs text-gray-500 uppercase">Raw Fingerprint Data</p>
+            {visitor.canvasData && (
+              <div>
+                <p className="text-xs text-gray-500 mb-1">Canvas Data</p>
+                <p className="text-xs text-gray-400 font-mono break-all max-h-20 overflow-y-auto">{visitor.canvasData}</p>
+              </div>
+            )}
+            {visitor.audioData && (
+              <div>
+                <p className="text-xs text-gray-500 mb-1">Audio Data</p>
+                <p className="text-xs text-gray-400 font-mono break-all max-h-20 overflow-y-auto">{visitor.audioData}</p>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Sessions Timeline */}

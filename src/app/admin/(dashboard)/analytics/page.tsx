@@ -240,13 +240,13 @@ export default async function AnalyticsPage({
         <div className="flex items-center gap-4">
           <Link
             href="/admin/analytics/visitors"
-            className="text-sm text-gray-400 hover:text-white transition-colors"
+            className="text-sm px-3 py-1.5 rounded-lg bg-gray-800 border border-gray-700 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
           >
             All Visitors
           </Link>
           <Link
             href="/admin/analytics/events"
-            className="text-sm text-gray-400 hover:text-white transition-colors"
+            className="text-sm px-3 py-1.5 rounded-lg bg-gray-800 border border-gray-700 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
           >
             Event Stream
           </Link>
