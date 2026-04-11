@@ -241,7 +241,15 @@ const projects = [
 
 export default function Projects() {
     const [lightbox, setLightbox] = useState<{ images: string[]; startIndex: number; alt: string } | null>(null)
-    const openLightbox = (images: string[], startIndex: number, alt: string) => setLightbox({ images, startIndex, alt })
+    const openLightbox = (images: string[], startIndex: number, alt: string) => {
+        track("project_click", "engagement", {
+            project: alt,
+            action: "open_lightbox",
+            startIndex,
+            imageCount: images.length,
+        })
+        setLightbox({ images, startIndex, alt })
+    }
     const closeLightbox = () => setLightbox(null)
 
     return (
