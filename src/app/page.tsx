@@ -7,11 +7,19 @@ import Contact from "@/components/Contact"
 import Footer from "@/components/Footer"
 import { SectionTracker } from "@/components/SectionTracker"
 import { getRecent } from "@/lib/posts"
+import { getRepoStats } from "@/lib/github"
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const recentPosts = await getRecent(3);
+  const [recentPosts, repoStats] = await Promise.all([
+    getRecent(3),
+    getRepoStats([
+      "janardannn/ai-eval-lab",
+      "janardannn/taimumashin",
+      "janardannn/rents.app",
+    ]),
+  ]);
 
   const posts = recentPosts.map((p) => ({
     title: p.title,
@@ -37,7 +45,7 @@ export default async function Home() {
 
       <section id="projects">
         <SectionTracker sectionId="projects" />
-        <Projects />
+        <Projects repoStats={repoStats} />
       </section>
 
       <section id="about">

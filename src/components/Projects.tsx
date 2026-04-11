@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ChevronLeft, ChevronRight, ExternalLink, Github, ArrowRight, Star, GitFork, X } from "lucide-react"
 import { track } from "@/lib/tracker"
+import { parseRepoFromUrl, type RepoStats } from "@/lib/github"
 import Image from "next/image"
 
 function FeaturedImageCarousel({ images, alt, onImageClick }: { images: string[]; alt: string; onImageClick?: (index: number) => void }) {
@@ -197,7 +198,6 @@ const projects = [
             "/projects/ael/7.jpeg",
             "/projects/ael/8.jpeg",
         ],
-        stats: { stars: 0, forks: 0, contributors: 0 },
         featured: true,
         status: "Live"
     },
@@ -222,7 +222,6 @@ const projects = [
             "/projects/tm/9.jpeg",
             "/projects/tm/10.jpeg",
         ],
-        stats: { stars: 0, forks: 0, contributors: 0 },
         featured: true,
         status: "Development"
     },
@@ -233,13 +232,17 @@ const projects = [
         liveUrl: "https://rents-app-theta.vercel.app/",
         githubUrl: "https://github.com/janardannn/rents.app",
         image: "/projects/rents.app.jpg",
-        stats: { stars: 0, forks: 0, contributors: 0 },
         featured: true,
         status: "Development"
     },
 ]
 
-export default function Projects() {
+export default function Projects({ repoStats }: { repoStats?: Record<string, RepoStats> }) {
+    const statsFor = (githubUrl: string): RepoStats => {
+        const repo = parseRepoFromUrl(githubUrl)
+        return (repo && repoStats?.[repo]) || { stars: 0, forks: 0 }
+    }
+
     const [lightbox, setLightbox] = useState<{ images: string[]; startIndex: number; alt: string } | null>(null)
     const openLightbox = (images: string[], startIndex: number, alt: string) => {
         track("project_click", "engagement", {
@@ -271,7 +274,9 @@ export default function Projects() {
                 </motion.div>
 
                 <div className="grid lg:grid-cols-2 gap-28 mb-12">
-                    {projects.filter(project => project.featured).map((project, index) => (
+                    {projects.filter(project => project.featured).map((project, index) => {
+                        const liveStats = statsFor(project.githubUrl)
+                        return (
                         <motion.div
                             key={project.title}
                             initial={{ opacity: 0, y: 10 }}
@@ -319,15 +324,15 @@ export default function Projects() {
                                             </Badge>
                                         )}
                                     </div>
-                                    {project.stats.stars > 0 &&
-                                        <div className="absolute bottom-4 right-4 flex gap-2">
+                                    {(liveStats.stars > 0 || liveStats.forks > 0) &&
+                                        <div className="absolute bottom-4 right-4 flex gap-2 pointer-events-none">
                                             <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm px-2 py-1 rounded-lg">
                                                 <Star className="h-3 w-3 text-amber-400" />
-                                                <span className="text-xs text-white">{project.stats.stars}</span>
+                                                <span className="text-xs text-white">{liveStats.stars}</span>
                                             </div>
                                             <div className="flex items-center gap-1 bg-black/40 backdrop-blur-sm px-2 py-1 rounded-lg">
                                                 <GitFork className="h-3 w-3 text-blue-400" />
-                                                <span className="text-xs text-white">{project.stats.forks}</span>
+                                                <span className="text-xs text-white">{liveStats.forks}</span>
                                             </div>
                                         </div>
                                     }
@@ -376,7 +381,8 @@ export default function Projects() {
                                 </div>
                             </Card>
                         </motion.div>
-                    ))}
+                        )
+                    })}
                 </div>
 
                 <div className="grid md:grid-cols-3 gap-12">
