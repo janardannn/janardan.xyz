@@ -1,34 +1,230 @@
 "use client"
-import { motion } from "framer-motion"
+import { useEffect, useState } from "react"
+import { AnimatePresence, motion } from "framer-motion"
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ExternalLink, Github, ArrowRight, Star, GitFork } from "lucide-react"
+import { ChevronLeft, ChevronRight, ExternalLink, Github, ArrowRight, Star, GitFork, X } from "lucide-react"
 import { track } from "@/lib/tracker"
 import Image from "next/image"
+
+function FeaturedImageCarousel({ images, alt, onImageClick }: { images: string[]; alt: string; onImageClick?: (index: number) => void }) {
+    const [index, setIndex] = useState(0)
+    const [paused, setPaused] = useState(false)
+    const prev = () => setIndex((i) => (i - 1 + images.length) % images.length)
+    const next = () => setIndex((i) => (i + 1) % images.length)
+
+    useEffect(() => {
+        if (paused || images.length <= 1) return
+        const id = setInterval(() => setIndex((i) => (i + 1) % images.length), 3500)
+        return () => clearInterval(id)
+    }, [paused, images.length, index])
+
+    return (
+        <div
+            className="absolute inset-0 cursor-zoom-in"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+            onClick={() => onImageClick?.(index)}
+        >
+            <AnimatePresence initial={false} mode="wait">
+                <motion.div
+                    key={index}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="absolute inset-0"
+                >
+                    <Image
+                        src={images[index]}
+                        alt={`${alt} — screenshot ${index + 1}`}
+                        layout="fill"
+                        objectFit="cover"
+                        className="transition-transform duration-500 group-hover:scale-105"
+                    />
+                </motion.div>
+            </AnimatePresence>
+
+            <button
+                type="button"
+                aria-label="Previous image"
+                onClick={(e) => { e.preventDefault(); e.stopPropagation(); prev() }}
+                className="absolute left-3 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-black/40 backdrop-blur-sm text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:scale-110"
+            >
+                <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button
+                type="button"
+                aria-label="Next image"
+                onClick={(e) => { e.preventDefault(); e.stopPropagation(); next() }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-black/40 backdrop-blur-sm text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:scale-110"
+            >
+                <ChevronRight className="h-4 w-4" />
+            </button>
+
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex gap-1.5">
+                {images.map((_, i) => (
+                    <button
+                        key={i}
+                        type="button"
+                        aria-label={`Go to image ${i + 1}`}
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIndex(i) }}
+                        className={`h-1.5 rounded-full transition-all duration-300 ${i === index ? "w-6 bg-white" : "w-1.5 bg-white/50 hover:bg-white/80"}`}
+                    />
+                ))}
+            </div>
+        </div>
+    )
+}
+
+function Lightbox({
+    images,
+    startIndex,
+    alt,
+    onClose,
+}: {
+    images: string[]
+    startIndex: number
+    alt: string
+    onClose: () => void
+}) {
+    const [index, setIndex] = useState(startIndex)
+    const prev = () => setIndex((i) => (i - 1 + images.length) % images.length)
+    const next = () => setIndex((i) => (i + 1) % images.length)
+
+    useEffect(() => {
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === "Escape" || e.key === "x" || e.key === "X") onClose()
+            else if (e.key === "ArrowLeft") prev()
+            else if (e.key === "ArrowRight") next()
+        }
+        window.addEventListener("keydown", onKey)
+        const prevOverflow = document.body.style.overflow
+        document.body.style.overflow = "hidden"
+        return () => {
+            window.removeEventListener("keydown", onKey)
+            document.body.style.overflow = prevOverflow
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [images.length])
+
+    return (
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex items-center justify-center"
+            onClick={onClose}
+        >
+            <button
+                type="button"
+                aria-label="Close"
+                onClick={(e) => { e.stopPropagation(); onClose() }}
+                className="absolute top-6 right-6 z-10 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition"
+            >
+                <X className="h-6 w-6" />
+            </button>
+
+            {images.length > 1 && (
+                <>
+                    <button
+                        type="button"
+                        aria-label="Previous image"
+                        onClick={(e) => { e.stopPropagation(); prev() }}
+                        className="absolute left-6 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition"
+                    >
+                        <ChevronLeft className="h-6 w-6" />
+                    </button>
+                    <button
+                        type="button"
+                        aria-label="Next image"
+                        onClick={(e) => { e.stopPropagation(); next() }}
+                        className="absolute right-6 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition"
+                    >
+                        <ChevronRight className="h-6 w-6" />
+                    </button>
+
+                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 text-white/80 text-sm font-mono">
+                        {index + 1} / {images.length}
+                    </div>
+                </>
+            )}
+
+            <div
+                className="relative w-[92vw] h-[88vh]"
+                onClick={(e) => e.stopPropagation()}
+            >
+                <AnimatePresence initial={false} mode="wait">
+                    <motion.div
+                        key={index}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute inset-0"
+                    >
+                        <Image
+                            src={images[index]}
+                            alt={`${alt} — screenshot ${index + 1}`}
+                            layout="fill"
+                            objectFit="contain"
+                            priority
+                        />
+                    </motion.div>
+                </AnimatePresence>
+            </div>
+        </motion.div>
+    )
+}
 
 const projects = [
     {
         title: "ai-eval-lab - AI-Proctored Skill Assessment Platform",
-        description: "An AI-proctored exam platform for professional engineering tools (EDA, CAD) that streams desktop environments to the browser via a VNC pipeline. Features dynamic Docker container provisioning, a three-phase AI proctor using Gemini for adaptive questioning and rubric-based grading, with ElevenLabs TTS/STT for voice interaction.",
-        tech: ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "Redis", "Docker", "Gemini", "ElevenLabs", "noVNC"],
-        liveUrl: "",
+        description: "An AI-proctored exam platform for professional engineering tools (EDA, CAD) like KiCad that streams real desktop applications to the browser via a VNC pipeline. Features dynamic Docker container provisioning, a real-time telemetry pipeline that polls KiCad board state every 3s, and a three-phase AI proctor using Gemini for adaptive questioning and rubric-based grading, with ElevenLabs TTS/STT for voice interaction.",
+        tech: ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "Redis", "Docker", "KiCad", "Gemini", "ElevenLabs", "noVNC"],
+        liveUrl: "https://ai-eval-lab.janardan.xyz/",
         githubUrl: "https://github.com/janardannn/ai-eval-lab",
         image: "/projects/ai-eval-lab.jpg",
-        stats: { stars: 0, forks: 0, contributors: 0 },
-        featured: true,
-        status: "Development"
-    },
-    {
-        title: "scaler-lite - A fullstack online learning platform",
-        description: "A full-stack online learning platform, supporting the entire lifecycle from course creation to student enrollment. Including sequential lecture access, progress tracking, and automated real-time quiz scoring. Secure role-based authorization and authentication (Student/Instructor).",
-        tech: ["Next.js", "TypeScript", "Prisma", "MongoDB", "Tailwind CSS", "UploadThing", "NextAuth"],
-        liveUrl: "https://scaler-lite.vercel.app/",
-        githubUrl: "https://github.com/janardannn/scaler-lite",
-        image: "/projects/scaler-lite.jpg",
+        images: [
+            "/projects/ael/1.jpeg",
+            "/projects/ael/2.jpeg",
+            "/projects/ael/3.jpeg",
+            "/projects/ael/4.jpeg",
+            "/projects/ael/5.jpeg",
+            "/projects/ael/6.jpeg",
+            "/projects/ael/7.jpeg",
+            "/projects/ael/8.jpeg",
+        ],
         stats: { stars: 0, forks: 0, contributors: 0 },
         featured: true,
         status: "Live"
+    },
+    {
+        title: "taimumashin - Personal Cold Storage Archive",
+        description: "A BYOA (Bring Your Own AWS) personal archive on S3 Glacier Deep Archive — users deploy their own AWS stack via a single CloudFormation template that provisions S3 buckets, lifecycle rules, IAM roles, and Lambda functions. Features browser-to-S3 direct uploads with presigned URLs, client-side Canvas thumbnails, and multi-tenant auth via STS AssumeRoleWithWebIdentity that scopes each user's browser session to their own bucket with auto-refreshing temporary credentials.",
+        tech: ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "AWS S3 Glacier", "STS", "CloudFormation", "Lambda", "Vercel"],
+        liveUrl: "",
+        githubUrl: "https://github.com/janardannn/taimumashin",
+        image: "",
+        tag: "Self-Hostable",
+        hideStatusBadge: true,
+        images: [
+            "/projects/tm/1.jpeg",
+            "/projects/tm/2.jpeg",
+            "/projects/tm/3.jpeg",
+            "/projects/tm/4.jpeg",
+            "/projects/tm/5.jpeg",
+            "/projects/tm/6.jpeg",
+            "/projects/tm/7.jpeg",
+            "/projects/tm/8.jpeg",
+            "/projects/tm/9.jpeg",
+            "/projects/tm/10.jpeg",
+        ],
+        stats: { stars: 0, forks: 0, contributors: 0 },
+        featured: true,
+        status: "Development"
     },
     {
         title: "rents.app - A fullstack user centric, map based rental platform.",
@@ -44,6 +240,10 @@ const projects = [
 ]
 
 export default function Projects() {
+    const [lightbox, setLightbox] = useState<{ images: string[]; startIndex: number; alt: string } | null>(null)
+    const openLightbox = (images: string[], startIndex: number, alt: string) => setLightbox({ images, startIndex, alt })
+    const closeLightbox = () => setLightbox(null)
+
     return (
         <section className="py-24 relative overflow-hidden">
             <div className="container px-6 mx-auto max-w-7xl relative z-10">
@@ -74,23 +274,42 @@ export default function Projects() {
                         >
                             <Card className="h-full hover:shadow-2xl transition-all duration-500 border border-border shadow-lg overflow-hidden bg-card rounded-3xl hover:scale-[1.02]">
                                 <div className="relative h-84 overflow-hidden">
-                                    {project.image === "" ?
-                                        <div className="absolute inset-0 bg-muted" />
-                                        : <Image
-                                            src={project.image}
+                                    {project.images && project.images.length > 0 ? (
+                                        <FeaturedImageCarousel
+                                            images={project.images}
                                             alt={project.title}
-                                            layout="fill"
-                                            objectFit="cover"
-                                            className="transition-transform duration-500 group-hover:scale-105"
+                                            onImageClick={(i) => openLightbox(project.images!, i, project.title)}
                                         />
-                                    }
-                                    <div className="absolute top-6 left-6">
-                                        <Badge className={`px-3 py-1 text-xs font-medium rounded-full border-0 ${project.status === 'Live'
-                                            ? 'bg-pop/90 text-white'
-                                            : 'bg-amber-500/90 text-white'
-                                            }`}>
-                                            {project.status}
-                                        </Badge>
+                                    ) : project.image === "" ? (
+                                        <div className="absolute inset-0 bg-muted" />
+                                    ) : (
+                                        <div
+                                            className="absolute inset-0 cursor-zoom-in"
+                                            onClick={() => openLightbox([project.image], 0, project.title)}
+                                        >
+                                            <Image
+                                                src={project.image}
+                                                alt={project.title}
+                                                layout="fill"
+                                                objectFit="cover"
+                                                className="transition-transform duration-500 group-hover:scale-105"
+                                            />
+                                        </div>
+                                    )}
+                                    <div className="absolute top-6 left-6 flex gap-2">
+                                        {!project.hideStatusBadge && (
+                                            <Badge className={`px-3 py-1 text-xs font-medium rounded-full border-0 ${project.status === 'Live'
+                                                ? 'bg-emerald-500/90 text-white'
+                                                : 'bg-amber-500/90 text-white'
+                                                }`}>
+                                                {project.status}
+                                            </Badge>
+                                        )}
+                                        {project.tag && (
+                                            <Badge className="px-3 py-1 text-xs font-medium rounded-full border-0 bg-indigo-500/90 text-white">
+                                                {project.tag}
+                                            </Badge>
+                                        )}
                                     </div>
                                     {project.stats.stars > 0 &&
                                         <div className="absolute bottom-4 right-4 flex gap-2">
@@ -167,17 +386,22 @@ export default function Projects() {
                                     {project.image === "" ?
                                         <div className="absolute inset-0" />
                                         :
-                                        <Image
-                                            src={project.image}
-                                            alt={project.title}
-                                            layout="fill"
-                                            objectFit="cover"
-                                            className="transition-transform duration-500 group-hover:scale-105"
-                                        />
+                                        <div
+                                            className="absolute inset-0 cursor-zoom-in"
+                                            onClick={() => openLightbox([project.image], 0, project.title)}
+                                        >
+                                            <Image
+                                                src={project.image}
+                                                alt={project.title}
+                                                layout="fill"
+                                                objectFit="cover"
+                                                className="transition-transform duration-500 group-hover:scale-105"
+                                            />
+                                        </div>
                                     }
                                     <div className="absolute top-4 left-4">
                                         <Badge className={`px-2 py-1 text-xs font-medium rounded-full border-0 ${project.status === 'Live'
-                                            ? 'bg-pop/90 text-white'
+                                            ? 'bg-emerald-500/90 text-white'
                                             : project.status === 'Beta'
                                                 ? 'bg-amber-500/90 text-white'
                                                 : 'bg-blue-500/90 text-white'
@@ -243,6 +467,17 @@ export default function Projects() {
                     </Button>
                 </motion.div>
             </div>
+
+            <AnimatePresence>
+                {lightbox && (
+                    <Lightbox
+                        images={lightbox.images}
+                        startIndex={lightbox.startIndex}
+                        alt={lightbox.alt}
+                        onClose={closeLightbox}
+                    />
+                )}
+            </AnimatePresence>
         </section>
     )
 }
