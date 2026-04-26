@@ -20,6 +20,7 @@ export default async function WritingPage() {
         readTime: p.readTime,
         tags: p.tags,
         featured: p.featured,
+        bannerImage: p.bannerImage,
       }))}
     />
   );

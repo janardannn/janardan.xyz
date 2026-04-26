@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Calendar, Clock } from "lucide-react"
 import { track } from "@/lib/tracker"
 import Link from "next/link"
+import Image from "next/image"
 
 interface Post {
   title: string;
@@ -14,6 +15,7 @@ interface Post {
   date: string;
   readTime: string;
   category: string;
+  bannerImage?: string | null;
 }
 
 export default function Writing({ posts }: { posts: Post[] }) {
@@ -60,6 +62,16 @@ export default function Writing({ posts }: { posts: Post[] }) {
               >
                 <Card className="h-full hover:shadow-xl transition-all duration-300 border border-border bg-card rounded-2xl hover:scale-[1.02] overflow-hidden">
                   <Link href={`/writing/${post.slug}`} onClick={() => track("blog_click", "engagement", { slug: post.slug, title: post.title })}>
+                    {post.bannerImage && (
+                      <div className="relative h-48 w-full overflow-hidden">
+                        <Image
+                          src={post.bannerImage}
+                          alt={post.title}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
+                    )}
                     <CardContent className="p-6">
                       <Badge className="px-2 py-1 text-xs font-medium rounded-full border-0 bg-pop/90 text-white mb-3 inline-block">
                         {post.category}

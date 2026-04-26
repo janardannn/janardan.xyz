@@ -32,6 +32,7 @@ export default async function Home() {
     }),
     readTime: p.readTime,
     category: p.category,
+    bannerImage: p.bannerImage,
   }));
 
   return (

@@ -12,7 +12,6 @@ export default async function EditPage({ params }: { params: Promise<{ id: strin
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-white mb-8">Edit Post</h1>
       <PostEditor
         initialData={{
           id: post.id,

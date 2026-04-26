@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Calendar, Clock, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface Post {
   title: string;
@@ -15,6 +16,7 @@ interface Post {
   readTime: string;
   tags: string[];
   featured: boolean;
+  bannerImage?: string | null;
 }
 
 export default function WritingPageClient({ posts }: { posts: Post[] }) {
@@ -74,6 +76,16 @@ export default function WritingPageClient({ posts }: { posts: Post[] }) {
                   className="group"
                 >
                   <Card className="h-full hover:shadow-xl transition-all duration-300 border border-border bg-card rounded-2xl hover:scale-[1.02] overflow-hidden">
+                    {post.bannerImage && (
+                      <div className="relative h-48 w-full overflow-hidden">
+                        <Image
+                          src={post.bannerImage}
+                          alt={post.title}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
+                    )}
                     <CardContent className="p-6">
                       <div className="flex items-center justify-between text-sm text-muted-foreground mb-3">
                         <div className="flex items-center">

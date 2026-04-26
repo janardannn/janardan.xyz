@@ -51,6 +51,7 @@ export async function createPost(data: {
   category: string;
   featured?: boolean;
   published?: boolean;
+  bannerImage?: string;
 }) {
   const prisma = await getPrisma();
   return prisma.post.create({ data });
@@ -68,6 +69,7 @@ export async function updatePost(
     category?: string;
     featured?: boolean;
     published?: boolean;
+    bannerImage?: string;
   }
 ) {
   const prisma = await getPrisma();
