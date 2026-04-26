@@ -24,6 +24,7 @@ interface PostEditorProps {
     category: string;
     featured: boolean;
     published: boolean;
+    bannerImage?: string | null;
   };
 }
 

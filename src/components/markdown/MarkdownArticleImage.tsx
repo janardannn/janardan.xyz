@@ -11,9 +11,10 @@ type MarkdownImgProps = React.ImgHTMLAttributes<HTMLImageElement> & { node?: unk
 export default function MarkdownArticleImage(props: MarkdownImgProps) {
   const { node: _node, src, alt, title, className, width, height } = props;
   const [isOpen, setIsOpen] = useState(false);
-  
+
+  const srcString = typeof src === "string" ? src : "";
   // Clean the src: remove accidental whitespace or trailing brackets
-  let rawSrc = (src || "").trim().replace(/\]+$/, "");
+  let rawSrc = srcString.trim().replace(/\]+$/, "");
   
   if (rawSrc.includes(" ")) {
     rawSrc = rawSrc.replace(/ /g, "%20");

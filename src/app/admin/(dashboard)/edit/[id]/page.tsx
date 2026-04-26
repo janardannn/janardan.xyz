@@ -24,6 +24,7 @@ export default async function EditPage({ params }: { params: Promise<{ id: strin
           category: post.category,
           featured: post.featured,
           published: post.published,
+          bannerImage: post.bannerImage,
         }}
       />
     </div>
