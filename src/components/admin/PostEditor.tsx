@@ -56,7 +56,7 @@ export default function PostEditor({ initialData }: PostEditorProps) {
   const [category, setCategory] = useState(initialData?.category || "");
   const [featured, setFeatured] = useState(initialData?.featured || false);
   const [published, setPublished] = useState(initialData?.published || false);
-  const [paneMode, setPaneMode] = useState<PaneMode>("split");
+  const [paneMode, setPaneMode] = useState<PaneMode>("source");
   const [propsOpen, setPropsOpen] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
