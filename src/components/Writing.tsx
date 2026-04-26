@@ -7,6 +7,7 @@ import { ArrowRight, Calendar, Clock } from "lucide-react"
 import { track } from "@/lib/tracker"
 import Link from "next/link"
 import Image from "next/image"
+import { formatPostCategoryLabel, postCategoryBadgeClass } from "@/lib/postCardMeta"
 
 interface Post {
   title: string;
@@ -73,8 +74,8 @@ export default function Writing({ posts }: { posts: Post[] }) {
                       </div>
                     )}
                     <CardContent className="p-6">
-                      <Badge className="px-2 py-1 text-xs font-medium rounded-full border-0 bg-pop/90 text-white mb-3 inline-block">
-                        {post.category}
+                      <Badge className={`${postCategoryBadgeClass} mb-3`}>
+                        {formatPostCategoryLabel(post.category)}
                       </Badge>
                       <h4 className="font-bold text-lg text-foreground group-hover:text-pop transition-colors mb-3 leading-tight font-serif">
                         {post.title}

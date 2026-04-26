@@ -18,6 +18,7 @@ export default async function WritingPage() {
           day: "numeric",
         }),
         readTime: p.readTime,
+        category: p.category,
         tags: p.tags,
         featured: p.featured,
         bannerImage: p.bannerImage,

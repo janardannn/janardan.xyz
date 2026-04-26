@@ -7,6 +7,12 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Calendar, Clock, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import {
+  formatPostCategoryLabel,
+  postCategoryBadgeClass,
+  postTagBadgeClass,
+  tagsExcludingCategory,
+} from "@/lib/postCardMeta";
 
 interface Post {
   title: string;
@@ -14,6 +20,7 @@ interface Post {
   excerpt: string;
   date: string;
   readTime: string;
+  category: string;
   tags: string[];
   featured: boolean;
   bannerImage?: string | null;
@@ -66,7 +73,9 @@ export default function WritingPageClient({ posts }: { posts: Post[] }) {
             <p className="text-muted-foreground text-center py-16">No posts yet. Check back soon!</p>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {posts.map((post, index) => (
+              {posts.map((post, index) => {
+                const extraTags = tagsExcludingCategory(post.tags, post.category);
+                return (
                 <motion.div
                   key={post.slug}
                   initial={{ opacity: 0, y: 10 }}
@@ -87,6 +96,26 @@ export default function WritingPageClient({ posts }: { posts: Post[] }) {
                       </div>
                     )}
                     <CardContent className="p-6">
+                      <div className="mb-3 space-y-2">
+                        <div className="flex flex-wrap">
+                          <Badge className={postCategoryBadgeClass}>
+                            {formatPostCategoryLabel(post.category)}
+                          </Badge>
+                        </div>
+                        {extraTags.length > 0 ? (
+                          <div className="flex flex-wrap gap-1.5">
+                            {extraTags.slice(0, 4).map((tag) => (
+                              <Badge key={tag} className={postTagBadgeClass}>
+                                {tag}
+                              </Badge>
+                            ))}
+                            {extraTags.length > 4 && (
+                              <span className="text-xs text-muted-foreground">+{extraTags.length - 4}</span>
+                            )}
+                          </div>
+                        ) : null}
+                      </div>
+
                       <div className="flex items-center justify-between text-sm text-muted-foreground mb-3">
                         <div className="flex items-center">
                           <Calendar className="h-4 w-4 mr-2" />
@@ -106,21 +135,6 @@ export default function WritingPageClient({ posts }: { posts: Post[] }) {
                         {post.excerpt}
                       </p>
 
-                      <div className="flex flex-wrap gap-1 mb-4">
-                        {post.tags.slice(0, 2).map((tag) => (
-                          <Badge
-                            key={tag}
-                            variant="outline"
-                            className="text-xs border-pop/30 text-pop-muted bg-pop/10"
-                          >
-                            {tag}
-                          </Badge>
-                        ))}
-                        {post.tags.length > 2 && (
-                          <span className="text-xs text-muted-foreground">+{post.tags.length - 2}</span>
-                        )}
-                      </div>
-
                       <Button
                         variant="outline"
                         asChild
@@ -135,7 +149,8 @@ export default function WritingPageClient({ posts }: { posts: Post[] }) {
                     </CardContent>
                   </Card>
                 </motion.div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
