@@ -19,7 +19,7 @@ export default function Navigation() {
         return () => window.removeEventListener("scroll", handleScroll)
     }, [])
 
-    const navItems = ["About", "Projects", "Writing", "Contact", "Resume"]
+    const navItems = ["About", "Projects", "Writing", "Contact"]
 
     return (
         <motion.nav
