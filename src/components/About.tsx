@@ -60,11 +60,12 @@ const experience = [
         company: "Scaler (InterviewBit Technologies Pvt Ltd)",
         period: "Sep 2025 - Present",
         description: "Working across the full stack on Scaler's growth team.",
-        highlights: [
-            "Refactored legacy Rails + React components into modular, testable units, cutting page load times and improving maintainability",
-            "Built a conversational chat-form flow that nearly doubled V2L (visit-to-lead) conversion rates",
-            "Implemented GTM-based event tracking across 40+ user touchpoints for data-driven product decisions",
-            "Worked on lead auto-allocation service with Redis-backed distributed locking to prevent race conditions at scale"
+        "highlights": [
+            "Architected multi-featured AI Widget using FastAPI and multi-provider LLM orchestration, serving 10L+ learners and increasing engagement by 35%.",
+            "Built a FastAPI based resume screening pipeline processing 10,000+ daily applications, improving shortlist accuracy by 70% and reducing screening time by 50%.",
+            "Developed a RAG-based Sales Analysis AI Agent using PostgreSQL and multi-layered agentic pipelines, reducing retrieval time by 95%.",
+            "Designed and deployed 100+ production-grade AI mock interviews to streamline candidate evaluation across recruitment workflows.",
+            "Worked on a lead auto-allocation service in Rails with distributed locking and multi-layered eligibility guards, increasing lead consumption by 35%."
         ],
     },
     {
