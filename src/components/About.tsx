@@ -191,7 +191,7 @@ export default function About() {
                                             <p className="text-pop font-medium">{exp.company}</p>
                                             <p className="text-sm text-muted-foreground mb-2">{exp.period}</p>
                                             <p className="text-muted-foreground">{exp.description}</p>
-                                            /* {exp.highlights && (
+                                            {/* {exp.highlights && (
                                                 <ul className="mt-3 space-y-2">
                                                     {exp.highlights.map((point) => (
                                                         <li key={point} className="text-sm text-muted-foreground flex items-start gap-2">
@@ -200,7 +200,7 @@ export default function About() {
                                                         </li>
                                                     ))}
                                                 </ul>
-                                            )} */
+                                            )} */}
                                         </div>
                                     </div>
                                 ))}
