@@ -42,8 +42,12 @@ model Visitor {
   language     String?
   timezone     String?
 
-  // Bot detection (server-side)
-  isBot      Boolean  @default(false)
+  // Bot detection (multi-signal)
+  isBot         Boolean  @default(false)
+  webdriver     Boolean?
+  pluginsLength Int?
+  botScore      Int?
+  botSignals    Json?
 
   // Geolocation (server-side, from Vercel headers)
   country    String?

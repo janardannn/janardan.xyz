@@ -34,6 +34,9 @@ interface TrackingPayload {
     webglVendor?: string;
     webglRenderer?: string;
     audioData?: string;
+    // Bot detection signals
+    webdriver?: boolean;
+    pluginsLength?: number;
   };
   acquisition: {
     referrer?: string;
@@ -80,10 +83,67 @@ function parseUserAgent(ua: string) {
   return { browser, os, device };
 }
 
-function detectBot(ua: string): boolean {
-  if (!ua) return false;
-  const botPattern = /bot|crawler|spider|crawling|slurp|bingpreview|facebookexternalhit|whatsapp|telegram|discord|preview|scanner|archiver|curl|wget|python-requests|go-http|java\//i;
-  return botPattern.test(ua);
+// ---------------------------------------------------------------------------
+// Bot detection — multi-signal scoring
+// ---------------------------------------------------------------------------
+
+const KNOWN_CRAWLERS =
+  /bot|crawler|spider|crawling|slurp|bingpreview|facebookexternalhit|whatsapp|semrush|ahrefs|majestic|mj12|rogerbot|dotbot|blexbot|dataforseo/i;
+
+const HEADLESS =
+  /headlesschrome|puppeteer|playwright|selenium|phantomjs|nightmare|casperjs|electron|chrome-lighthouse/i;
+
+const FAKE_BROWSER_TOOLS =
+  /curl|wget|python-requests|python-urllib|go-http-client|java\/|libwww-perl|scrapy|axios\/|node-fetch|undici/i;
+
+function detectBot(
+  ua: string,
+  webdriver: boolean | undefined,
+  pluginsLength: number | undefined
+): { isBot: boolean; botScore: number; botSignals: string[] } {
+  const signals: string[] = [];
+  let score = 0;
+
+  if (!ua) return { isBot: false, botScore: 0, botSignals: [] };
+
+  // 1. Known crawler pattern — strongest UA signal
+  if (KNOWN_CRAWLERS.test(ua)) {
+    score += 40;
+    signals.push("ua:crawler");
+  }
+
+  // 2. Headless / automation framework in UA
+  if (HEADLESS.test(ua)) {
+    score += 50;
+    signals.push("ua:headless");
+  }
+
+  // 3. Raw HTTP / scripted client
+  if (FAKE_BROWSER_TOOLS.test(ua)) {
+    score += 35;
+    signals.push("ua:scripted");
+  }
+
+  // 4. navigator.webdriver === true (strongest single signal)
+  if (webdriver === true) {
+    score += 60;
+    signals.push("webdriver:true");
+  }
+
+  // 5. Zero plugins — most headless browsers have none AND real Chrome always has ≥2
+  if (typeof pluginsLength === "number" && pluginsLength === 0) {
+    score += 15;
+    signals.push("plugins:0");
+  }
+
+  // 6. Short UA strings that don't match any real browser
+  if (ua.length < 50) {
+    score += 10;
+    signals.push("ua:short");
+  }
+
+  const isBot = score >= 50;
+  return { isBot, botScore: score, botSignals: signals };
 }
 
 export async function POST(req: NextRequest) {
@@ -100,14 +160,18 @@ export async function POST(req: NextRequest) {
       device.userAgent || ""
     );
     const geo = extractGeoData(req);
-    const isBot = detectBot(device.userAgent || "");
+    const bot = detectBot(device.userAgent || "", device.webdriver, device.pluginsLength);
 
     // 1. Upsert visitor
     const visitor = await prisma.visitor.upsert({
       where: { fingerprint },
       create: {
         fingerprint,
-        isBot,
+        isBot: bot.isBot,
+        webdriver: device.webdriver ?? null,
+        pluginsLength: device.pluginsLength ?? null,
+        botScore: bot.botScore,
+        botSignals: bot.botSignals,
         userAgent: device.userAgent,
         browser,
         os,
@@ -137,7 +201,11 @@ export async function POST(req: NextRequest) {
       },
       update: {
         lastSeenAt: new Date(),
-        isBot,
+        isBot: bot.isBot,
+        webdriver: device.webdriver ?? undefined,
+        pluginsLength: device.pluginsLength ?? undefined,
+        botScore: bot.botScore,
+        botSignals: bot.botSignals,
         userAgent: device.userAgent,
         browser,
         os,

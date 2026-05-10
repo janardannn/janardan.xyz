@@ -25,6 +25,9 @@ interface DeviceInfo {
   platform: string;
   cpuCores: number | null;
   connectionType: string | null;
+  // Bot detection signals
+  webdriver: boolean;
+  pluginsLength: number;
   // Advanced fingerprint signals (raw)
   canvasData: string;
   webglVendor: string;
@@ -267,6 +270,9 @@ class Tracker {
       platform: navigator.platform ?? "",
       cpuCores: (navigator.hardwareConcurrency as number) ?? null,
       connectionType: conn?.effectiveType ?? null,
+      // Bot detection signals
+      webdriver: Boolean(nav.webdriver),
+      pluginsLength: navigator.plugins?.length ?? 0,
       // Placeholders — real values merged at flush time
       canvasData: "",
       webglVendor: "",
