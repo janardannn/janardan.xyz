@@ -1,8 +1,11 @@
 import { getPrisma } from "@/lib/db";
 
-type DateRange = { from: Date; to: Date };
+type DateRange = { from: Date | undefined; to: Date | undefined };
 
 function getDateRange(range: string): DateRange {
+  if (range === "all") {
+    return { from: undefined, to: undefined };
+  }
   const to = new Date();
   const from = new Date();
   switch (range) {
@@ -20,28 +23,33 @@ function getDateRange(range: string): DateRange {
   return { from, to };
 }
 
+function dateFilter(range: string, field: string = "timestamp") {
+  const { from, to } = getDateRange(range);
+  if (!from || !to) return undefined;
+  return { [field]: { gte: from, lte: to } };
+}
+
 export async function getOverviewStats(range: string = "7d") {
   const prisma = await getPrisma();
-  const { from, to } = getDateRange(range);
-  const where = { timestamp: { gte: from, lte: to } };
-  const sessionWhere = { startedAt: { gte: from, lte: to } };
-  const visitorWhere = { lastSeenAt: { gte: from, lte: to } };
+  const df = dateFilter(range);
+  const sessionDf = dateFilter(range, "startedAt");
+  const visitorDf = dateFilter(range, "lastSeenAt");
 
   const [visitors, bots, sessions, pageViews, events] = await Promise.all([
-    prisma.visitor.count({ where: visitorWhere }),
-    prisma.visitor.count({ where: { ...visitorWhere, isBot: true } }),
-    prisma.session.count({ where: sessionWhere }),
-    prisma.pageView.count({ where }),
-    prisma.trackingEvent.count({ where }),
+    prisma.visitor.count({ where: { ...visitorDf } }),
+    prisma.visitor.count({ where: { ...visitorDf, isBot: true } }),
+    prisma.session.count({ where: { ...sessionDf } }),
+    prisma.pageView.count({ where: { ...df } }),
+    prisma.trackingEvent.count({ where: { ...df } }),
   ]);
 
   const durationAgg = await prisma.session.aggregate({
-    where: sessionWhere,
+    where: { ...sessionDf },
     _avg: { duration: true },
   });
 
   const bounceSessions = await prisma.session.count({
-    where: { ...sessionWhere, pageCount: { lte: 1 } },
+    where: { ...sessionDf, pageCount: { lte: 1 } },
   });
 
   const avgDuration = Math.round(durationAgg._avg.duration ?? 0);
@@ -52,11 +60,11 @@ export async function getOverviewStats(range: string = "7d") {
 
 export async function getTopPages(range: string = "7d", limit: number = 10) {
   const prisma = await getPrisma();
-  const { from, to } = getDateRange(range);
+  const df = dateFilter(range);
 
   const pages = await prisma.pageView.groupBy({
     by: ["path"],
-    where: { timestamp: { gte: from, lte: to } },
+    where: { ...df },
     _count: { id: true },
     _avg: { duration: true, scrollDepth: true },
     orderBy: { _count: { id: "desc" } },
@@ -73,11 +81,11 @@ export async function getTopPages(range: string = "7d", limit: number = 10) {
 
 export async function getTopReferrers(range: string = "7d", limit: number = 10) {
   const prisma = await getPrisma();
-  const { from, to } = getDateRange(range);
+  const sessionDf = dateFilter(range, "startedAt");
 
   const referrers = await prisma.session.groupBy({
     by: ["referrer"],
-    where: { startedAt: { gte: from, lte: to }, referrer: { not: null } },
+    where: { ...sessionDf, referrer: { not: null } },
     _count: { id: true },
     orderBy: { _count: { id: "desc" } },
     take: limit,
@@ -91,27 +99,26 @@ export async function getTopReferrers(range: string = "7d", limit: number = 10) 
 
 export async function getDeviceBreakdown(range: string = "7d") {
   const prisma = await getPrisma();
-  const { from, to } = getDateRange(range);
-  const where = { lastSeenAt: { gte: from, lte: to } };
+  const visitorDf = dateFilter(range, "lastSeenAt");
 
   const [browsers, oses, devices] = await Promise.all([
     prisma.visitor.groupBy({
       by: ["browser"],
-      where,
+      where: { ...visitorDf },
       _count: { id: true },
       orderBy: { _count: { id: "desc" } },
       take: 5,
     }),
     prisma.visitor.groupBy({
       by: ["os"],
-      where,
+      where: { ...visitorDf },
       _count: { id: true },
       orderBy: { _count: { id: "desc" } },
       take: 5,
     }),
     prisma.visitor.groupBy({
       by: ["device"],
-      where,
+      where: { ...visitorDf },
       _count: { id: true },
       orderBy: { _count: { id: "desc" } },
       take: 5,
@@ -127,11 +134,11 @@ export async function getDeviceBreakdown(range: string = "7d") {
 
 export async function getTopEvents(range: string = "7d", limit: number = 10) {
   const prisma = await getPrisma();
-  const { from, to } = getDateRange(range);
+  const df = dateFilter(range);
 
   const events = await prisma.trackingEvent.groupBy({
     by: ["name"],
-    where: { timestamp: { gte: from, lte: to } },
+    where: { ...df },
     _count: { id: true },
     orderBy: { _count: { id: "desc" } },
     take: limit,
@@ -236,8 +243,8 @@ export async function getEventStream(
 
 export async function getGeoBreakdown(range: string = "7d") {
   const prisma = await getPrisma();
-  const { from, to } = getDateRange(range);
-  const where = { lastSeenAt: { gte: from, lte: to }, country: { not: null } };
+  const visitorDf = dateFilter(range, "lastSeenAt");
+  const where = { ...visitorDf, country: { not: null } };
 
   const [countries, cities] = await Promise.all([
     prisma.visitor.groupBy({
@@ -271,27 +278,26 @@ export async function getGeoBreakdown(range: string = "7d") {
 
 export async function getHardwareBreakdown(range: string = "7d") {
   const prisma = await getPrisma();
-  const { from, to } = getDateRange(range);
-  const where = { lastSeenAt: { gte: from, lte: to } };
+  const visitorDf = dateFilter(range, "lastSeenAt");
 
   const [gpuRenderers, memoryTiers, connectionTypes] = await Promise.all([
     prisma.visitor.groupBy({
       by: ["webglRenderer"],
-      where: { ...where, webglRenderer: { not: null } },
+      where: { ...visitorDf, webglRenderer: { not: null } },
       _count: { id: true },
       orderBy: { _count: { id: "desc" } },
       take: 10,
     }),
     prisma.visitor.groupBy({
       by: ["deviceMemory"],
-      where: { ...where, deviceMemory: { not: null } },
+      where: { ...visitorDf, deviceMemory: { not: null } },
       _count: { id: true },
       orderBy: { _count: { id: "desc" } },
       take: 10,
     }),
     prisma.visitor.groupBy({
       by: ["connectionType"],
-      where: { ...where, connectionType: { not: null } },
+      where: { ...visitorDf, connectionType: { not: null } },
       _count: { id: true },
       orderBy: { _count: { id: "desc" } },
       take: 5,
@@ -316,10 +322,10 @@ export async function getHardwareBreakdown(range: string = "7d") {
 
 export async function getDailyPageViews(range: string = "7d") {
   const prisma = await getPrisma();
-  const { from } = getDateRange(range);
+  const df = dateFilter(range);
 
   const views = await prisma.pageView.findMany({
-    where: { timestamp: { gte: from } },
+    where: { ...df },
     select: { timestamp: true },
     orderBy: { timestamp: "asc" },
   });

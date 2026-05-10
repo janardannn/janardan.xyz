@@ -6,6 +6,7 @@ const ranges = [
   { label: "7 days", value: "7d" },
   { label: "30 days", value: "30d" },
   { label: "90 days", value: "90d" },
+  { label: "All time", value: "all" },
 ];
 
 export default function DateRangePicker() {
