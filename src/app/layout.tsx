@@ -4,6 +4,7 @@ import { Geist_Mono, Playfair_Display, Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { TrackerProvider } from "@/components/TrackerProvider";
 import NoiseOverlay from "@/components/NoiseOverlay";
+import AmbientGlow from "@/components/AmbientGlow";
 import "./globals.css";
 
 const inter = Inter({
@@ -86,9 +87,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth dark" suppressHydrationWarning>
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <head>
-        <meta name="theme-color" content="#1e293b" />
+        <meta name="theme-color" content="#f8f6f3" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
       </head>
       <body
@@ -98,6 +99,7 @@ export default function RootLayout({
           <Suspense fallback={null}>
             <TrackerProvider />
           </Suspense>
+          <AmbientGlow />
           <NoiseOverlay />
           {children}
         </ThemeProvider>

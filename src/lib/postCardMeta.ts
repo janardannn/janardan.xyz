@@ -7,13 +7,13 @@ export function formatPostCategoryLabel(raw: string) {
     .join(" ");
 }
 
-/** Primary topic pill — plum (red-purple), not blue or safety orange. */
+/** Primary topic pill — indigo, matching unified accent. */
 export const postCategoryBadgeClass =
-  "inline-flex rounded-full border border-purple-800/25 bg-purple-950/[0.06] px-2.5 py-1 text-[11px] font-semibold tracking-wide text-purple-950 shadow-sm dark:border-purple-300/35 dark:bg-purple-400/12 dark:text-purple-100";
+  "inline-flex rounded-md border border-[var(--pop)]/25 bg-[var(--pop)]/8 px-2.5 py-1 text-[11px] font-semibold tracking-wide text-[var(--pop)]";
 
 /** Secondary tag chips (TypeScript, Docker, …). */
 export const postTagBadgeClass =
-  "inline-flex rounded-full border border-foreground/10 bg-foreground/[0.04] px-2 py-0.5 text-[11px] font-medium text-foreground/85";
+  "inline-flex rounded-md border border-foreground/8 bg-foreground/[0.03] px-2 py-0.5 text-[11px] font-medium text-muted-foreground";
 
 export function tagsExcludingCategory(tags: string[], category: string) {
   const c = category.toLowerCase();

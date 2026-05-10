@@ -1,196 +1,123 @@
 "use client"
 import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Mail, Github, Linkedin, MessageCircle, MapPin, Phone, Clock, Send } from "lucide-react"
+import { Mail, Github, Linkedin, MessageCircle, MapPin, Clock, ArrowUpRight } from "lucide-react"
 import { track } from "@/lib/tracker"
 
 const contactMethods = [
     {
         title: "Email",
-        description: "Drop me a line anytime",
+        description: "Drop me a line",
         value: "janardanhazarika20@gmail.com",
         href: "mailto:janardanhazarika20@gmail.com",
         icon: Mail,
     },
     {
         title: "Schedule a Call",
-        description: "Let's discuss your project",
-        value: "Book a meeting",
+        description: "Book a 30-min slot",
+        value: "cal.com/janardan-hazarika",
         href: "https://cal.com/janardan-hazarika",
         icon: MessageCircle,
     },
-    {
-        title: "Phone",
-        description: "Give me a call",
-        value: "+91 7002347658",
-        href: "tel:+917002347658",
-        icon: Phone,
-    }
 ]
 
 const socialLinks = [
-    { name: "GitHub", href: "https://github.com/janardannn", icon: Github, description: "Check out my code" },
-    { name: "LinkedIn", href: "https://linkedin.com/in/janardan-hazarika", icon: Linkedin, description: "Professional network" },
-    { name: "Email", href: "mailto:janardanhazarika20@gmail.com", icon: Mail, description: "Send me a message" }
+    { name: "GitHub", href: "https://github.com/janardannn", icon: Github },
+    { name: "LinkedIn", href: "https://linkedin.com/in/janardan-hazarika", icon: Linkedin },
+    { name: "Email", href: "mailto:janardanhazarika20@gmail.com", icon: Mail },
 ]
 
 export default function Contact() {
     return (
         <section className="py-24 relative overflow-hidden">
-            <div className="container px-4 mx-auto relative z-10 max-w-7xl">
+            <div className="container px-6 mx-auto relative z-10 max-w-4xl">
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5 }}
-                    className="text-center max-w-4xl mx-auto mb-20"
+                    className="text-center mb-16"
                 >
-                    <h2 className="text-2xl md:text-4xl font-bold mb-6 text-foreground font-serif">
-                        Open for Projects, Problems, and Possibilities
+                    <h2 className="text-2xl md:text-3xl font-bold text-foreground font-serif mb-3">
+                        Get in Touch
                     </h2>
-                    <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-                        I&apos;m always curious about new ideas and challenges. If you&apos;re building something exciting, let&apos;s talk.
+                    <p className="text-muted-foreground leading-relaxed max-w-lg mx-auto">
+                        Open for projects, problems, and possibilities. If you&apos;re building something exciting, let&apos;s talk.
                     </p>
-
-                    <div className="flex flex-wrap justify-center gap-4 mb-8">
-                        <Badge className="bg-secondary text-muted-foreground border-border px-4 py-2">
-                            <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
-                            Available for new projects
-                        </Badge>
-                        <Badge className="bg-secondary text-muted-foreground border-border px-4 py-2">
-                            <MapPin className="w-3 h-3 mr-2" />
-                            Based in Bengaluru, India
-                        </Badge>
-                        <Badge className="bg-secondary text-muted-foreground border-border px-4 py-2">
-                            <Clock className="w-3 h-3 mr-2" />
-                            IST Timezone
-                        </Badge>
-                    </div>
                 </motion.div>
 
-                <div className="grid md:grid-cols-3 gap-8 mb-16">
+                {/* Contact cards */}
+                <div className="grid sm:grid-cols-2 gap-4 mb-12 max-w-xl mx-auto">
                     {contactMethods.map((method, index) => (
-                        <motion.div
+                        <motion.a
                             key={method.title}
+                            href={method.href}
+                            target={method.href.startsWith('http') ? "_blank" : undefined}
+                            rel={method.href.startsWith('http') ? "noopener noreferrer" : undefined}
                             initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: index * 0.05 }}
+                            transition={{ duration: 0.4, delay: index * 0.05 }}
+                            className="group flex items-start gap-4 p-5 rounded-xl border border-border/40 bg-card/40 hover:bg-card hover:border-pop/20 transition-all"
+                            onClick={() => track("contact_click", "conversion", { method: method.title.toLowerCase().replace(/ /g, "_") })}
                         >
-                            <Card className="group hover:shadow-2xl transition-all duration-500 border border-border shadow-lg bg-card hover:bg-card/80">
-                                <CardContent className="p-8 text-center">
-                                    <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-secondary border border-border flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                        <method.icon className="h-8 w-8 text-muted-foreground" />
-                                    </div>
-                                    <h3 className="text-xl font-semibold mb-2 text-foreground">{method.title}</h3>
-                                    <p className="text-muted-foreground mb-4">{method.description}</p>
-                                    <Button
-                                        asChild
-                                        variant="outline"
-                                        className="border-2 border-border bg-secondary text-secondary-foreground hover:scale-105 transition-transform duration-200"
-                                    >
-                                        <a href={method.href} target={method.href.startsWith('http') ? "_blank" : undefined}
-                                            onClick={() => track("contact_click", "conversion", { method: method.title.toLowerCase().replace(/ /g, "_") })}>
-                                            <Send className="mr-2 h-4 w-4" />
-                                            {method.value}
-                                        </a>
-                                    </Button>
-                                </CardContent>
-                            </Card>
-                        </motion.div>
+                            <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center shrink-0 group-hover:bg-pop/10 transition-colors">
+                                <method.icon className="h-4 w-4 text-muted-foreground group-hover:text-pop transition-colors" />
+                            </div>
+                            <div className="min-w-0">
+                                <div className="flex items-center gap-1 mb-0.5">
+                                    <h3 className="text-sm font-semibold text-foreground">{method.title}</h3>
+                                    <ArrowUpRight className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </div>
+                                <p className="text-xs text-muted-foreground">{method.description}</p>
+                                <p className="text-xs text-pop mt-1 truncate">{method.value}</p>
+                            </div>
+                        </motion.a>
                     ))}
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-12 mb-16">
-                    <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5 }}
-                    >
-                        <h3 className="text-2xl font-bold mb-6 text-foreground">Connect with Me</h3>
-                        <div className="space-y-4">
-                            {socialLinks.map((social) => (
-                                <a
-                                    key={social.name}
-                                    href={social.href}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex items-center gap-4 p-4 rounded-lg bg-card border border-border hover:bg-secondary transition-all duration-200 group hover:translate-x-2"
-                                    onClick={() => track("social_click", "conversion", { platform: social.name.toLowerCase(), location: "contact" })}
-                                >
-                                    <social.icon className="h-6 w-6 text-muted-foreground group-hover:text-pop transition-colors" />
-                                    <div>
-                                        <div className="font-semibold text-foreground">{social.name}</div>
-                                        <div className="text-sm text-muted-foreground">{social.description}</div>
-                                    </div>
-                                </a>
-                            ))}
-                        </div>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: 0.1 }}
-                    >
-                        <h3 className="text-2xl font-bold mb-6 text-foreground">Working Hours</h3>
-                        <Card className="bg-card border border-border">
-                            <CardContent className="p-6">
-                                <div className="space-y-4">
-                                    <div className="flex justify-between items-center py-2">
-                                        <span className="font-medium text-foreground">All Days</span>
-                                        <span className="text-muted-foreground">24/7 Available</span>
-                                    </div>
-                                </div>
-                                <div className="mt-6 p-4 bg-secondary rounded-lg border border-border">
-                                    <p className="text-muted-foreground text-sm flex items-center">
-                                        <Clock className="h-4 w-4 mr-2" />
-                                        Response time: Usually within 24 hours
-                                    </p>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </motion.div>
-                </div>
-
+                {/* Social links row */}
                 <motion.div
-                    className="text-center"
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
+                    transition={{ duration: 0.4 }}
+                    className="flex justify-center gap-3"
                 >
-                    <h3 className="text-2xl font-bold mb-6 text-foreground">Ready to Start Your Project?</h3>
-                    <div className="flex flex-col sm:flex-row justify-center gap-4">
-                        <Button
-                            asChild
-                            size="lg"
-                            variant="outline"
-                            className="border-2 border-border bg-secondary text-secondary-foreground hover:scale-105 transition-transform duration-200"
+                    {socialLinks.map((social) => (
+                        <a
+                            key={social.name}
+                            href={social.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-border/40 bg-card/40 hover:bg-card hover:border-pop/20 transition-all text-sm text-muted-foreground hover:text-foreground"
+                            onClick={() => track("social_click", "conversion", { platform: social.name.toLowerCase(), location: "contact" })}
                         >
-                            <a href="mailto:janardanhazarika20@gmail.com"
-                                onClick={() => track("cta_click", "conversion", { label: "send_email", location: "contact_bottom" })}>
-                                <Mail className="mr-2 h-5 w-5" />
-                                Send me an Email
-                            </a>
-                        </Button>
-                        <Button
-                            asChild
-                            size="lg"
-                            variant="outline"
-                            className="border-2 border-border bg-secondary text-secondary-foreground hover:scale-105 transition-transform duration-200"
-                        >
-                            <a href="https://cal.com/janardan-hazarika" target="_blank"
-                                onClick={() => track("cta_click", "conversion", { label: "schedule_call", location: "contact_bottom" })}>
-                                <MessageCircle className="mr-2 h-5 w-5" />
-                                Schedule a Call
-                            </a>
-                        </Button>
-                    </div>
+                            <social.icon className="h-4 w-4" />
+                            <span className="hidden sm:inline">{social.name}</span>
+                        </a>
+                    ))}
+                </motion.div>
+
+                {/* Status indicators */}
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: 0.2 }}
+                    className="flex justify-center gap-6 mt-10 text-xs text-muted-foreground"
+                >
+                    <span className="flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                        Available for new projects
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                        <MapPin className="h-3 w-3" />
+                        Bengaluru, India
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                        <Clock className="h-3 w-3" />
+                        IST
+                    </span>
                 </motion.div>
             </div>
         </section>

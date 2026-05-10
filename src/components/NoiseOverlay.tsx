@@ -12,8 +12,7 @@ export default function NoiseOverlay() {
     const ctx = canvas.getContext("2d")
     if (!ctx) return
 
-    // Small tile with fine grain
-    const tile = 128
+    const tile = 256
     const offscreen = document.createElement("canvas")
     offscreen.width = tile
     offscreen.height = tile
@@ -30,15 +29,19 @@ export default function NoiseOverlay() {
     }
     offCtx.putImageData(imageData, 0, 0)
 
-    // Tile it across the full viewport
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
-
-    const pattern = ctx.createPattern(offscreen, "repeat")
-    if (pattern) {
-      ctx.fillStyle = pattern
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+    const resize = () => {
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+      const pattern = ctx.createPattern(offscreen, "repeat")
+      if (pattern) {
+        ctx.fillStyle = pattern
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+      }
     }
+
+    resize()
+    window.addEventListener("resize", resize)
+    return () => window.removeEventListener("resize", resize)
   }, [])
 
   return (
@@ -46,7 +49,8 @@ export default function NoiseOverlay() {
       ref={canvasRef}
       className="pointer-events-none fixed inset-0 z-0 h-full w-full"
       style={{
-        opacity: 0.07,
+        opacity: 0.09,
+        mixBlendMode: "overlay",
       }}
     />
   )

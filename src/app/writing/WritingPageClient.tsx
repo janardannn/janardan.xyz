@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Calendar, Clock, ArrowRight } from "lucide-react";
@@ -13,6 +12,7 @@ import {
   postTagBadgeClass,
   tagsExcludingCategory,
 } from "@/lib/postCardMeta";
+import { track } from "@/lib/tracker";
 
 interface Post {
   title: string;
@@ -29,8 +29,9 @@ interface Post {
 export default function WritingPageClient({ posts }: { posts: Post[] }) {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <section className="py-24 relative overflow-hidden">
-        <div className="container px-6 mx-auto max-w-7xl relative z-10">
+      {/* Header */}
+      <section className="pt-32 pb-12 relative overflow-hidden">
+        <div className="container px-6 mx-auto max-w-4xl relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -39,7 +40,8 @@ export default function WritingPageClient({ posts }: { posts: Post[] }) {
             <Button
               variant="outline"
               asChild
-              className="mb-8 border-2 border-border bg-secondary text-secondary-foreground hover:scale-105 transition-all duration-200"
+              size="sm"
+              className="mb-8 border-border/50 hover:bg-secondary"
             >
               <Link href="/">
                 <ArrowLeft className="mr-2 h-4 w-4" />
@@ -47,108 +49,86 @@ export default function WritingPageClient({ posts }: { posts: Post[] }) {
               </Link>
             </Button>
 
-            <h1 className="text-4xl md:text-4xl font-bold mb-6 text-foreground font-serif">
+            <h1 className="text-3xl md:text-4xl font-bold text-foreground font-serif mb-3">
               Writing
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed">
+            <p className="text-muted-foreground max-w-xl leading-relaxed">
               Thoughts on code, systems, and the messy process of turning ideas into products.
             </p>
           </motion.div>
         </div>
       </section>
 
-      <section className="py-16 relative overflow-hidden">
-        <div className="container px-6 mx-auto max-w-7xl relative z-10">
-          <motion.h3
-            className="text-3xl font-bold text-foreground mb-12"
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            All Articles
-          </motion.h3>
-
+      {/* Articles */}
+      <section className="pb-24 relative overflow-hidden">
+        <div className="container px-6 mx-auto max-w-4xl relative z-10">
           {posts.length === 0 ? (
             <p className="text-muted-foreground text-center py-16">No posts yet. Check back soon!</p>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="space-y-1">
               {posts.map((post, index) => {
                 const extraTags = tagsExcludingCategory(post.tags, post.category);
                 return (
-                <motion.div
-                  key={post.slug}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.05 }}
-                  className="group"
-                >
-                  <Card className="h-full hover:shadow-xl transition-all duration-300 border border-border bg-card rounded-2xl hover:scale-[1.02] overflow-hidden">
-                    {post.bannerImage && (
-                      <div className="relative h-48 w-full overflow-hidden">
-                        <Image
-                          src={post.bannerImage}
-                          alt={post.title}
-                          fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                      </div>
-                    )}
-                    <CardContent className="p-6">
-                      <div className="mb-3 space-y-2">
-                        <div className="flex flex-wrap">
+                  <motion.div
+                    key={post.slug}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: index * 0.03 }}
+                  >
+                    <Link
+                      href={`/writing/${post.slug}`}
+                      onClick={() => track("blog_click", "engagement", { slug: post.slug, title: post.title })}
+                      className="group flex gap-5 items-start p-4 -mx-4 rounded-xl hover:bg-card/60 transition-colors"
+                    >
+                      {post.bannerImage && (
+                        <div className="relative w-72 h-40 shrink-0 rounded-xl overflow-hidden hidden sm:block">
+                          <Image
+                            src={post.bannerImage}
+                            alt={post.title}
+                            fill
+                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-wrap items-center gap-2 mb-2">
                           <Badge className={postCategoryBadgeClass}>
                             {formatPostCategoryLabel(post.category)}
                           </Badge>
+                          {extraTags.slice(0, 3).map((tag) => (
+                            <Badge key={tag} className={postTagBadgeClass}>
+                              {tag}
+                            </Badge>
+                          ))}
+                          {extraTags.length > 3 && (
+                            <span className="text-[11px] text-muted-foreground">+{extraTags.length - 3}</span>
+                          )}
                         </div>
-                        {extraTags.length > 0 ? (
-                          <div className="flex flex-wrap gap-1.5">
-                            {extraTags.slice(0, 4).map((tag) => (
-                              <Badge key={tag} className={postTagBadgeClass}>
-                                {tag}
-                              </Badge>
-                            ))}
-                            {extraTags.length > 4 && (
-                              <span className="text-xs text-muted-foreground">+{extraTags.length - 4}</span>
-                            )}
-                          </div>
-                        ) : null}
+
+                        <h4 className="font-bold text-lg text-foreground group-hover:text-pop transition-colors mb-1.5 font-serif leading-snug">
+                          {post.title}
+                        </h4>
+
+                        <p className="text-muted-foreground text-sm leading-relaxed mb-2 line-clamp-2">
+                          {post.excerpt}
+                        </p>
+
+                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                          <span className="flex items-center gap-1">
+                            <Calendar className="h-3 w-3" />
+                            {post.date}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Clock className="h-3 w-3" />
+                            {post.readTime}
+                          </span>
+                        </div>
                       </div>
 
-                      <div className="flex items-center justify-between text-sm text-muted-foreground mb-3">
-                        <div className="flex items-center">
-                          <Calendar className="h-4 w-4 mr-2" />
-                          {post.date}
-                        </div>
-                        <div className="flex items-center text-xs">
-                          <Clock className="h-3 w-3 mr-1" />
-                          {post.readTime}
-                        </div>
-                      </div>
-
-                      <h4 className="font-bold text-lg text-foreground group-hover:text-pop transition-colors mb-3 font-serif">
-                        {post.title}
-                      </h4>
-
-                      <p className="text-muted-foreground text-sm leading-relaxed mb-4 line-clamp-3">
-                        {post.excerpt}
-                      </p>
-
-                      <Button
-                        variant="outline"
-                        asChild
-                        size="sm"
-                        className="w-full border-2 border-border bg-secondary text-secondary-foreground hover:scale-105 transition-all duration-200"
-                      >
-                        <Link href={`/writing/${post.slug}`} className="flex items-center justify-center">
-                          Read More
-                          <ArrowRight className="ml-1 h-3 w-3" />
-                        </Link>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </motion.div>
+                      <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-pop group-hover:translate-x-1 transition-all duration-200 shrink-0 mt-1 hidden md:block" />
+                    </Link>
+                  </motion.div>
                 );
               })}
             </div>

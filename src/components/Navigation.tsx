@@ -19,102 +19,116 @@ export default function Navigation() {
         return () => window.removeEventListener("scroll", handleScroll)
     }, [])
 
-    const navItems = ["About", "Projects", "Writing", "Contact"]
+    const navItems = [
+        { label: "About", href: "#about" },
+        { label: "Projects", href: "#projects" },
+        { label: "Writing", href: "#writing" },
+        { label: "Contact", href: "#contact" },
+    ]
 
     return (
         <motion.nav
-            className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? "pt-4" : ""}`}
-            initial={{ y: -100 }}
-            animate={{ y: 0 }}
-            transition={{ duration: 0.6 }}
+            className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 md:pt-6"
+            initial={{ y: -40, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
         >
-            <div className={`container px-4 mx-auto max-w-7xl transition-all duration-500 ${scrolled ? "max-w-4xl" : ""}`}>
-                <div className={`flex justify-between items-center py-4 transition-all duration-500 ${scrolled
-                    ? "bg-background/80 backdrop-blur-xl shadow-2xl border border-border rounded-2xl px-6 py-3"
-                    : "bg-transparent"
-                    }`}>
-                    <div className="font-bold text-l text-foreground hover:scale-105 transition-transform">
-                        <a href="#home" onClick={() => track("nav_click", "navigation", { item: "logo" })}>janardan.xyz</a>
-                    </div>
+            <div
+                className={`
+                    flex items-center gap-1 px-2 py-2 rounded-full transition-all duration-500
+                    ${scrolled
+                        ? "bg-background/70 backdrop-blur-xl border border-border/60 shadow-lg"
+                        : "bg-transparent border border-transparent"
+                    }
+                `}
+            >
+                <a
+                    href="#home"
+                    onClick={() => track("nav_click", "navigation", { item: "logo" })}
+                    className="px-4 py-1.5 text-sm font-semibold text-foreground hover:text-pop transition-colors"
+                >
+                    janardan
+                </a>
 
-                    <div className="hidden md:flex items-center space-x-8">
-                        {navItems.map((item) => (
-                            <a
-                                key={item}
-                                href={item === "Resume" ? "/resume.pdf" : `#${item.toLowerCase()}`}
-                                className="font-medium text-muted-foreground hover:text-pop transition-colors duration-200"
-                                onClick={() => track("nav_click", "navigation", { item, device: "desktop" })}
-                            >
-                                {item}
-                            </a>
-                        ))}
-                        <button
-                            onClick={() => {
-                                const newTheme = theme === "dark" ? "light" : "dark"
-                                setTheme(newTheme)
-                                track("theme_toggle", "interaction", { newTheme })
-                            }}
-                            className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
-                            aria-label="Toggle theme"
-                        >
-                            {mounted && (theme === "dark" ? <Sun size={18} /> : <Moon size={18} />)}
-                        </button>
-                    </div>
+                <span className="w-px h-4 bg-border/60 hidden md:block" />
 
-                    <div className="flex md:hidden items-center gap-2">
-                        <button
-                            onClick={() => {
-                                const newTheme = theme === "dark" ? "light" : "dark"
-                                setTheme(newTheme)
-                                track("theme_toggle", "interaction", { newTheme })
-                            }}
-                            className="p-2 rounded-lg text-muted-foreground hover:text-foreground transition-colors"
-                            aria-label="Toggle theme"
+                <div className="hidden md:flex items-center">
+                    {navItems.map((item) => (
+                        <a
+                            key={item.label}
+                            href={item.href}
+                            className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
+                            onClick={() => track("nav_click", "navigation", { item: item.label, device: "desktop" })}
                         >
-                            {mounted && (theme === "dark" ? <Sun size={18} /> : <Moon size={18} />)}
-                        </button>
-                        <button
-                            className="p-2 text-foreground"
-                            onClick={() => {
-                                const newState = !mobileMenuOpen
-                                setMobileMenuOpen(newState)
-                                track("mobile_menu_toggle", "navigation", { state: newState ? "open" : "close" })
-                            }}
-                            aria-label="Toggle mobile menu"
-                        >
-                            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-                        </button>
-                    </div>
+                            {item.label}
+                        </a>
+                    ))}
                 </div>
 
-                {mobileMenuOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className={`md:hidden bg-background/90 backdrop-blur-xl shadow-lg border border-border transition-all duration-300 ${scrolled
-                            ? "rounded-2xl mx-0 mt-4"
-                            : "rounded-lg mx-4 mb-4"
-                            }`}
+                <span className="w-px h-4 bg-border/60 hidden md:block" />
+
+                <button
+                    onClick={() => {
+                        const newTheme = theme === "dark" ? "light" : "dark"
+                        setTheme(newTheme)
+                        track("theme_toggle", "interaction", { newTheme })
+                    }}
+                    className="p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+                    aria-label="Toggle theme"
+                >
+                    {mounted && (theme === "dark" ? <Sun size={16} /> : <Moon size={16} />)}
+                </button>
+
+                <div className="flex md:hidden items-center gap-2">
+                    <button
+                        onClick={() => {
+                            const newTheme = theme === "dark" ? "light" : "dark"
+                            setTheme(newTheme)
+                            track("theme_toggle", "interaction", { newTheme })
+                        }}
+                        className="p-2 rounded-lg text-muted-foreground hover:text-foreground transition-colors"
+                        aria-label="Toggle theme"
                     >
-                        <div className="flex flex-col space-y-4 p-6">
-                            {navItems.map((item) => (
-                                <a
-                                    key={item}
-                                    href={item === "Resume" ? "/resume.pdf" : `#${item.toLowerCase()}`}
-                                    className="text-muted-foreground hover:text-pop transition-colors font-medium"
-                                    onClick={() => {
-                                        setMobileMenuOpen(false)
-                                        track("nav_click", "navigation", { item, device: "mobile" })
-                                    }}
-                                >
-                                    {item}
-                                </a>
-                            ))}
-                        </div>
-                    </motion.div>
-                )}
+                        {mounted && (theme === "dark" ? <Sun size={16} /> : <Moon size={16} />)}
+                    </button>
+                    <button
+                        className="p-2 text-foreground"
+                        onClick={() => {
+                            const newState = !mobileMenuOpen
+                            setMobileMenuOpen(newState)
+                            track("mobile_menu_toggle", "navigation", { state: newState ? "open" : "close" })
+                        }}
+                        aria-label="Toggle mobile menu"
+                    >
+                        {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+                    </button>
+                </div>
             </div>
+
+            {mobileMenuOpen && (
+                <motion.div
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    className="absolute top-full left-4 right-4 mt-2 md:hidden bg-background/90 backdrop-blur-xl border border-border/60 rounded-2xl shadow-xl overflow-hidden"
+                >
+                    <div className="flex flex-col p-2">
+                        {navItems.map((item) => (
+                            <a
+                                key={item.label}
+                                href={item.href}
+                                className="px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-secondary/50 rounded-xl transition-colors font-medium"
+                                onClick={() => {
+                                    setMobileMenuOpen(false)
+                                    track("nav_click", "navigation", { item: item.label, device: "mobile" })
+                                }}
+                            >
+                                {item.label}
+                            </a>
+                        ))}
+                    </div>
+                </motion.div>
+            )}
         </motion.nav>
     )
 }
