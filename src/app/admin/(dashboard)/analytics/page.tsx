@@ -76,7 +76,6 @@ async function AnalyticsDashboard({ range }: { range: string }) {
           <h3 className="text-sm text-gray-400 mb-4">Page Views Trend</h3>
           <MiniChart
             data={dailyViews.map((d) => d.count)}
-            width={800}
             height={80}
           />
           <div className="flex justify-between text-xs text-gray-600 mt-2">
