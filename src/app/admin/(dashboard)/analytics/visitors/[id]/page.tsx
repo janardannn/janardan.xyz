@@ -99,6 +99,63 @@ export default async function VisitorDetailPage({
           ))}
         </div>
 
+        {/* Bot Detection */}
+        {(visitor.botScore != null || visitor.webdriver != null || visitor.pluginsLength != null) && (
+          <div className="mt-4 pt-4 border-t border-gray-800">
+            <p className="text-xs text-gray-500 uppercase mb-3">Bot Detection</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {visitor.botScore != null && (
+                <div>
+                  <p className="text-xs text-gray-500">Bot Score</p>
+                  <div className="flex items-center gap-2 mt-1">
+                    <div className="flex-1 h-2 bg-gray-800 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full rounded-full ${
+                          visitor.botScore >= 50 ? "bg-rose-500" : visitor.botScore >= 30 ? "bg-amber-500" : "bg-emerald-500"
+                        }`}
+                        style={{ width: `${Math.min(visitor.botScore, 100)}%` }}
+                      />
+                    </div>
+                    <span className={`text-sm font-mono font-medium ${
+                      visitor.botScore >= 50 ? "text-rose-400" : visitor.botScore >= 30 ? "text-amber-400" : "text-emerald-400"
+                    }`}>
+                      {visitor.botScore}
+                    </span>
+                  </div>
+                </div>
+              )}
+              {visitor.webdriver != null && (
+                <div>
+                  <p className="text-xs text-gray-500">WebDriver</p>
+                  <p className={`text-sm font-medium ${visitor.webdriver ? "text-rose-400" : "text-emerald-400"}`}>
+                    {visitor.webdriver ? "Detected" : "Not detected"}
+                  </p>
+                </div>
+              )}
+              {visitor.pluginsLength != null && (
+                <div>
+                  <p className="text-xs text-gray-500">Plugins</p>
+                  <p className={`text-sm font-medium ${visitor.pluginsLength === 0 ? "text-amber-400" : "text-gray-300"}`}>
+                    {visitor.pluginsLength}
+                  </p>
+                </div>
+              )}
+            </div>
+            {Array.isArray(visitor.botSignals) && visitor.botSignals.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-3">
+                {(visitor.botSignals as string[]).map((signal) => (
+                  <span
+                    key={signal}
+                    className="px-2 py-0.5 bg-gray-800 text-gray-400 rounded text-xs font-mono"
+                  >
+                    {signal}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
         {/* User Agent */}
         <div className="mt-4 pt-4 border-t border-gray-800">
           <p className="text-xs text-gray-500 mb-1">User Agent</p>
