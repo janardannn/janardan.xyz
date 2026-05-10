@@ -60,8 +60,9 @@ async function AnalyticsDashboard({ range }: { range: string }) {
   return (
     <>
       {/* Stats Row */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-7 gap-4 mb-8">
         <StatCard label="Unique Visitors" value={stats.visitors} />
+        <StatCard label="Bots" value={stats.bots} />
         <StatCard label="Sessions" value={stats.sessions} />
         <StatCard label="Page Views" value={stats.pageViews} />
         <StatCard label="Events" value={stats.events} />
@@ -258,8 +259,8 @@ export default async function AnalyticsPage({
 
       <Suspense
         fallback={
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
-            {Array.from({ length: 6 }).map((_, i) => (
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-7 gap-4 mb-8">
+            {Array.from({ length: 7 }).map((_, i) => (
               <div key={i} className="bg-gray-900 border border-gray-800 rounded-xl p-6 animate-pulse">
                 <div className="h-3 w-16 bg-gray-800 rounded mb-2" />
                 <div className="h-8 w-20 bg-gray-800 rounded" />

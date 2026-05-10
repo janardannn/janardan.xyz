@@ -80,6 +80,12 @@ function parseUserAgent(ua: string) {
   return { browser, os, device };
 }
 
+function detectBot(ua: string): boolean {
+  if (!ua) return false;
+  const botPattern = /bot|crawler|spider|crawling|slurp|bingpreview|facebookexternalhit|whatsapp|telegram|discord|preview|scanner|archiver|curl|wget|python-requests|go-http|java\//i;
+  return botPattern.test(ua);
+}
+
 export async function POST(req: NextRequest) {
   try {
     const payload: TrackingPayload = await req.json();
@@ -94,12 +100,14 @@ export async function POST(req: NextRequest) {
       device.userAgent || ""
     );
     const geo = extractGeoData(req);
+    const isBot = detectBot(device.userAgent || "");
 
     // 1. Upsert visitor
     const visitor = await prisma.visitor.upsert({
       where: { fingerprint },
       create: {
         fingerprint,
+        isBot,
         userAgent: device.userAgent,
         browser,
         os,
@@ -129,6 +137,7 @@ export async function POST(req: NextRequest) {
       },
       update: {
         lastSeenAt: new Date(),
+        isBot,
         userAgent: device.userAgent,
         browser,
         os,

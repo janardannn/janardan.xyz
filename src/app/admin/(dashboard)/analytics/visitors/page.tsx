@@ -27,6 +27,7 @@ async function VisitorList({ page }: { page: number }) {
           <thead>
             <tr className="border-b border-gray-800">
               <th className="text-left py-3 px-4 text-gray-400 font-medium">Fingerprint</th>
+              <th className="text-left py-3 px-4 text-gray-400 font-medium">Type</th>
               <th className="text-left py-3 px-4 text-gray-400 font-medium">Browser</th>
               <th className="text-left py-3 px-4 text-gray-400 font-medium">OS</th>
               <th className="text-left py-3 px-4 text-gray-400 font-medium">Device</th>
@@ -38,7 +39,7 @@ async function VisitorList({ page }: { page: number }) {
           <tbody>
             {visitors.length === 0 && (
               <tr>
-                <td colSpan={7} className="py-8 text-center text-gray-500">
+                <td colSpan={8} className="py-8 text-center text-gray-500">
                   No visitors yet
                 </td>
               </tr>
@@ -52,6 +53,17 @@ async function VisitorList({ page }: { page: number }) {
                   >
                     {v.fingerprint.slice(0, 12)}...
                   </Link>
+                </td>
+                <td className="py-3 px-4">
+                  {v.isBot ? (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-rose-500/15 text-rose-400 border border-rose-500/25">
+                      Bot
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25">
+                      Human
+                    </span>
+                  )}
                 </td>
                 <td className="py-3 px-4 text-gray-300">{v.browser ?? "—"}</td>
                 <td className="py-3 px-4 text-gray-300">{v.os ?? "—"}</td>

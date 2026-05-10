@@ -42,6 +42,9 @@ model Visitor {
   language     String?
   timezone     String?
 
+  // Bot detection (server-side)
+  isBot      Boolean  @default(false)
+
   // Geolocation (server-side, from Vercel headers)
   country    String?
   region     String?
@@ -69,6 +72,7 @@ model Visitor {
   @@index([firstSeenAt])
   @@index([country])
   @@index([city])
+  @@index([isBot])
   @@map("visitors")
 }
 

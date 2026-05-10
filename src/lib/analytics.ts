@@ -25,9 +25,11 @@ export async function getOverviewStats(range: string = "7d") {
   const { from, to } = getDateRange(range);
   const where = { timestamp: { gte: from, lte: to } };
   const sessionWhere = { startedAt: { gte: from, lte: to } };
+  const visitorWhere = { lastSeenAt: { gte: from, lte: to } };
 
-  const [visitors, sessions, pageViews, events] = await Promise.all([
-    prisma.visitor.count({ where: { lastSeenAt: { gte: from, lte: to } } }),
+  const [visitors, bots, sessions, pageViews, events] = await Promise.all([
+    prisma.visitor.count({ where: visitorWhere }),
+    prisma.visitor.count({ where: { ...visitorWhere, isBot: true } }),
     prisma.session.count({ where: sessionWhere }),
     prisma.pageView.count({ where }),
     prisma.trackingEvent.count({ where }),
@@ -45,7 +47,7 @@ export async function getOverviewStats(range: string = "7d") {
   const avgDuration = Math.round(durationAgg._avg.duration ?? 0);
   const bounceRate = sessions > 0 ? Math.round((bounceSessions / sessions) * 100) : 0;
 
-  return { visitors, sessions, pageViews, events, avgDuration, bounceRate };
+  return { visitors, bots, sessions, pageViews, events, avgDuration, bounceRate };
 }
 
 export async function getTopPages(range: string = "7d", limit: number = 10) {
@@ -159,6 +161,7 @@ export async function getVisitors(
     visitors: visitors.map((v) => ({
       id: v.id,
       fingerprint: v.fingerprint,
+      isBot: v.isBot,
       browser: v.browser,
       os: v.os,
       device: v.device,
