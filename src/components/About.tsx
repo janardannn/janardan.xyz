@@ -45,7 +45,7 @@ const experience = [
     company: "Scaler (InterviewBit Technologies)",
     period: "Sep 2025 — Sep 2026",
     description:
-      "Owned AWS infrastructure — Terraform-provisioned ECS-on-EC2, RDS Multi-AZ, ElastiCache and CloudFront across isolated staging and production, with OpenTelemetry and Sentry feeding CloudWatch → PagerDuty. Shipped an AI widget for SWAYAM (NPTEL) reaching 10L+ learners, a résumé screening pipeline handling 10,000+ applications daily, and a Rails lead auto-allocation service using distributed locking.",
+      "Owned AWS infrastructure — Terraform-provisioned ECS-on-EC2, RDS Multi-AZ, ElastiCache and CloudFront across isolated staging and production, with OpenTelemetry and Sentry feeding CloudWatch → PagerDuty. Also shipped a Rails lead auto-allocation service using distributed locking, CRM activity checks and multi-layered eligibility guards.",
     href: "https://scaler.com",
   },
   {
