@@ -8,7 +8,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
-  --font-serif: var(--font-serif);
+  --font-display: var(--font-display);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -38,41 +38,58 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --color-pop: var(--pop);
-  --color-pop-muted: var(--pop-muted);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --color-signal: var(--signal);
+  --color-signal-dim: var(--signal-dim);
+  --color-rule: var(--rule);
+  /* Tailwind's rounded-* scale still resolves to the pre-revamp values. The
+     admin dashboard is out of scope and leans on these across ~40 elements;
+     the new public design gets its sharpness from --radius instead. */
+  --radius-sm: calc(var(--radius-ui) - 4px);
+  --radius-md: calc(var(--radius-ui) - 2px);
+  --radius-lg: var(--radius-ui);
+  --radius-xl: calc(var(--radius-ui) + 4px);
 }
 
 :root {
-  --radius: 0.625rem;
-  /* Light mode: warm paper, not generic off-white */
-  --background: oklch(0.97 0.005 80);
-  --foreground: oklch(0.15 0.02 270);
-  --card: oklch(0.98 0.003 80);
-  --card-foreground: oklch(0.15 0.02 270);
-  --popover: oklch(0.98 0.003 80);
-  --popover-foreground: oklch(0.15 0.02 270);
-  --primary: oklch(0.55 0.14 270);
+  /* Near-sharp. Elevation is expressed as a hairline, never a shadow. */
+  --radius: 2px;
+  /* Legacy scale retained so the out-of-scope admin dashboard is untouched. */
+  --radius-ui: 0.625rem;
+
+  /* Light: paper */
+  --background: oklch(0.975 0.004 85);
+  --foreground: oklch(0.18 0.01 260);
+  --card: oklch(0.995 0.002 85);
+  --card-foreground: oklch(0.18 0.01 260);
+  --popover: oklch(0.995 0.002 85);
+  --popover-foreground: oklch(0.18 0.01 260);
+  --primary: oklch(0.18 0.01 260);
   --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.94 0.01 80);
-  --secondary-foreground: oklch(0.25 0.02 270);
-  --muted: oklch(0.93 0.008 80);
-  --muted-foreground: oklch(0.50 0.015 270);
-  --accent: oklch(0.94 0.01 80);
-  --accent-foreground: oklch(0.25 0.02 270);
+  --secondary: oklch(0.945 0.004 85);
+  --secondary-foreground: oklch(0.25 0.01 260);
+  --muted: oklch(0.945 0.004 85);
+  --muted-foreground: oklch(0.48 0.012 260);
+  --accent: oklch(0.945 0.004 85);
+  --accent-foreground: oklch(0.25 0.01 260);
   --destructive: oklch(0.577 0.245 27.325);
-  /* Subtle borders */
-  --border: oklch(0.85 0.01 80);
-  --input: oklch(0.85 0.01 80);
-  --ring: oklch(0.65 0.12 270);
+  --border: oklch(0.86 0.006 85);
+  --input: oklch(0.86 0.006 85);
+  --ring: var(--signal);
+
+  /* The one signal colour. Amber reads as instrument, not cyberpunk. */
+  --signal: oklch(0.52 0.14 62);
+  --signal-dim: oklch(0.66 0.1 62);
+
+  /* Hairline: the primary separator in this design. */
+  --rule: color-mix(in oklch, var(--foreground) 14%, transparent);
+  --rule-faint: color-mix(in oklch, var(--foreground) 7%, transparent);
+
+  /* Admin dashboard tokens — deliberately untouched by the revamp. */
   --chart-1: oklch(0.55 0.14 270);
   --chart-2: oklch(0.65 0.12 200);
-  --chart-3: oklch(0.60 0.10 160);
-  --chart-4: oklch(0.70 0.10 300);
-  --chart-5: oklch(0.60 0.14 30);
+  --chart-3: oklch(0.6 0.1 160);
+  --chart-4: oklch(0.7 0.1 300);
+  --chart-5: oklch(0.6 0.14 30);
   --sidebar: oklch(0.96 0.005 80);
   --sidebar-foreground: oklch(0.15 0.02 270);
   --sidebar-primary: oklch(0.55 0.14 270);
@@ -81,67 +98,75 @@
   --sidebar-accent-foreground: oklch(0.25 0.02 270);
   --sidebar-border: oklch(0.88 0.008 80);
   --sidebar-ring: oklch(0.65 0.12 270);
-  /* Bold accent: rich violet-indigo, more personality */
-  --pop: oklch(0.52 0.20 275);
-  --pop-muted: oklch(0.62 0.14 275);
 }
 
 .dark {
-  /* Dark mode: lighter slate, less oppressive */
-  --background: oklch(0.22 0.025 270);
-  --foreground: oklch(0.94 0.015 265);
-  --card: oklch(0.27 0.03 270);
-  --card-foreground: oklch(0.94 0.015 265);
-  --popover: oklch(0.27 0.03 270);
-  --popover-foreground: oklch(0.94 0.015 265);
-  --primary: oklch(0.78 0.10 270);
-  --primary-foreground: oklch(0.15 0.02 270);
-  --secondary: oklch(0.30 0.02 265);
-  --secondary-foreground: oklch(0.88 0.01 260);
-  --muted: oklch(0.30 0.02 265);
-  --muted-foreground: oklch(0.70 0.015 265);
-  --accent: oklch(0.30 0.02 265);
-  --accent-foreground: oklch(0.94 0.01 260);
+  /* Dark: properly dark, so the signal can glow. */
+  --background: oklch(0.16 0.008 250);
+  --foreground: oklch(0.93 0.008 250);
+  --card: oklch(0.2 0.01 250);
+  --card-foreground: oklch(0.93 0.008 250);
+  --popover: oklch(0.2 0.01 250);
+  --popover-foreground: oklch(0.93 0.008 250);
+  --primary: oklch(0.93 0.008 250);
+  --primary-foreground: oklch(0.16 0.008 250);
+  --secondary: oklch(0.24 0.01 250);
+  --secondary-foreground: oklch(0.88 0.008 250);
+  --muted: oklch(0.24 0.01 250);
+  --muted-foreground: oklch(0.68 0.01 250);
+  --accent: oklch(0.24 0.01 250);
+  --accent-foreground: oklch(0.93 0.008 250);
   --destructive: oklch(0.704 0.191 22.216);
-  /* Borders slightly more visible */
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 14%);
-  --ring: oklch(0.72 0.10 270);
-  --chart-1: oklch(0.72 0.10 270);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: var(--signal);
+
+  --signal: oklch(0.78 0.16 70);
+  --signal-dim: oklch(0.62 0.12 70);
+
+  --rule: color-mix(in oklch, var(--foreground) 16%, transparent);
+  --rule-faint: color-mix(in oklch, var(--foreground) 8%, transparent);
+
+  /* Admin dashboard tokens — deliberately untouched by the revamp. */
+  --chart-1: oklch(0.72 0.1 270);
   --chart-2: oklch(0.68 0.12 200);
-  --chart-3: oklch(0.62 0.10 160);
-  --chart-4: oklch(0.75 0.10 300);
+  --chart-3: oklch(0.62 0.1 160);
+  --chart-4: oklch(0.75 0.1 300);
   --chart-5: oklch(0.65 0.14 30);
   --sidebar: oklch(0.26 0.025 265);
   --sidebar-foreground: oklch(0.93 0.01 260);
-  --sidebar-primary: oklch(0.72 0.10 270);
+  --sidebar-primary: oklch(0.72 0.1 270);
   --sidebar-primary-foreground: oklch(0.15 0.02 270);
   --sidebar-accent: oklch(0.32 0.025 265);
   --sidebar-accent-foreground: oklch(0.93 0.01 260);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.72 0.10 270);
-  /* Bold accent in dark: electric violet */
-  --pop: oklch(0.75 0.18 275);
-  --pop-muted: oklch(0.65 0.14 275);
+  --sidebar-ring: oklch(0.72 0.1 270);
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
 
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
+  }
+
+  /* Tabular numerals everywhere numbers carry meaning. */
+  .tnum,
+  .font-mono {
+    font-variant-numeric: tabular-nums;
   }
 
   ::selection {
-    background: var(--pop);
-    color: var(--primary-foreground);
+    background: var(--signal);
+    color: var(--background);
   }
 
   ::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
+    height: 8px;
   }
 
   ::-webkit-scrollbar-track {
@@ -149,24 +174,174 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: var(--muted-foreground);
-    opacity: 0.3;
-    border-radius: 3px;
+    background: var(--rule);
+    border-radius: 0;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    opacity: 0.5;
+    background: var(--signal-dim);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 2px;
   }
 }
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 6rem;
+  scroll-padding-top: 5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 @layer components {
-  .text-balance {
+  /* ── Type roles ─────────────────────────────────────────────
+     Display for headlines, mono for structure. The homepage uses
+     no body sans at all; prose sans lives only in the reader. */
+
+  .t-display {
+    font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 0.88;
     text-wrap: balance;
+  }
+
+  .t-hero {
+    font-size: clamp(2.75rem, 11vw, 9rem);
+  }
+
+  .t-h2 {
+    font-size: clamp(1.75rem, 4vw, 3rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .t-h3 {
+    font-size: 1.25rem;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+
+  /* Mono label: 11px, uppercase, wide. Metadata only, never body. */
+  .t-label {
+    font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.6875rem;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 500;
+  }
+
+  .t-mono {
+    font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+
+  .t-mono-sm {
+    font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+
+  /* ── Structure ────────────────────────────────────────────── */
+
+  .shell {
+    width: 100%;
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .shell {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  /* Hairline rules are the primary separator, not whitespace. */
+  .rule-t {
+    border-top: 1px solid var(--rule);
+  }
+
+  .rule-b {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .rule-l {
+    border-left: 1px solid var(--rule);
+  }
+
+  /* Faint dot grid, aligned to the layout rhythm. Pure CSS. */
+  .grid-field {
+    background-image: radial-gradient(var(--rule-faint) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-position: -1px -1px;
+  }
+
+  /* Mono text link with an underline that wipes in from the left. */
+  .link-mono {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--foreground);
+    transition: color 120ms ease-out;
+  }
+
+  .link-mono::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -3px;
+    height: 1px;
+    background: var(--signal);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 160ms ease-out;
+  }
+
+  .link-mono:hover {
+    color: var(--signal);
+  }
+
+  .link-mono:hover::after {
+    transform: scaleX(1);
+  }
+
+  /* Dense mono chip — replaces the badge pills. */
+  .chip {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 0.6875rem;
+    line-height: 1;
+    padding: 0.3125rem 0.4375rem;
+    border: 1px solid var(--rule);
+    color: var(--muted-foreground);
+    white-space: nowrap;
+    transition: border-color 120ms ease-out, color 120ms ease-out;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .line-clamp-3 {
@@ -175,144 +350,16 @@ html {
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-
-  .hover-lift {
-    @apply transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-lg;
-  }
-
-  .focus-ring {
-    @apply focus:outline-none focus:ring-2 focus:ring-pop focus:ring-offset-2 focus:ring-offset-background;
-  }
-
-  /* Terminal / code aesthetic utilities */
-  .terminal-text {
-    font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 0.8125rem;
-    line-height: 1.6;
-  }
-
-  .surface-elevated {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-  }
-
-  .surface-elevated:hover {
-    box-shadow: 0 4px 12px -2px rgb(0 0 0 / 0.08), 0 2px 6px -2px rgb(0 0 0 / 0.04);
-    transform: translateY(-2px);
-  }
-
-  .dark .surface-elevated {
-    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.15), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  }
-
-  .dark .surface-elevated:hover {
-    box-shadow: 0 4px 12px -2px rgb(0 0 0 / 0.3), 0 2px 6px -2px rgb(0 0 0 / 0.15);
-  }
-
-  /* Primary action button */
-  .btn-primary {
-    background: var(--pop);
-    color: var(--primary-foreground);
-    border: none;
-    border-radius: var(--radius-md);
-    padding: 0.625rem 1.25rem;
-    font-weight: 500;
-    font-size: 0.875rem;
-    transition: filter 0.2s ease, transform 0.2s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.375rem;
-    cursor: pointer;
-  }
-
-  .btn-primary:hover {
-    filter: brightness(1.1);
-    transform: scale(1.02);
-  }
-
-  /* Ghost / secondary button */
-  .btn-ghost {
-    background: transparent;
-    color: var(--foreground);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    padding: 0.625rem 1.25rem;
-    font-weight: 500;
-    font-size: 0.875rem;
-    transition: background 0.2s ease, transform 0.2s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.375rem;
-    cursor: pointer;
-  }
-
-  .btn-ghost:hover {
-    background: var(--secondary);
-    transform: scale(1.02);
-  }
 }
 
-/* Prose styling for markdown blog posts */
-.prose h1 {
-  font-family: var(--font-serif), ui-serif, Georgia, serif;
-  font-size: 2em;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  margin-top: 1.5em;
-  margin-bottom: 0.5em;
-  color: var(--foreground);
-}
-.prose h2 {
-  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-  font-size: 1.5em;
-  font-weight: 600;
-  margin-top: 1.5em;
-  margin-bottom: 0.5em;
-  color: var(--foreground);
-}
-.prose h3 {
-  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-  font-size: 1.25em;
-  font-weight: 600;
-  margin-top: 1.25em;
-  margin-bottom: 0.5em;
-  color: var(--foreground);
-}
-.prose h4,
-.prose h5,
-.prose h6 {
-  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-  font-weight: 600;
-  margin-top: 1.1em;
-  margin-bottom: 0.4em;
-  color: var(--foreground);
-}
-.prose h4 { font-size: 1.125em; }
-.prose h5 { font-size: 1.05em; }
-.prose h6 { font-size: 1em; }
-.prose p { margin-top: 0.75em; margin-bottom: 0.75em; line-height: 1.75; color: var(--muted-foreground); }
-.prose ul { list-style: disc; padding-left: 1.5em; margin-top: 0.5em; margin-bottom: 0.5em; }
-.prose ol { list-style: decimal; padding-left: 1.5em; margin-top: 0.5em; margin-bottom: 0.5em; }
-.prose li { margin-top: 0.25em; margin-bottom: 0.25em; color: var(--muted-foreground); }
-.prose blockquote { border-left: 3px solid var(--border); padding-left: 1em; margin: 1em 0; color: var(--muted-foreground); font-style: italic; }
-.prose code { background: var(--muted); padding: 0.15em 0.35em; border-radius: 0.25em; font-size: 0.875em; color: var(--foreground); }
-.prose pre { background: oklch(0.14 0.02 280); color: #e5e7eb; padding: 1em; border-radius: 0.5em; overflow-x: auto; margin: 1em 0; }
-.prose pre code { background: transparent; padding: 0; font-size: 0.875em; color: inherit; }
-.prose a { color: var(--pop); text-decoration: underline; text-underline-offset: 2px; }
-.prose img { border-radius: 0.5em; margin: 1em 0; }
-.prose hr { border-color: var(--border); margin: 2em 0; }
-.prose table { width: 100%; border-collapse: collapse; margin: 1em 0; }
-.prose th, .prose td { border: 1px solid var(--border); padding: 0.5em 0.75em; text-align: left; }
+/* ── Blog reader prose ────────────────────────────────────────
+   The one place body sans appears. Headings take the display
+   face; code and metadata stay mono. */
 
-/* Markdown reading (admin preview + /writing posts) */
 .markdown-reading.prose {
-  font-size: 1.0625rem;
-  max-width: 48rem;
-  margin-left: auto;
-  margin-right: auto;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.125rem;
+  max-width: 44rem;
 }
 
 .markdown-reading.prose > *:first-child {
@@ -322,7 +369,12 @@ html {
 .markdown-reading.prose p,
 .markdown-reading.prose li {
   color: var(--muted-foreground);
-  line-height: 1.82;
+  line-height: 1.7;
+}
+
+.markdown-reading.prose p {
+  margin-top: 1.1em;
+  margin-bottom: 1.1em;
 }
 
 .markdown-reading.prose strong {
@@ -330,122 +382,162 @@ html {
   font-weight: 600;
 }
 
-.markdown-reading.prose h1 {
-  font-family: var(--font-serif), ui-serif, Georgia, serif;
-  font-weight: 700;
-  letter-spacing: -0.035em;
-  color: var(--foreground);
-}
-
+.markdown-reading.prose h1,
 .markdown-reading.prose h2,
 .markdown-reading.prose h3,
 .markdown-reading.prose h4,
 .markdown-reading.prose h5,
 .markdown-reading.prose h6 {
-  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.03em;
   color: var(--foreground);
+  line-height: 1.1;
+}
+
+.markdown-reading.prose h1 {
+  font-size: 2em;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.markdown-reading.prose h2 {
+  font-size: 1.5em;
+  margin-top: 2em;
+  margin-bottom: 0.6em;
+  padding-top: 0.6em;
+  border-top: 1px solid var(--rule);
+}
+
+.markdown-reading.prose h3 {
+  font-size: 1.2em;
+  margin-top: 1.6em;
+  margin-bottom: 0.5em;
+}
+
+.markdown-reading.prose h4,
+.markdown-reading.prose h5,
+.markdown-reading.prose h6 {
+  font-size: 1.05em;
+  margin-top: 1.3em;
+  margin-bottom: 0.4em;
+}
+
+.markdown-reading.prose ul {
+  list-style: disc;
+  padding-left: 1.4em;
+  margin: 0.9em 0;
+}
+
+.markdown-reading.prose ol {
+  list-style: decimal;
+  padding-left: 1.4em;
+  margin: 0.9em 0;
+}
+
+.markdown-reading.prose li {
+  margin: 0.35em 0;
 }
 
 .markdown-reading.prose a {
-  color: var(--pop);
-  text-decoration-color: color-mix(in oklch, var(--pop) 45%, transparent);
+  color: var(--signal);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in oklch, var(--signal) 40%, transparent);
+  transition: text-decoration-color 120ms ease-out;
 }
 
 .markdown-reading.prose a:hover {
-  filter: brightness(1.15);
+  text-decoration-color: var(--signal);
 }
 
 .markdown-reading.prose blockquote {
-  border-left-color: color-mix(in oklch, var(--pop) 55%, transparent);
+  border-left: 2px solid var(--signal);
+  padding: 0.6rem 0 0.6rem 1.15rem;
+  margin: 1.4em 0;
   color: var(--muted-foreground);
-  background: color-mix(in oklch, var(--pop) 4%, var(--card));
-  padding: 0.75rem 1rem 0.75rem 1.25rem;
-  border-radius: 0 0.375rem 0.375rem 0;
-}
-
-.markdown-reading.prose pre {
-  background: oklch(0.14 0.02 280);
-  border: 1px solid oklch(1 0 0 / 8%);
-  border-radius: 0.625rem;
-  padding: 1rem 1.125rem;
-  box-shadow: inset 0 1px 0 oklch(1 0 0 / 4%);
+  font-style: normal;
 }
 
 .markdown-reading.prose code {
-  background: color-mix(in oklch, var(--pop) 8%, var(--muted));
+  font-family: var(--font-mono), ui-monospace, monospace;
+  background: var(--muted);
+  border: 1px solid var(--rule);
+  padding: 0.1em 0.35em;
+  border-radius: 2px;
+  font-size: 0.85em;
   color: var(--foreground);
 }
 
+.markdown-reading.prose pre {
+  background: oklch(0.13 0.008 250);
+  border: 1px solid oklch(1 0 0 / 10%);
+  border-radius: 2px;
+  padding: 1rem 1.125rem;
+  overflow-x: auto;
+  margin: 1.4em 0;
+  color: #e5e7eb;
+}
+
+.markdown-reading.prose pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 0.85em;
+  color: inherit;
+}
+
+.markdown-reading.prose img {
+  border-radius: 2px;
+  margin: 1.4em 0;
+}
+
 .markdown-reading.prose hr {
-  border-color: var(--border);
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 2.4em 0;
 }
 
-/* Engineering article: /writing slug pages (.writing-article on <article>) */
-.writing-article.markdown-reading.prose :not(pre) > code {
-  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 0.88em;
-  font-weight: 500;
-  border: 1px solid var(--border);
+.markdown-reading.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.4em 0;
 }
 
+.markdown-reading.prose th,
+.markdown-reading.prose td {
+  border: 1px solid var(--rule);
+  padding: 0.5em 0.75em;
+  text-align: left;
+}
+
+/* Engineering article: /writing slug pages */
 .writing-article.markdown-reading.prose table {
   display: block;
   overflow-x: auto;
   font-size: 0.9em;
-  border-radius: 0.5rem;
-  border: 1px solid var(--border);
-  box-shadow: 0 1px 0 oklch(1 0 0 / 5%);
-}
-
-.writing-article.markdown-reading.prose thead {
-  background: color-mix(in oklch, var(--pop) 8%, var(--card));
-}
-
-.writing-article.markdown-reading.prose tbody tr:nth-child(even) {
-  background: color-mix(in oklch, var(--pop) 3%, transparent);
-}
-
-.writing-article.markdown-reading.prose th,
-.writing-article.markdown-reading.prose td {
-  border-color: var(--border);
 }
 
 .writing-article.markdown-reading.prose th {
   font-family: var(--font-mono), ui-monospace, monospace;
-  font-weight: 600;
-  font-size: 0.72rem;
+  font-weight: 500;
+  font-size: 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.1em;
   color: var(--muted-foreground);
   white-space: nowrap;
+  background: var(--muted);
 }
 
 .writing-article.markdown-reading.prose .writing-code-block pre {
   background: transparent !important;
   border: none !important;
-  box-shadow: none !important;
 }
 
 .writing-code-block pre code.hljs {
   background: transparent !important;
 }
 
-/* Responsive typography */
-@media (max-width: 640px) {
-  html {
-    font-size: 14px;
-  }
-}
-
-@media (min-width: 1280px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-/* Print styles */
 @media print {
   .no-print {
     display: none !important;

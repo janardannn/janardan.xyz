@@ -1,18 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Calendar, Clock, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import {
   formatPostCategoryLabel,
-  postCategoryBadgeClass,
-  postTagBadgeClass,
   tagsExcludingCategory,
 } from "@/lib/postCardMeta";
 import { track } from "@/lib/tracker";
+import Reveal from "@/components/site/Reveal";
 
 interface Post {
   title: string;
@@ -29,112 +24,105 @@ interface Post {
 export default function WritingPageClient({ posts }: { posts: Post[] }) {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Header */}
-      <section className="pt-32 pb-12 relative overflow-hidden">
-        <div className="container px-6 mx-auto max-w-4xl relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Button
-              variant="outline"
-              asChild
-              size="sm"
-              className="mb-8 border-border/50 hover:bg-secondary"
-            >
-              <Link href="/">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Portfolio
-              </Link>
-            </Button>
+      <header className="rule-b grid-field">
+        <div className="shell pt-24 pb-14 md:pt-32 md:pb-20">
+          <Link href="/" className="link-mono t-label text-muted-foreground mb-10 inline-flex">
+            <span aria-hidden="true">←</span> Index
+          </Link>
 
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground font-serif mb-3">
-              Writing
-            </h1>
-            <p className="text-muted-foreground max-w-xl leading-relaxed">
-              Thoughts on code, systems, and the messy process of turning ideas into products.
+          <div className="grid gap-6 md:grid-cols-12 items-end">
+            <h1 className="t-display t-h2 md:col-span-7">Writing</h1>
+            <p className="t-mono text-muted-foreground md:col-span-4 md:col-start-9">
+              Thoughts on code, systems, and the messy process of turning ideas into
+              products.
             </p>
-          </motion.div>
+          </div>
         </div>
-      </section>
+      </header>
 
-      {/* Articles */}
-      <section className="pb-24 relative overflow-hidden">
-        <div className="container px-6 mx-auto max-w-4xl relative z-10">
-          {posts.length === 0 ? (
-            <p className="text-muted-foreground text-center py-16">No posts yet. Check back soon!</p>
-          ) : (
-            <div className="space-y-1">
-              {posts.map((post, index) => {
-                const extraTags = tagsExcludingCategory(post.tags, post.category);
-                return (
-                  <motion.div
-                    key={post.slug}
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: index * 0.03 }}
+      <main className="shell pb-24">
+        {posts.length === 0 ? (
+          <p className="t-mono text-muted-foreground py-16">
+            No posts yet. Check back soon.
+          </p>
+        ) : (
+          <ul>
+            {posts.map((post, i) => {
+              const extraTags = tagsExcludingCategory(post.tags, post.category);
+              return (
+                <Reveal as="li" key={post.slug} index={i} className="rule-b">
+                  <Link
+                    href={`/writing/${post.slug}`}
+                    onClick={() =>
+                      track("blog_click", "engagement", {
+                        slug: post.slug,
+                        title: post.title,
+                      })
+                    }
+                    className="group block py-7 md:py-9"
                   >
-                    <Link
-                      href={`/writing/${post.slug}`}
-                      onClick={() => track("blog_click", "engagement", { slug: post.slug, title: post.title })}
-                      className="group flex gap-5 items-start p-4 -mx-4 rounded-xl hover:bg-card/60 transition-colors"
-                    >
-                      {post.bannerImage && (
-                        <div className="relative w-72 h-40 shrink-0 rounded-xl overflow-hidden hidden sm:block">
-                          <Image
-                            src={post.bannerImage}
-                            alt={post.title}
-                            fill
-                            className="object-cover transition-transform duration-500 group-hover:scale-105"
-                          />
-                        </div>
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex flex-wrap items-center gap-2 mb-2">
-                          <Badge className={postCategoryBadgeClass}>
-                            {formatPostCategoryLabel(post.category)}
-                          </Badge>
-                          {extraTags.slice(0, 3).map((tag) => (
-                            <Badge key={tag} className={postTagBadgeClass}>
-                              {tag}
-                            </Badge>
-                          ))}
-                          {extraTags.length > 3 && (
-                            <span className="text-[11px] text-muted-foreground">+{extraTags.length - 3}</span>
-                          )}
-                        </div>
+                    <div className="grid gap-5 md:grid-cols-12 md:gap-6 items-start">
+                      <div className="md:col-span-2 flex md:flex-col items-baseline md:items-start gap-3 md:gap-1.5">
+                        <span className="t-label text-signal tnum">
+                          {String(i + 1).padStart(3, "0")}
+                        </span>
+                        <span className="t-label text-muted-foreground">
+                          {formatPostCategoryLabel(post.category)}
+                        </span>
+                      </div>
 
-                        <h4 className="font-bold text-lg text-foreground group-hover:text-pop transition-colors mb-1.5 font-serif leading-snug">
+                      <div className="md:col-span-6">
+                        <h2 className="t-display t-h3 md:text-[1.6rem] text-foreground group-hover:text-signal transition-colors duration-100">
                           {post.title}
-                        </h4>
+                        </h2>
 
-                        <p className="text-muted-foreground text-sm leading-relaxed mb-2 line-clamp-2">
+                        <p className="t-mono text-muted-foreground mt-3 line-clamp-2 max-w-2xl">
                           {post.excerpt}
                         </p>
 
-                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                          <span className="flex items-center gap-1">
-                            <Calendar className="h-3 w-3" />
-                            {post.date}
+                        {extraTags.length > 0 && (
+                          <div className="flex flex-wrap gap-1.5 mt-4">
+                            {extraTags.slice(0, 4).map((tag) => (
+                              <span key={tag} className="chip">
+                                {tag}
+                              </span>
+                            ))}
+                            {extraTags.length > 4 && (
+                              <span className="chip border-transparent">
+                                +{extraTags.length - 4}
+                              </span>
+                            )}
+                          </div>
+                        )}
+
+                        <p className="t-label text-muted-foreground mt-4 flex items-center gap-3">
+                          <span>{post.date}</span>
+                          <span className="text-rule" aria-hidden="true">
+                            /
                           </span>
-                          <span className="flex items-center gap-1">
-                            <Clock className="h-3 w-3" />
-                            {post.readTime}
-                          </span>
-                        </div>
+                          <span>{post.readTime}</span>
+                        </p>
                       </div>
 
-                      <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-pop group-hover:translate-x-1 transition-all duration-200 shrink-0 mt-1 hidden md:block" />
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </section>
+                      {post.bannerImage ? (
+                        <div className="md:col-span-3 md:col-start-10 relative aspect-[16/10] w-full overflow-hidden border border-rule">
+                          <Image
+                            src={post.bannerImage}
+                            alt=""
+                            fill
+                            sizes="(max-width: 768px) 100vw, 260px"
+                            className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                          />
+                        </div>
+                      ) : null}
+                    </div>
+                  </Link>
+                </Reveal>
+              );
+            })}
+          </ul>
+        )}
+      </main>
     </div>
   );
 }

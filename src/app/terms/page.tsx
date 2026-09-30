@@ -42,7 +42,7 @@ export default function TermsOfServicePage() {
 
                         <div className="flex items-center mb-6">
                             <FileText className="h-8 w-8 text-blue-400 mr-4" />
-                            <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent font-serif leading-tight pb-1">
+                            <h1 className="t-display t-h2 text-foreground pb-1">
                                 Terms of Service
                             </h1>
                         </div>

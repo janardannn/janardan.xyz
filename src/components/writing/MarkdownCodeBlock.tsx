@@ -33,7 +33,7 @@ export default function MarkdownCodeBlock({ children, className, node: _node, ..
   }
 
   return (
-    <div className="writing-code-block not-prose my-6 overflow-hidden rounded-lg border border-border/70 bg-[oklch(0.11_0.022_265)] shadow-[0_1px_0_oklch(1_0_0/6%),0_12px_40px_-16px_oklch(0_0_0/45%)]">
+    <div className="writing-code-block not-prose my-6 overflow-hidden rounded-[2px] border border-rule bg-[oklch(0.13_0.008_250)]">
       <div className="flex items-center justify-between gap-3 border-b border-white/[0.06] bg-black/25 px-3 py-2">
         <span className="truncate font-mono text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
           {lang || "plain text"}
