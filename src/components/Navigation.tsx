@@ -41,10 +41,18 @@ export default function Navigation() {
     return () => window.removeEventListener("keydown", onKey);
   }, [mobileMenuOpen]);
 
+  // Event names and property shapes are held identical to the pre-revamp
+  // markup so existing analytics queries keep matching.
   const toggleTheme = () => {
-    const next = resolvedTheme === "dark" ? "light" : "dark";
-    setTheme(next);
-    track("theme_toggle", "interaction", { theme: next });
+    const newTheme = resolvedTheme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
+    track("theme_toggle", "interaction", { newTheme });
+  };
+
+  const toggleMobileMenu = () => {
+    const newState = !mobileMenuOpen;
+    setMobileMenuOpen(newState);
+    track("mobile_menu_toggle", "navigation", { state: newState ? "open" : "close" });
   };
 
   return (
@@ -53,6 +61,7 @@ export default function Navigation() {
         <div className="flex items-center justify-between h-14">
           <a
             href="#home"
+            onClick={() => track("nav_click", "navigation", { item: "logo" })}
             className="t-label text-foreground hover:text-signal transition-colors duration-100 flex items-center gap-2.5"
           >
             <span
@@ -68,7 +77,7 @@ export default function Navigation() {
                 key={item.href}
                 href={item.href}
                 onClick={() =>
-                  track("nav_click", "navigation", { target: item.label.toLowerCase() })
+                  track("nav_click", "navigation", { item: item.label, device: "desktop" })
                 }
                 className="t-label text-muted-foreground hover:text-foreground transition-colors duration-100 px-3.5 py-2"
               >
@@ -104,9 +113,9 @@ export default function Navigation() {
               )}
             </button>
             <button
-              onClick={() => setMobileMenuOpen((v) => !v)}
+              onClick={toggleMobileMenu}
               className="p-2 text-foreground"
-              aria-label="Toggle menu"
+              aria-label="Toggle mobile menu"
               aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
@@ -133,7 +142,7 @@ export default function Navigation() {
                 href={item.href}
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  track("nav_click", "navigation", { target: item.label.toLowerCase() });
+                  track("nav_click", "navigation", { item: item.label, device: "mobile" });
                 }}
                 className="t-label text-muted-foreground hover:text-foreground py-3.5 transition-colors duration-100"
               >
