@@ -1,72 +1,71 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
-import { Geist_Mono, Playfair_Display, Inter } from "next/font/google";
+import { Geist_Mono, Bricolage_Grotesque, Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { TrackerProvider } from "@/components/TrackerProvider";
 import NoiseOverlay from "@/components/NoiseOverlay";
-import AmbientGlow from "@/components/AmbientGlow";
 import "./globals.css";
 
+/** Prose only — the homepage carries no body sans at all. */
 const inter = Inter({
   variable: "--font-sans",
   subsets: ["latin"],
   display: "swap",
 });
 
-const playfair = Playfair_Display({
-  variable: "--font-serif",
+/** Display face. Headlines only, set large and tight. */
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-display",
   subsets: ["latin"],
   display: "swap",
+  axes: ["opsz"],
 });
 
+/** The structural voice: labels, metadata, numerals, navigation, telemetry. */
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
   display: "swap",
 });
 
+const DESCRIPTION =
+  "Software engineer building reliable systems at scale. Full-stack, AI/agentic engineering, and the observability to prove it works.";
+
 export const metadata: Metadata = {
   title: {
-    default: "janardan.xyz",
-    template: "%s | Janardan Hazarika"
+    default: "Janardan Hazarika — Software Engineer",
+    template: "%s · Janardan Hazarika",
   },
-  description: "Software Engineer exploring how to build reliable, scalable, and human-focused digital products. I work with React, Next.js, TypeScript, and Node.js.",
+  description: DESCRIPTION,
   keywords: [
     "Janardan Hazarika",
     "Software Engineer",
     "Full-Stack Developer",
     "Next.js Developer",
     "TypeScript",
-    "Web Development",
-    "Backend Developer"
+    "AI Engineering",
+    "Backend Developer",
   ],
   authors: [{ name: "Janardan Hazarika", url: "https://janardan.xyz" }],
   creator: "Janardan Hazarika",
   publisher: "Janardan Hazarika",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
   metadataBase: new URL("https://janardan.xyz"),
-  alternates: {
-    canonical: "/",
-  },
+  formatDetection: { email: false, address: false, telephone: false },
+  // Note: no `alternates.canonical` here. Setting it on the root layout makes
+  // every page inherit it, which previously told search engines that each blog
+  // post was a duplicate of the homepage. Pages declare their own.
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://janardan.xyz",
-    title: "Janardan Hazarika - Software Engineer",
-    description: "Software Engineer exploring how to build reliable, scalable, and human-focused digital products. I work with React, Next.js, TypeScript, and Node.js.",
-    siteName: "janardan's personal website & blog",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Janardan Hazarika - Full-Stack Developer",
-      },
-    ],
+    title: "Janardan Hazarika — Software Engineer",
+    description: DESCRIPTION,
+    siteName: "janardan.xyz",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Janardan Hazarika — Software Engineer",
+    description: DESCRIPTION,
   },
   robots: {
     index: true,
@@ -81,6 +80,16 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f7f5f2" },
+    { media: "(prefers-color-scheme: dark)", color: "#0b0d10" },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -88,18 +97,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
-      <head>
-        <meta name="theme-color" content="#f8f6f3" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-      </head>
       <body
-        className={`${inter.variable} ${geistMono.variable} ${playfair.variable} antialiased`}
+        className={`${inter.variable} ${geistMono.variable} ${bricolage.variable} antialiased`}
       >
         <ThemeProvider>
           <Suspense fallback={null}>
             <TrackerProvider />
           </Suspense>
-          <AmbientGlow />
           <NoiseOverlay />
           {children}
         </ThemeProvider>

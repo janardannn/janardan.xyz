@@ -1,24 +1,32 @@
-import Navigation from "@/components/Navigation"
-import Hero from "@/components/Hero"
-import Projects from "@/components/Projects"
-import About from "@/components/About"
-import Writing from "@/components/Writing"
-import Contact from "@/components/Contact"
-import Footer from "@/components/Footer"
-import { SectionTracker } from "@/components/SectionTracker"
-import { getRecent } from "@/lib/posts"
-import { getRepoStats } from "@/lib/github"
+import type { Metadata } from "next";
+import Navigation from "@/components/Navigation";
+import Hero from "@/components/Hero";
+import Projects from "@/components/Projects";
+import About from "@/components/About";
+import Writing from "@/components/Writing";
+import Contact from "@/components/Contact";
+import Footer from "@/components/Footer";
+import TelemetryStrip from "@/components/site/TelemetryStrip";
+import { SectionTracker } from "@/components/SectionTracker";
+import { getRecent } from "@/lib/posts";
+import { getRepoStats } from "@/lib/github";
+import { getSiteStats } from "@/lib/site-stats";
 
 export const dynamic = "force-dynamic";
 
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
+
 export default async function Home() {
-  const [recentPosts, repoStats] = await Promise.all([
+  const [recentPosts, repoStats, siteStats] = await Promise.all([
     getRecent(3),
     getRepoStats([
       "janardannn/ai-eval-lab",
       "janardannn/taimumashin",
       "janardannn/rents.app",
     ]),
+    getSiteStats(),
   ]);
 
   const posts = recentPosts.map((p) => ({
@@ -44,6 +52,9 @@ export default async function Home() {
         <Hero />
       </section>
 
+      {/* The site reporting on itself, from its own analytics engine. */}
+      <TelemetryStrip stats={siteStats} />
+
       <section id="projects">
         <SectionTracker sectionId="projects" />
         <Projects repoStats={repoStats} />
@@ -66,5 +77,5 @@ export default async function Home() {
 
       <Footer />
     </div>
-  )
+  );
 }

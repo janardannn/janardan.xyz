@@ -1,134 +1,157 @@
-"use client"
-import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
-import { useTheme } from "next-themes"
-import { Menu, X, Sun, Moon } from "lucide-react"
-import { track } from "@/lib/tracker"
+"use client";
 
+import { useState, useEffect } from "react";
+import { motion, useScroll, useSpring, useReducedMotion } from "framer-motion";
+import { useTheme } from "next-themes";
+import { Menu, X, Sun, Moon } from "lucide-react";
+import { track } from "@/lib/tracker";
+
+const navItems = [
+  { label: "Work", href: "#projects" },
+  { label: "About", href: "#about" },
+  { label: "Writing", href: "#writing" },
+  { label: "Contact", href: "#contact" },
+];
+
+/**
+ * A full-width hairline status bar rather than a floating centred pill.
+ * Reads as window chrome: brand left, sections right, a scroll-progress
+ * line along the bottom edge.
+ */
 export default function Navigation() {
-    const [scrolled, setScrolled] = useState(false)
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-    const { theme, setTheme } = useTheme()
-    const [mounted, setMounted] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const reduced = useReducedMotion();
 
-    useEffect(() => setMounted(true), [])
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 200,
+    damping: 40,
+    restDelta: 0.001,
+  });
 
-    useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 50)
-        window.addEventListener("scroll", handleScroll)
-        return () => window.removeEventListener("scroll", handleScroll)
-    }, [])
+  useEffect(() => setMounted(true), []);
 
-    const navItems = [
-        { label: "About", href: "#about" },
-        { label: "Projects", href: "#projects" },
-        { label: "Writing", href: "#writing" },
-        { label: "Contact", href: "#contact" },
-    ]
+  // Close the mobile sheet on Escape.
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMobileMenuOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [mobileMenuOpen]);
 
-    return (
-        <motion.nav
-            className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 md:pt-6"
-            initial={{ y: -40, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-        >
-            <div
-                className={`
-                    flex items-center gap-1 px-2 py-2 rounded-full transition-all duration-500
-                    ${scrolled
-                        ? "bg-background/70 backdrop-blur-xl border border-border/60 shadow-lg"
-                        : "bg-transparent border border-transparent"
-                    }
-                `}
+  // Event names and property shapes are held identical to the pre-revamp
+  // markup so existing analytics queries keep matching.
+  const toggleTheme = () => {
+    const newTheme = resolvedTheme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
+    track("theme_toggle", "interaction", { newTheme });
+  };
+
+  const toggleMobileMenu = () => {
+    const newState = !mobileMenuOpen;
+    setMobileMenuOpen(newState);
+    track("mobile_menu_toggle", "navigation", { state: newState ? "open" : "close" });
+  };
+
+  return (
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md rule-b">
+      <div className="shell">
+        <div className="flex items-center justify-between h-14">
+          <a
+            href="#home"
+            onClick={() => track("nav_click", "navigation", { item: "logo" })}
+            className="t-label text-foreground hover:text-signal transition-colors duration-100 flex items-center gap-2.5"
+          >
+            <span
+              className="w-1.5 h-1.5 rounded-full bg-signal shrink-0"
+              aria-hidden="true"
+            />
+            janardan.xyz
+          </a>
+
+          <div className="hidden md:flex items-center">
+            {navItems.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                onClick={() =>
+                  track("nav_click", "navigation", { item: item.label, device: "desktop" })
+                }
+                className="t-label text-muted-foreground hover:text-foreground transition-colors duration-100 px-3.5 py-2"
+              >
+                {item.label}
+              </a>
+            ))}
+
+            <span className="w-px h-3.5 bg-rule mx-2.5" aria-hidden="true" />
+
+            <button
+              onClick={toggleTheme}
+              className="p-2 text-muted-foreground hover:text-signal transition-colors duration-100"
+              aria-label="Toggle theme"
             >
-                <a
-                    href="#home"
-                    onClick={() => track("nav_click", "navigation", { item: "logo" })}
-                    className="px-4 py-1.5 text-sm font-semibold text-foreground hover:text-pop transition-colors"
-                >
-                    janardan
-                </a>
+              {mounted && resolvedTheme === "dark" ? (
+                <Sun className="h-3.5 w-3.5" />
+              ) : (
+                <Moon className="h-3.5 w-3.5" />
+              )}
+            </button>
+          </div>
 
-                <span className="w-px h-4 bg-border/60 hidden md:block" />
+          <div className="flex md:hidden items-center gap-1">
+            <button
+              onClick={toggleTheme}
+              className="p-2 text-muted-foreground hover:text-signal transition-colors duration-100"
+              aria-label="Toggle theme"
+            >
+              {mounted && resolvedTheme === "dark" ? (
+                <Sun className="h-3.5 w-3.5" />
+              ) : (
+                <Moon className="h-3.5 w-3.5" />
+              )}
+            </button>
+            <button
+              onClick={toggleMobileMenu}
+              className="p-2 text-foreground"
+              aria-label="Toggle mobile menu"
+              aria-expanded={mobileMenuOpen}
+            >
+              {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </button>
+          </div>
+        </div>
+      </div>
 
-                <div className="hidden md:flex items-center">
-                    {navItems.map((item) => (
-                        <a
-                            key={item.label}
-                            href={item.href}
-                            className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-                            onClick={() => track("nav_click", "navigation", { item: item.label, device: "desktop" })}
-                        >
-                            {item.label}
-                        </a>
-                    ))}
-                </div>
+      {/* Scroll progress — a 1px signal line along the bar's lower edge. */}
+      {!reduced && (
+        <motion.div
+          className="absolute bottom-0 left-0 right-0 h-px bg-signal origin-left"
+          style={{ scaleX: progress }}
+          aria-hidden="true"
+        />
+      )}
 
-                <span className="w-px h-4 bg-border/60 hidden md:block" />
-
-                <button
-                    onClick={() => {
-                        const newTheme = theme === "dark" ? "light" : "dark"
-                        setTheme(newTheme)
-                        track("theme_toggle", "interaction", { newTheme })
-                    }}
-                    className="p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
-                    aria-label="Toggle theme"
-                >
-                    {mounted && (theme === "dark" ? <Sun size={16} /> : <Moon size={16} />)}
-                </button>
-
-                <div className="flex md:hidden items-center gap-2">
-                    <button
-                        onClick={() => {
-                            const newTheme = theme === "dark" ? "light" : "dark"
-                            setTheme(newTheme)
-                            track("theme_toggle", "interaction", { newTheme })
-                        }}
-                        className="p-2 rounded-lg text-muted-foreground hover:text-foreground transition-colors"
-                        aria-label="Toggle theme"
-                    >
-                        {mounted && (theme === "dark" ? <Sun size={16} /> : <Moon size={16} />)}
-                    </button>
-                    <button
-                        className="p-2 text-foreground"
-                        onClick={() => {
-                            const newState = !mobileMenuOpen
-                            setMobileMenuOpen(newState)
-                            track("mobile_menu_toggle", "navigation", { state: newState ? "open" : "close" })
-                        }}
-                        aria-label="Toggle mobile menu"
-                    >
-                        {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-                    </button>
-                </div>
-            </div>
-
-            {mobileMenuOpen && (
-                <motion.div
-                    initial={{ opacity: 0, y: -8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    className="absolute top-full left-4 right-4 mt-2 md:hidden bg-background/90 backdrop-blur-xl border border-border/60 rounded-2xl shadow-xl overflow-hidden"
-                >
-                    <div className="flex flex-col p-2">
-                        {navItems.map((item) => (
-                            <a
-                                key={item.label}
-                                href={item.href}
-                                className="px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-secondary/50 rounded-xl transition-colors font-medium"
-                                onClick={() => {
-                                    setMobileMenuOpen(false)
-                                    track("nav_click", "navigation", { item: item.label, device: "mobile" })
-                                }}
-                            >
-                                {item.label}
-                            </a>
-                        ))}
-                    </div>
-                </motion.div>
-            )}
-        </motion.nav>
-    )
+      {mobileMenuOpen && (
+        <div className="md:hidden rule-t bg-background">
+          <div className="shell flex flex-col py-2">
+            {navItems.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  track("nav_click", "navigation", { item: item.label, device: "mobile" });
+                }}
+                className="t-label text-muted-foreground hover:text-foreground py-3.5 transition-colors duration-100"
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </nav>
+  );
 }

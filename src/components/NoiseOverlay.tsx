@@ -49,7 +49,8 @@ export default function NoiseOverlay() {
       ref={canvasRef}
       className="pointer-events-none fixed inset-0 z-0 h-full w-full"
       style={{
-        opacity: 0.09,
+        // Now the site's only atmospheric layer, so it carries a little more weight.
+        opacity: 0.13,
         mixBlendMode: "overlay",
       }}
     />

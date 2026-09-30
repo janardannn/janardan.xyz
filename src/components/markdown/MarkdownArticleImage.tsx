@@ -33,9 +33,9 @@ export default function MarkdownArticleImage(props: MarkdownImgProps) {
     maxWidth: "100%",
     margin: "2rem auto",
     display: "block",
-    borderRadius: "0.75rem",
-    boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
-    transition: "transform 0.3s ease, box-shadow 0.3s ease",
+    borderRadius: "2px",
+    border: "1px solid var(--rule)",
+    transition: "transform 150ms ease-out, border-color 150ms ease-out",
   };
 
   if (!isVideo) {
@@ -65,7 +65,7 @@ export default function MarkdownArticleImage(props: MarkdownImgProps) {
 
   if (!transformedSrc) {
     return (
-      <span className="my-8 block rounded-xl border border-dashed border-border bg-muted/30 px-4 py-6 text-center text-sm text-muted-foreground">
+      <span className="my-8 block rounded-[2px] border border-dashed border-rule bg-muted/30 px-4 py-6 text-center text-sm text-muted-foreground">
         Missing or invalid media URL
       </span>
     );
@@ -100,7 +100,7 @@ export default function MarkdownArticleImage(props: MarkdownImgProps) {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         alt={type === 'image' ? '' : type}
-        className={`${className} hover:scale-[1.01] hover:shadow-2xl`}
+        className={`${className} transition-[transform,border-color] duration-150 hover:scale-[1.005] hover:border-signal-dim`}
         height={height}
         loading="lazy"
         decoding="async"
