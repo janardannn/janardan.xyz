@@ -1,159 +1,87 @@
-"use client"
-import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { ArrowLeft, Shield, Eye, Cookie, Mail, Server } from "lucide-react"
-import Link from "next/link"
+import type { Metadata } from "next";
+import LegalDocument, { type LegalSection } from "@/components/site/LegalDocument";
+
+export const metadata: Metadata = {
+  title: "Privacy",
+  description:
+    "What this site collects, why, and what it never does with it. Including a straight account of the analytics running here.",
+  alternates: { canonical: "/privacy" },
+};
+
+/**
+ * Disclosure is written against what the GTS tracker and the Visitor model
+ * actually store, rather than the generic "browser type, device, IP address"
+ * this page used to claim. The fingerprinting in particular is unusual enough
+ * that it deserves naming outright.
+ */
+const sections: LegalSection[] = [
+  {
+    heading: "The short version",
+    body: "This is a personal site. I run my own analytics on it rather than Google Analytics or Mixpanel, which means the data stays with me and is never sold, shared or used to advertise to you. It also means I collect more detail than a typical portfolio site, so the rest of this page says exactly what.",
+  },
+  {
+    heading: "What gets collected automatically",
+    body: "Every visit records the following. None of it requires you to type anything.",
+    list: [
+      "Pages viewed, time spent on each, and how far down you scrolled",
+      "Browser, operating system, and device type",
+      "Screen size, colour depth, pixel ratio, touch points, CPU cores and device memory",
+      "Language, timezone, and network connection type",
+      "Approximate location — country, region and city — derived from your IP address by the hosting provider",
+      "Your IP address",
+      "Referring site and any campaign parameters in the URL",
+    ],
+  },
+  {
+    heading: "Device fingerprinting",
+    body: "The tracker also generates a fingerprint: a hash derived from your user agent, screen dimensions, timezone, language and hardware concurrency, plus separate canvas, WebGL and audio rendering signatures. Together these identify your browser fairly reliably across visits without using cookies.",
+    note: "This is how repeat visits get linked together. It is the most privacy-sensitive thing this site does, which is why it is stated plainly rather than buried under 'technical information'.",
+  },
+  {
+    heading: "What you give me directly",
+    body: "If you email me or book a call, I have whatever you chose to put in that message. That is the only data you actively hand over — this site has no forms, no accounts and no sign-up.",
+  },
+  {
+    heading: "Why any of this exists",
+    list: [
+      "To see which writing people actually read and finish",
+      "To find out what is broken, and on which devices",
+      "To reply to you if you got in touch",
+      "Honestly: because I built the analytics engine myself and I like watching it work",
+    ],
+  },
+  {
+    heading: "What I never do",
+    list: [
+      "Sell or rent your data to anyone",
+      "Share it with third parties, except where the law requires it",
+      "Run advertising, ad networks or third-party trackers",
+      "Email you anything you did not ask for",
+      "Use any of it to make automated decisions about you",
+    ],
+  },
+  {
+    heading: "Where it lives",
+    body: "Analytics are stored in a Postgres database hosted on Neon, and the site runs on Vercel. Those two providers process the data on my behalf. Nothing is copied anywhere else.",
+  },
+  {
+    heading: "Cookies",
+    body: "No tracking cookies. Session identifiers are held in your browser's sessionStorage and disappear when you close the tab; your theme preference is stored locally so the site remembers whether you wanted dark or light.",
+  },
+  {
+    heading: "Your rights",
+    body: "Email me and I will delete everything associated with you, tell you what I hold, or stop collecting it going forward. No forms, no process — I will just do it. If you would rather not be measured at all, any content blocker or a browser with tracking protection will stop the tracker from loading.",
+  },
+];
 
 export default function PrivacyPolicyPage() {
-    return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-900">
-            {/* Background Effects */}
-            <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
-            <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-blue-600/5 to-slate-600/5"
-                animate={{
-                    background: [
-                        "linear-gradient(to right, rgba(59, 130, 246, 0.05), rgba(71, 85, 105, 0.05))",
-                        "linear-gradient(to right, rgba(71, 85, 105, 0.05), rgba(59, 130, 246, 0.05))",
-                        "linear-gradient(to right, rgba(59, 130, 246, 0.05), rgba(71, 85, 105, 0.05))"
-                    ]
-                }}
-                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-            />
-
-            {/* Hero Section */}
-            <section className="py-24 relative overflow-hidden">
-                <div className="container px-6 mx-auto max-w-4xl relative z-10">
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                    >
-                        <Button
-                            variant="outline"
-                            asChild
-                            className="mb-8 border-2 border-gray-600 bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 hover:text-white hover:scale-105 transition-all duration-200"
-                        >
-                            <Link href="/">
-                                <ArrowLeft className="mr-2 h-4 w-4" />
-                                Back to Portfolio
-                            </Link>
-                        </Button>
-
-                        <div className="flex items-center mb-6">
-                            <Shield className="h-8 w-8 text-blue-400 mr-4" />
-                            <h1 className="t-display t-h2 text-foreground pb-1">
-                                Privacy Policy
-                            </h1>
-                        </div>
-
-                        <p className="text-xl text-gray-300 max-w-3xl leading-relaxed mb-8">
-                            Simple privacy policy for my personal portfolio website.
-                        </p>
-
-                        <div className="text-sm text-gray-400">
-                            <p>Last updated: September 2, 2025</p>
-                        </div>
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* Content Section */}
-            <section className="py-2 relative">
-                <div className="container px-6 mx-auto max-w-4xl relative z-10">
-                    <div className="bg-gray-900/30 backdrop-blur-sm rounded-3xl p-8 md:p-12 border border-gray-800/50">
-                        <div className="prose prose-invert prose-lg max-w-none">
-
-                            {/* What I Collect */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6 }}
-                                className="mb-8"
-                            >
-                                <h2 className="text-2xl font-bold text-white mb-4">What I Collect</h2>
-                                <div className="text-gray-300 space-y-3">
-                                    <p>When you visit this website, I may collect:</p>
-                                    <ul className="list-disc list-inside space-y-1 ml-4">
-                                        <li>Your email and message when you contact me</li>
-                                        <li>Basic website usage data (pages visited, time spent)</li>
-                                        <li>Technical info (browser type, device, IP address)</li>
-                                    </ul>
-                                </div>
-                            </motion.div>
-
-                            {/* How I Use It */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6, delay: 0.1 }}
-                                className="mb-8"
-                            >
-                                <h2 className="text-2xl font-bold text-white mb-4">How I Use It</h2>
-                                <div className="text-gray-300 space-y-3">
-                                    <ul className="list-disc list-inside space-y-1 ml-4">
-                                        <li>To respond to your messages</li>
-                                        <li>To improve the website</li>
-                                        <li>To understand how people use the site</li>
-                                    </ul>
-                                </div>
-                            </motion.div>
-
-                            {/* What I Don't Do */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6, delay: 0.2 }}
-                                className="mb-8"
-                            >
-                                <h2 className="text-2xl font-bold text-white mb-4">What I Don&apos;t Do</h2>
-                                <div className="text-gray-300 space-y-3">
-                                    <ul className="list-disc list-inside space-y-1 ml-4">
-                                        <li>I don&apos;t sell your information</li>
-                                        <li>I don&apos;t spam you</li>
-                                        <li>I don&apos;t share your data with others (unless legally required)</li>
-                                    </ul>
-                                </div>
-                            </motion.div>
-
-                            {/* Your Rights */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6, delay: 0.3 }}
-                                className="mb-8"
-                            >
-                                <h2 className="text-2xl font-bold text-white mb-4">Your Rights</h2>
-                                <div className="text-gray-300 space-y-3">
-                                    <p>You can ask me to delete your information or stop contacting you anytime.</p>
-                                </div>
-                            </motion.div>
-
-                            {/* Contact */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6, delay: 0.4 }}
-                                className="bg-blue-600/10 rounded-2xl p-6 border border-blue-500/20 not-prose"
-                            >
-                                <div className="flex items-center mb-4">
-                                    <Mail className="h-6 w-6 shrink-0 text-blue-400 mr-3" />
-                                    <h2 className="text-2xl font-bold text-white !my-0">Questions?</h2>
-                                </div>
-                                <div className="text-gray-300">
-                                    <p>
-                                        Email me at{" "}
-                                        <a href="mailto:janardanhazarika20@gmail.com" className="text-blue-400 hover:text-blue-300 underline">
-                                            janardanhazarika20@gmail.com
-                                        </a>
-                                    </p>
-                                </div>
-                            </motion.div>
-
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-    )
+  return (
+    <LegalDocument
+      eyebrow="Legal"
+      title="Privacy"
+      lede="I run my own analytics here, which means more detail than most personal sites collect. This page says exactly what, and what never happens to it."
+      updated="30 September 2026"
+      sections={sections}
+    />
+  );
 }

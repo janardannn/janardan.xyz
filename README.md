@@ -22,7 +22,7 @@ Custom-built, zero-dependency tracking system. No GA, no Mixpanel, no ad-blocker
 
 **Client** (~4KB gzipped) collects canvas, WebGL, and AudioContext fingerprints alongside standard device signals. Batches events every 7s, fires via `sendBeacon` on unload. Tracks pageviews, scroll depth milestones, time on page, and custom interaction events.
 
-**Server** extracts geolocation from Vercel headers (country, city, region), hashes the IP with SHA-256 (never stored raw), and writes everything to Neon via Prisma in a single transaction.
+**Server** extracts geolocation from Vercel headers (country, city, region), scores each visitor for bot signals, and writes everything to Neon via Prisma in a single transaction. The IP address is stored as received — see `/privacy` for the full disclosure.
 
 **Admin dashboard** at `/admin/analytics` — overview stats, visitor list with location, visitor deep-dive (20+ device/hardware/geo fields), event stream with filters, geography breakdown, all server-rendered.
 
