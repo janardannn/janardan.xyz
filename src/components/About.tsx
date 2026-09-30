@@ -7,11 +7,12 @@ import SectionHeader from "@/components/site/SectionHeader";
 
 const skills = [
   "TypeScript", "JavaScript", "Python", "C++", "Java", "Ruby", "SQL",
-  "Next.js", "FastAPI", "React.js", "Node.js", "Ruby on Rails", "Prisma", "WebSockets", "Tailwind CSS", "Zod", "Storybook",
-  "PostgreSQL", "MongoDB", "Redis", "ClickHouse", "Neon",
-  "Docker", "AWS", "GitHub Actions", "Nginx", "Linux", "Vercel", "PM2", "Jenkins",
-  "LangChain", "Langfuse", "OpenRouter", "LLM Orchestration",
-  "Selenium", "Puppeteer", "KiCad", "VNC",
+  "Next.js", "FastAPI", "React.js", "Node.js", "Ruby on Rails", "Prisma", "SQLAlchemy", "Alembic", "Celery", "WebSockets", "Tailwind CSS", "SCSS", "Zod", "Storyblok", "Storybook",
+  "PostgreSQL", "Neon", "MongoDB", "Redis", "ClickHouse",
+  "Docker", "Terraform", "AWS", "ECS", "RDS", "Lambda", "CloudFront", "CloudFormation", "GitHub Actions", "Nginx", "Linux", "Vercel", "PM2", "Jenkins",
+  "LangChain", "OpenRouter", "LLM Orchestration", "Gemini", "OpenAI",
+  "OpenTelemetry", "Sentry", "Google Tag Manager", "MixPanel", "A/B Testing",
+  "OAuth", "JWT", "Selenium", "Puppeteer", "KiCad", "VNC",
 ];
 
 const education = [
@@ -31,27 +32,37 @@ const education = [
 
 const experience = [
   {
+    title: "Software Engineer",
+    company: "Scaler (InterviewBit Technologies)",
+    period: "Sep 2026 — Present",
+    description:
+      "Built InterviewBit Varsity end-to-end — a multi-tenant FastAPI/Celery platform for IIT and IIM degree programs serving 1M+ visitors, with a config-driven form engine over a typed enquiry → offer → payment → enrollment state machine handling ₹80L+ in fees via PayU and NBFC loan disbursal.",
+    href: "https://scaler.com",
+    shipped: { label: "interviewbit.com/varsity", href: "https://www.interviewbit.com/varsity" },
+  },
+  {
     title: "SDE Intern",
     company: "Scaler (InterviewBit Technologies)",
-    period: "Sep 2025 — Present",
-    description: "Growth engineering across various engineering verticals.",
+    period: "Sep 2025 — Sep 2026",
+    description:
+      "Owned AWS infrastructure — Terraform-provisioned ECS-on-EC2, RDS Multi-AZ, ElastiCache and CloudFront across isolated staging and production, with OpenTelemetry and Sentry feeding CloudWatch → PagerDuty. Shipped an AI widget for SWAYAM (NPTEL) reaching 10L+ learners, a résumé screening pipeline handling 10,000+ applications daily, and a Rails lead auto-allocation service using distributed locking.",
     href: "https://scaler.com",
   },
   {
-    title: "Independent Freelancer",
-    company: "Upwork & Fiverr",
-    period: "2022 — 2025",
+    title: "Freelance Developer",
+    company: "Upwork & direct clients",
+    period: "Feb 2025 — Aug 2025",
     description:
-      "Built fullstack apps, scraping engines, and automation tools for clients across diverse industries.",
+      "Selenium-based Google Maps scraper feeding listings into an LLM for market analysis, and a stock market data scraper with automated Telegram notifications.",
   },
 ];
 
 const now = [
-  { label: "Role", value: "SDE Intern at Scaler" },
+  { label: "Role", value: "Software Engineer at Scaler" },
   {
     label: "Focus",
     value:
-      "AI/agentic engineering, RAG, FastAPI, LLM orchestration, AWS, Docker, Next.js, observability",
+      "Multi-tenant platform work in FastAPI and Celery, AWS infrastructure with Terraform, LLM orchestration, and the observability to keep it honest",
   },
   {
     label: "Last shipped",
@@ -85,7 +96,7 @@ export default function About() {
         index="002"
         label="About"
         title="Engineer, Bengaluru."
-        lede="Final-year CSE, shipping production systems at Scaler. Before that, four years of freelance work across whatever clients needed built."
+        lede="Software engineer at Scaler, where I converted from intern after a year. Multi-tenant platforms, the AWS underneath them, and the instrumentation that proves they hold."
       />
 
       <div className="grid gap-x-6 gap-y-12 md:grid-cols-12">
@@ -119,6 +130,24 @@ export default function About() {
                       )}
                     </p>
                     <p className="t-mono text-muted-foreground mt-2.5">{exp.description}</p>
+
+                    {exp.shipped ? (
+                      <a
+                        href={exp.shipped.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="link-mono t-label mt-3.5 inline-flex"
+                        onClick={() =>
+                          track("project_click", "engagement", {
+                            project: exp.shipped.label,
+                            action: "view_live",
+                          })
+                        }
+                      >
+                        <ExternalLink className="h-3 w-3" aria-hidden="true" />
+                        {exp.shipped.label}
+                      </a>
+                    ) : null}
                   </div>
                 </li>
               ))}

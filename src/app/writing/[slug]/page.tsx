@@ -72,6 +72,10 @@ export default async function BlogPost({
     <BlogPostClient
       post={{
         title: post.title,
+        excerpt: post.excerpt,
+        category: post.category,
+        bannerImage: post.bannerImage,
+        views: post.views,
         date: new Date(post.date).toLocaleDateString("en-US", {
           year: "numeric",
           month: "long",

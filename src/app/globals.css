@@ -102,20 +102,20 @@
 
 .dark {
   /* Dark: properly dark, so the signal can glow. */
-  --background: oklch(0.16 0.008 250);
-  --foreground: oklch(0.93 0.008 250);
-  --card: oklch(0.2 0.01 250);
-  --card-foreground: oklch(0.93 0.008 250);
-  --popover: oklch(0.2 0.01 250);
-  --popover-foreground: oklch(0.93 0.008 250);
-  --primary: oklch(0.93 0.008 250);
-  --primary-foreground: oklch(0.16 0.008 250);
-  --secondary: oklch(0.24 0.01 250);
-  --secondary-foreground: oklch(0.88 0.008 250);
-  --muted: oklch(0.24 0.01 250);
-  --muted-foreground: oklch(0.68 0.01 250);
-  --accent: oklch(0.24 0.01 250);
-  --accent-foreground: oklch(0.93 0.008 250);
+  --background: oklch(0.155 0.002 60);
+  --foreground: oklch(0.93 0.003 60);
+  --card: oklch(0.195 0.003 60);
+  --card-foreground: oklch(0.93 0.003 60);
+  --popover: oklch(0.195 0.003 60);
+  --popover-foreground: oklch(0.93 0.003 60);
+  --primary: oklch(0.93 0.003 60);
+  --primary-foreground: oklch(0.155 0.002 60);
+  --secondary: oklch(0.235 0.003 60);
+  --secondary-foreground: oklch(0.88 0.003 60);
+  --muted: oklch(0.235 0.003 60);
+  --muted-foreground: oklch(0.68 0.004 60);
+  --accent: oklch(0.235 0.003 60);
+  --accent-foreground: oklch(0.93 0.003 60);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 15%);
@@ -222,7 +222,7 @@ html {
   }
 
   .t-hero {
-    font-size: clamp(2.75rem, 11vw, 9rem);
+    font-size: clamp(2.25rem, 7.5vw, 6.25rem);
   }
 
   .t-h2 {
@@ -470,7 +470,7 @@ html {
 }
 
 .markdown-reading.prose pre {
-  background: oklch(0.13 0.008 250);
+  background: oklch(0.125 0.002 60);
   border: 1px solid oklch(1 0 0 / 10%);
   border-radius: 2px;
   padding: 1rem 1.125rem;

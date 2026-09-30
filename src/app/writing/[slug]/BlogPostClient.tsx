@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
@@ -11,15 +12,20 @@ import MarkdownArticleImage from "@/components/markdown/MarkdownArticleImage";
 import ArticleTocNav from "@/components/writing/ArticleTocNav";
 import MarkdownCodeBlock from "@/components/writing/MarkdownCodeBlock";
 import { MarkdownH2, MarkdownH3, MarkdownH4 } from "@/components/writing/MarkdownSectionHeading";
+import ReadingProgress from "@/components/site/ReadingProgress";
 import { extractMarkdownToc } from "@/lib/extractMarkdownToc";
 import { markdownUrlTransform, prepareMarkdownForDisplay } from "@/lib/markdownForDisplay";
+import { formatPostCategoryLabel, tagsExcludingCategory } from "@/lib/postCardMeta";
 import { track } from "@/lib/tracker";
-import { cn } from "@/lib/utils";
 import "highlight.js/styles/atom-one-dark-reasonable.min.css";
 
 interface BlogPostClientProps {
   post: {
     title: string;
+    excerpt: string;
+    category: string;
+    bannerImage?: string | null;
+    views: number;
     date: string;
     readTime: string;
     tags: string[];
@@ -29,10 +35,15 @@ interface BlogPostClientProps {
 
 export default function BlogPostClient({ post }: BlogPostClientProps) {
   const [copied, setCopied] = useState(false);
+  const articleRef = useRef<HTMLDivElement>(null);
 
   const markdown = useMemo(() => prepareMarkdownForDisplay(post.content), [post.content]);
   const toc = useMemo(() => extractMarkdownToc(markdown), [markdown]);
   const hasToc = toc.length > 0;
+  const extraTags = useMemo(
+    () => tagsExcludingCategory(post.tags, post.category),
+    [post.tags, post.category]
+  );
 
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -60,68 +71,147 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
     </article>
   );
 
-  const articleFooter = (
-    <>
-      {article}
-      <div className="rule-t mt-14 pt-8 pb-16 flex flex-wrap items-center justify-between gap-4">
-        <p className="t-mono text-muted-foreground">
-          Thanks for reading. Pass it on if it helped.
-        </p>
-        <Link
-          href="/writing"
-          className="link-mono t-label"
-          onClick={() => track("cta_click", "navigation", { label: "read_more_posts" })}
-        >
-          More posts <span aria-hidden="true">→</span>
-        </Link>
-      </div>
-    </>
-  );
-
-  return (
-    <div className="min-h-screen bg-background text-foreground">
-      <div className="mx-auto w-full max-w-[88rem] px-6 pb-20 pt-8 lg:px-10">
-        <header className="mx-auto max-w-4xl rule-b pb-10">
-          <Link href="/writing" className="link-mono t-label text-muted-foreground mb-10 inline-flex">
-            <span aria-hidden="true">←</span> Writing
-          </Link>
-
-          {post.tags.length > 0 && (
-            <div className="mb-5 flex flex-wrap gap-1.5">
-              {post.tags.map((tag) => (
-                <span key={tag} className="chip">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
-
-          <h1 className="t-display text-[clamp(2rem,6vw,3.75rem)] text-foreground mb-7">
-            {post.title}
-          </h1>
-
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 t-label text-muted-foreground">
-            <span>{post.date}</span>
-            <span className="text-rule" aria-hidden="true">
-              /
-            </span>
-            <span>{post.readTime}</span>
-            <button
-              onClick={handleShare}
-              className="link-mono t-label ml-auto text-muted-foreground"
+  const endMatter = (
+    <div className="rule-t mt-14 pt-8 pb-16">
+      <div className="grid gap-8 sm:grid-cols-12">
+        <div className="sm:col-span-7">
+          <p className="t-label text-muted-foreground mb-3">End of article</p>
+          <p className="t-mono text-muted-foreground max-w-md">
+            Thanks for reading. If it was useful, pass it on — or tell me where I got it
+            wrong.
+          </p>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mt-6">
+            <Link
+              href="/writing"
+              className="link-mono t-label"
+              onClick={() => track("cta_click", "navigation", { label: "read_more_posts" })}
             >
+              <span aria-hidden="true">→</span> More posts
+            </Link>
+            <button onClick={handleShare} className="link-mono t-label text-muted-foreground">
               {copied ? (
                 <Check className="h-3 w-3" aria-hidden="true" />
               ) : (
                 <Share2 className="h-3 w-3" aria-hidden="true" />
               )}
-              {copied ? "Copied" : "Share"}
+              {copied ? "Link copied" : "Copy link"}
             </button>
           </div>
-        </header>
+        </div>
 
+        {/* Same idea as the homepage strip: the page reports on itself. */}
+        <dl className="sm:col-span-4 sm:col-start-9 rule-l pl-4 space-y-2.5">
+          {post.views > 0 && (
+            <div className="flex gap-3">
+              <dt className="t-label text-muted-foreground w-16 shrink-0 pt-px">Reads</dt>
+              <dd className="t-mono text-foreground tnum">
+                {post.views.toLocaleString("en-US")}
+              </dd>
+            </div>
+          )}
+          <div className="flex gap-3">
+            <dt className="t-label text-muted-foreground w-16 shrink-0 pt-px">Length</dt>
+            <dd className="t-mono text-foreground">{post.readTime}</dd>
+          </div>
+          <div className="flex gap-3">
+            <dt className="t-label text-muted-foreground w-16 shrink-0 pt-px">Filed</dt>
+            <dd className="t-mono text-foreground">
+              {formatPostCategoryLabel(post.category)}
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  );
+
+  const bodyAndEnd = (
+    <>
+      {article}
+      {endMatter}
+    </>
+  );
+
+  return (
+    <div className="min-h-screen bg-background text-foreground">
+      {/* ── Masthead ────────────────────────────────────────── */}
+      <header className="rule-b grid-field">
+        <div className="mx-auto w-full max-w-[88rem] px-6 pt-8 pb-12 lg:px-10">
+          <Link
+            href="/writing"
+            className="link-mono t-label text-muted-foreground mb-12 inline-flex"
+          >
+            <span aria-hidden="true">←</span> Writing
+          </Link>
+
+          <div className="grid gap-x-6 gap-y-8 lg:grid-cols-12">
+            <div className="lg:col-span-7">
+              <p className="t-label text-signal mb-5">
+                {formatPostCategoryLabel(post.category)}
+              </p>
+
+              <h1 className="t-display text-[clamp(1.85rem,4.6vw,3.4rem)] text-foreground">
+                {post.title}
+              </h1>
+
+              {/* Standfirst — the excerpt finally does some work here. */}
+              {post.excerpt ? (
+                <p className="mt-6 max-w-2xl font-sans text-lg leading-relaxed text-muted-foreground">
+                  {post.excerpt}
+                </p>
+              ) : null}
+
+              <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 t-label text-muted-foreground">
+                <span>{post.date}</span>
+                <span className="text-rule" aria-hidden="true">
+                  /
+                </span>
+                <span>{post.readTime}</span>
+                {/* A fresh post reading "0 reads" is worse than no count at all. */}
+                {post.views > 0 && (
+                  <>
+                    <span className="text-rule" aria-hidden="true">
+                      /
+                    </span>
+                    <span className="tnum">
+                      {post.views.toLocaleString("en-US")} reads
+                    </span>
+                  </>
+                )}
+              </div>
+
+              {extraTags.length > 0 && (
+                <div className="mt-6 flex flex-wrap gap-1.5">
+                  {extraTags.map((tag) => (
+                    <span key={tag} className="chip">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Banner. Present on every post, and previously never rendered here. */}
+            {post.bannerImage ? (
+              <div className="lg:col-span-5 lg:col-start-8">
+                <div className="relative aspect-[16/10] w-full overflow-hidden border border-rule">
+                  <Image
+                    src={post.bannerImage}
+                    alt=""
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 40rem"
+                    className="object-cover"
+                    priority
+                  />
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </div>
+      </header>
+
+      <div className="mx-auto w-full max-w-[88rem] px-6 pb-20 lg:px-10">
         {hasToc ? (
-          <details className="mx-auto mt-6 max-w-4xl border border-rule lg:hidden">
+          <details className="mt-6 border border-rule lg:hidden">
             <summary className="cursor-pointer px-4 py-3 t-label text-foreground">
               On this page
             </summary>
@@ -136,21 +226,27 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
           <div className="mt-8 overflow-visible lg:grid lg:grid-cols-[1fr_min(100%,52rem)_1fr] lg:items-stretch lg:gap-x-0">
             <aside className="hidden min-h-0 lg:col-start-1 lg:row-start-1 lg:block lg:h-full lg:justify-self-end lg:pr-10">
               {/* Sticky wrapper must not scroll: overflow lives on the inner rail. */}
-              <div className={cn("sticky top-24 z-10 w-[13.5rem] xl:w-56", "lg:pt-12")}>
-                <div className="max-h-[calc(100dvh-8rem)] overflow-y-auto overscroll-y-contain [scrollbar-width:thin]">
+              <div className="sticky top-24 z-10 w-[13.5rem] pt-12 xl:w-56">
+                <ReadingProgress targetRef={articleRef} />
+                <div className="mt-5 max-h-[calc(100dvh-12rem)] overflow-y-auto overscroll-y-contain [scrollbar-width:thin]">
                   <ArticleTocNav items={toc} />
                 </div>
               </div>
             </aside>
 
-            <div className="mx-auto mt-8 w-full min-w-0 max-w-4xl lg:col-start-2 lg:mx-0 lg:mt-0 lg:max-w-none">
-              {articleFooter}
+            <div
+              ref={articleRef}
+              className="mx-auto mt-8 w-full min-w-0 max-w-4xl lg:col-start-2 lg:mx-0 lg:mt-0 lg:max-w-none"
+            >
+              {bodyAndEnd}
             </div>
 
             <div className="hidden lg:col-start-3 lg:block" aria-hidden />
           </div>
         ) : (
-          <div className="mx-auto mt-8 max-w-4xl">{articleFooter}</div>
+          <div ref={articleRef} className="mx-auto mt-8 max-w-4xl">
+            {bodyAndEnd}
+          </div>
         )}
       </div>
     </div>

@@ -5,11 +5,10 @@ import { Github, Linkedin, Mail } from "lucide-react";
 import { track } from "@/lib/tracker";
 
 const datasheet = [
-  { k: "Role", v: "SDE Intern" },
+  { k: "Role", v: "Software Engineer", signal: true },
   { k: "At", v: "Scaler" },
-  { k: "Focus", v: "AI / Agentic" },
+  { k: "Focus", v: "Platform / AI" },
   { k: "Base", v: "Bengaluru, IN" },
-  { k: "Status", v: "Open to work", signal: true },
 ];
 
 const socials = [
