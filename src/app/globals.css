@@ -221,12 +221,21 @@ html {
     text-wrap: balance;
   }
 
-  /* The one place the Bastardica hybrid appears. It is a Times-Roman-derived
-     serif, so it needs looser tracking and more leading than the grotesque
-     the rest of the display scale is tuned for. Declared after .t-display so
-     it wins the family on equal specificity. */
-  .t-hero {
+  /* The Bastardica hybrid: Times New Roman with every fourth glyph swapped for
+     a blackletter Gothic one. The swap is an OpenType substitution, not plain
+     cmap glyphs, so the subset must keep its layout features or the page just
+     renders Times.
+
+     Carries the top display tier — the hero and every section title. Being a
+     Times-derived serif it needs looser tracking and more leading than the
+     grotesque the rest of the scale is tuned for. Both rules sit after
+     .t-display so they win the family on equal specificity. */
+  .t-hero,
+  .t-h2 {
     font-family: var(--font-hero), var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  }
+
+  .t-hero {
     font-size: clamp(2.25rem, 7.5vw, 6.25rem);
     letter-spacing: -0.015em;
     line-height: 0.98;
@@ -234,8 +243,8 @@ html {
 
   .t-h2 {
     font-size: clamp(1.9rem, 4.2vw, 3.25rem);
-    line-height: 1;
-    letter-spacing: -0.03em;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
   }
 
   .t-h3 {
