@@ -221,8 +221,15 @@ html {
     text-wrap: balance;
   }
 
+  /* The one place the Bastardica hybrid appears. It is a Times-Roman-derived
+     serif, so it needs looser tracking and more leading than the grotesque
+     the rest of the display scale is tuned for. Declared after .t-display so
+     it wins the family on equal specificity. */
   .t-hero {
+    font-family: var(--font-hero), var(--font-display), ui-sans-serif, system-ui, sans-serif;
     font-size: clamp(2.25rem, 7.5vw, 6.25rem);
+    letter-spacing: -0.015em;
+    line-height: 0.98;
   }
 
   .t-h2 {

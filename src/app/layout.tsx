@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import { Geist_Mono, Bricolage_Grotesque, Inter } from "next/font/google";
+import localFont from "next/font/local";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { TrackerProvider } from "@/components/TrackerProvider";
 import NoiseOverlay from "@/components/NoiseOverlay";
@@ -19,6 +20,24 @@ const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
   display: "swap",
   axes: ["opsz"],
+});
+
+/**
+ * Hero headline only.
+ *
+ * A Bastardica hybrid splicing Times New Roman with CyrillicGothSHA. Subset to
+ * Latin and converted to woff2, taking it from 1.2 MB / 4,976 glyphs down to
+ * ~20 kB / 208 — it only ever has to set one sentence.
+ */
+const bastardica = localFont({
+  src: "./fonts/bastardica-hero.woff2",
+  variable: "--font-hero",
+  display: "swap",
+  weight: "400",
+  style: "normal",
+  // Falls back to the display face rather than a system serif, so a failed
+  // load degrades into the rest of the design instead of out of it.
+  fallback: ["Bricolage Grotesque", "ui-sans-serif", "system-ui", "sans-serif"],
 });
 
 /** The structural voice: labels, metadata, numerals, navigation, telemetry. */
@@ -98,7 +117,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${geistMono.variable} ${bricolage.variable} antialiased`}
+        className={`${inter.variable} ${geistMono.variable} ${bricolage.variable} ${bastardica.variable} antialiased`}
       >
         <ThemeProvider>
           <Suspense fallback={null}>
