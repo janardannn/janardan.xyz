@@ -149,13 +149,13 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
                 {formatPostCategoryLabel(post.category)}
               </p>
 
-              <h1 className="t-display text-[clamp(1.85rem,4.6vw,3.4rem)] text-foreground">
+              <h1 className="t-display text-[clamp(2rem,4.9vw,3.65rem)] text-foreground">
                 {post.title}
               </h1>
 
               {/* Standfirst — the excerpt finally does some work here. */}
               {post.excerpt ? (
-                <p className="mt-6 max-w-2xl font-sans text-lg leading-relaxed text-muted-foreground">
+                <p className="mt-6 max-w-2xl font-sans text-xl leading-relaxed text-muted-foreground">
                   {post.excerpt}
                 </p>
               ) : null}

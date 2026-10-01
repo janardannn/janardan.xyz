@@ -269,7 +269,7 @@ export default function Projects({ repoStats }: { repoStats?: Record<string, Rep
 
                   {/* Title + description */}
                   <div className="md:col-span-6">
-                    <h3 className="t-display t-h3 md:text-[1.6rem] text-foreground group-hover:text-signal transition-colors duration-100">
+                    <h3 className="t-display t-h3 md:text-[1.8rem] text-foreground group-hover:text-signal transition-colors duration-100">
                       {name}
                     </h3>
                     {subtitle ? (
