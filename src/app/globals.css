@@ -233,18 +233,24 @@ html {
   .t-hero,
   .t-h2 {
     font-family: var(--font-hero), var(--font-display), ui-sans-serif, system-ui, sans-serif;
+
+    /* CRITICAL: the Gothic swap is a `liga` lookup, and browsers disable
+       ligatures whenever letter-spacing is non-zero. .t-display sets
+       -0.04em, which silently switched the entire effect off and left the
+       page rendering plain Times. Do not reintroduce letter-spacing here. */
+    letter-spacing: normal;
+    font-variant-ligatures: common-ligatures contextual;
+    font-feature-settings: "liga" 1, "clig" 1, "calt" 1;
   }
 
   .t-hero {
     font-size: clamp(2.25rem, 7.5vw, 6.25rem);
-    letter-spacing: -0.015em;
     line-height: 0.98;
   }
 
   .t-h2 {
     font-size: clamp(1.9rem, 4.2vw, 3.25rem);
     line-height: 1.08;
-    letter-spacing: -0.01em;
   }
 
   .t-h3 {
